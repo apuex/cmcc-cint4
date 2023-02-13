@@ -1,3 +1,7 @@
+# [200~git log --pretty=oneline | sed -e "s/\(^[0-9a-z]*\)\s\(.*\)/\2/g"
+# git log --pretty="[%ci] %H %an %s" > CHANGELOG
+# git log --pretty="[%ci] %H %an %s" --name-only
+
 # Compiled class file
 *.class
 
@@ -21,3 +25,67 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# idea generated directories
+.idea
+
+# vim temp files
+*.swp
+
+# build directories
+dist
+dist-*
+*RETAIL
+*DEBUG
+Debug
+Release
+.vs*
+vs*
+/build/
+.project
+.cproject
+cmake-build-debug
+
+*.APS
+*.aps
+*.ncb
+*.opt
+*.pdb
+*.log
+*.err
+*.wrn
+

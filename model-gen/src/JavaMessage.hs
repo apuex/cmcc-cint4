@@ -53,7 +53,7 @@ genField prefix field = case field of
     Meta.ByteStringField n s v c -> [st|std::vector<char> #{prefix}#{n}; // #{c}|]
     Meta.StringField n s v c -> [st|std::string #{prefix}#{n}; // #{c}|]
     Meta.NTStringField n s v c -> [st|char[#{fromMaybe 0 s}] #{prefix}#{n}; // #{c}|]
-    Meta.EnumerateField n t s v c -> [st|#{t} #{prefix}#{n}; // #{c}|]
+    Meta.EnumerateField n t s v es c -> [st|#{t} #{prefix}#{n}; // #{c}|]
     Meta.EntityField n t v c -> [st|#{t} #{prefix}#{n}; // #{c}|]
 
 genParam :: Meta.Field
@@ -72,48 +72,9 @@ genParam field = case field of
     Meta.ByteStringField n s v c -> [st|std::vector<char> #{n} // #{c}|]
     Meta.StringField n s v c -> [st|std::string #{n} // #{c}|]
     Meta.NTStringField n s v c -> [st|char* #{n}, #{n}Len // #{c}|]
-    Meta.EnumerateField n t s v c -> [st|#{t} #{n} // #{c}|]
+    Meta.EnumerateField n t s v es c -> [st|#{t} #{n} // #{c}|]
     Meta.EntityField n t v c -> [st|#{t} #{n} // #{c}|]
 
-
--- Generate C++ .cpp Source file content.
-genSource :: Meta.Model
-          -> Meta.Entity
-          -> T.Text
-genSource model entity = case entity of
-    Meta.Message id ver name fields -> [st|// #{name}
-#{name}::#{name}()
-  : Message(#{id}, #{ver})
-{
-}
-
-#{name}::#{name}
-  ( #{Util.combinePrefix 2 ", " $ DL.map genParam fields}
-  )
-  : Message(#{id}, #{ver})
-  , #{Util.combinePrefix 2 ", " $ DL.map (genInitializer "m_") fields}
-{
-}
-
-#{name}::~#{name}()
-{
-}
-
-std::ostream& operator<<(std::ostream& os, const #{name}& v) {
-  os
-    << std::dec
-    << std::setw(0)
-    << "#{name} {"
-    << dynamic_cast<const Message&>(v)#{DL.foldl (Util.combineLine 4) "" $ DL.map (genToString "m_") fields}
-    << " }";
-  return os;
-}
-
-|]
-
-    Meta.State id ver name fields -> [st|// #{name}|]
-
-    Meta.Struct id ver name fields -> [st|// #{name}|]
 
 genInitializer :: T.Text
                -> Meta.Field
@@ -132,7 +93,7 @@ genInitializer prefix field = case field of
     Meta.ByteStringField n s v c -> [st|#{prefix}#{n}(#{n})|]
     Meta.StringField n s v c -> [st|#{prefix}#{n}(#{n})|]
     Meta.NTStringField n s v c -> [st|// FIXME: null terminated string|]
-    Meta.EnumerateField n t s v c -> [st|#{prefix}#{n}(#{n})|]
+    Meta.EnumerateField n t s v es c -> [st|#{prefix}#{n}(#{n})|]
     Meta.EntityField n t v c -> [st|#{prefix}#{n}(#{n})|]
 
 genToString :: T.Text
@@ -152,7 +113,7 @@ genToString prefix field = case field of
     Meta.ByteStringField n s v c -> [st|<< ", #{prefix}#{n}=" << v.#{prefix}#{n}|]
     Meta.StringField n s v c -> [st|<< ", #{prefix}#{n}=" << v.#{prefix}#{n}|]
     Meta.NTStringField n s v c -> [st|<< ", #{prefix}#{n}=" << v.#{prefix}#{n}|]
-    Meta.EnumerateField n t s v c -> [st|<< ", #{prefix}#{n}=" << v.#{prefix}#{n}|]
+    Meta.EnumerateField n t s v es c -> [st|<< ", #{prefix}#{n}=" << v.#{prefix}#{n}|]
     Meta.EntityField n t v c -> [st|<< ", #{prefix}#{n}=" << v.#{prefix}#{n}|]
 
 genCompare :: T.Text
@@ -172,7 +133,7 @@ genCompare prefix field = case field of
     Meta.ByteStringField n s v c -> [st|l.#{prefix}#{n} == r.#{prefix}#{n}|]
     Meta.StringField n s v c -> [st|l.#{prefix}#{n} == r.#{prefix}#{n}|]
     Meta.NTStringField n s v c -> [st|strncmp(l.#{prefix}#{n}, r.#{prefix}#{n}, #{fromMaybe 0 s})|]
-    Meta.EnumerateField n t s v c -> [st|l.#{prefix}#{n} == r.#{prefix}#{n}|]
+    Meta.EnumerateField n t s v es c -> [st|l.#{prefix}#{n} == r.#{prefix}#{n}|]
     Meta.EntityField n t v c -> [st|l.#{prefix}#{n} == r.#{prefix}#{n}|]
 
 

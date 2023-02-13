@@ -10,6 +10,18 @@ import qualified Data.List              as L
 import qualified Data.Text              as T
 
 -- Enums
+enumRightLevel = Meta.EnumerateField
+    { Meta.fieldName    = "RightLevel"
+    , Meta.fieldType    = "int32_t"
+    , Meta.fieldSize    = Nothing
+    , Meta.fieldValue   = ""
+    , Meta.fieldEnums   =
+        [ ("INVALID", 0)
+        , ("LEVEL1", 1)
+        , ("LEVEL2", 2)
+        ]
+    , Meta.fieldComment = "Right level."
+    }
 
 
 -- Fields
@@ -25,13 +37,6 @@ passWord = Meta.StringField
     , Meta.fieldSize    = Just 20
     , Meta.fieldValue   = ""
     , Meta.fieldComment = "Login password."
-    }
-
-rightLevel = Meta.Int32Field
-    { Meta.fieldName    = "RightLevel"
-    , Meta.fieldSize    = Nothing
-    , Meta.fieldValue   = ""
-    , Meta.fieldComment = "Right level."
     }
 
 -- Message header and CRC16 fields
@@ -74,14 +79,12 @@ msgCRC16 = Meta.UInt16Field
 -- messages
 heartBeat = Meta.Message
     { Meta.entityId      = "Message::HEART_BEAT"
-    , Meta.entityVersion = "1"
     , Meta.entityName   = "HeartBeat"
     , Meta.entityFields = []
     }
 
 login = Meta.Message
     { Meta.entityId      = "Message::LOGIN"
-    , Meta.entityVersion = "1"
     , Meta.entityName   = "Login"
     , Meta.entityFields =
         [ userName
@@ -91,23 +94,20 @@ login = Meta.Message
 
 loginAck = Meta.Message
     { Meta.entityId      = "Message::LOGIN_ACK"
-    , Meta.entityVersion = "1"
     , Meta.entityName   = "LoginAck"
     , Meta.entityFields =
-        [ rightLevel 
+        [ enumRightLevel
         ]
     }
 
 logout = Meta.Message
     { Meta.entityId      = "Message::LOGOUT"
-    , Meta.entityVersion = "1"
     , Meta.entityName   = "Logout"
     , Meta.entityFields = []
     }
 
 logoutAck = Meta.Message
     { Meta.entityId      = "Message::LOGOUT_ACK"
-    , Meta.entityVersion = "1"
     , Meta.entityName   = "LogoutAck"
     , Meta.entityFields = []
     }
@@ -126,6 +126,9 @@ model = Meta.Model
         [ heartBeat
         , login, loginAck
         , logout, logoutAck
+        ]
+    , Meta.enumerates =
+        [ enumRightLevel
         ]
     }
 

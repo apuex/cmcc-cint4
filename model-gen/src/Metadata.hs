@@ -8,6 +8,7 @@
 module Metadata where
 
 import qualified Data.Text              as T
+import qualified Data.Map               as Map
 import           GHC.Generics              (Generic)
 
 data Field
@@ -92,6 +93,7 @@ data Field
     , fieldType    :: !T.Text
     , fieldSize    :: !(Maybe Int) -- Just a Number
     , fieldValue   :: !T.Text
+    , fieldEnums   :: ![(T.Text, Int)]
     , fieldComment :: !T.Text
     }
     | EntityField
@@ -105,25 +107,16 @@ data Field
 data Entity
     = Message
     { entityId      :: !T.Text
-    , entityVersion :: !T.Text
     , entityName    :: !T.Text
     , entityFields  :: ![Field] -- order by versionNo
     }
     | Struct
     { entityId      :: !T.Text
-    , entityVersion :: !T.Text
     , entityName    :: !T.Text
     , entityFields  :: ![Field] -- order by versionNo
     }
     | State 
     { entityId      :: !T.Text
-    , entityVersion :: !T.Text
-    , entityName    :: !T.Text
-    , entityFields  :: ![Field] -- order by versionNo
-    }
-    | Enumerate
-    { entityId      :: !T.Text
-    , entityVersion :: !T.Text
     , entityName    :: !T.Text
     , entityFields  :: ![Field] -- order by versionNo
     }
@@ -133,5 +126,6 @@ data Model = Model
     { namespace    :: !T.Text
     , headerFields :: ![Field]
     , entities     :: ![Entity]
+    , enumerates   :: ![Field]
     }
 
