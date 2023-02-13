@@ -11,6 +11,15 @@ import qualified Data.Text              as T
 import qualified Data.Map               as Map
 import           GHC.Generics              (Generic)
 
+
+data EnumItem
+    = EnumItem
+    { enumName    :: !T.Text
+    , enumValue   :: Int
+    , enumComment :: !T.Text
+    }
+    deriving (Eq, Show, Generic)
+
 data Field
     = Int8Field
     { fieldName    :: !T.Text
@@ -93,7 +102,7 @@ data Field
     , fieldType    :: !T.Text
     , fieldSize    :: !(Maybe Int) -- Just a Number
     , fieldValue   :: !T.Text
-    , fieldEnums   :: ![(T.Text, Int)]
+    , fieldEnums   :: ![EnumItem]
     , fieldComment :: !T.Text
     }
     | EntityField

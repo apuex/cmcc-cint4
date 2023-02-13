@@ -16,9 +16,18 @@ enumRightLevel = Meta.EnumerateField
     , Meta.fieldSize    = Nothing
     , Meta.fieldValue   = ""
     , Meta.fieldEnums   =
-        [ ("INVALID", 0)
-        , ("LEVEL1", 1)
-        , ("LEVEL2", 2)
+        [ Meta.EnumItem { Meta.enumName = "INVALID"
+                        , Meta.enumValue = 0
+                        , Meta.enumComment = ""
+                        }
+        , Meta.EnumItem { Meta.enumName = "LEVEL1"
+                        , Meta.enumValue = 1
+                        , Meta.enumComment = ""
+                        }
+        , Meta.EnumItem { Meta.enumName = "LEVEL2"
+                        , Meta.enumValue = 2
+                        , Meta.enumComment = ""
+                        }
         ]
     , Meta.fieldComment = "Right level."
     }
