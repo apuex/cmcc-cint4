@@ -1,4 +1,4 @@
-{-# LANGUAGE QuasiQuotes #-}
+﻿{-# LANGUAGE QuasiQuotes #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE BangPatterns #-}
 {-# LANGUAGE BinaryLiterals #-}
@@ -18,18 +18,18 @@ enumRightLevel = Meta.EnumerateField
     , Meta.fieldEnums   =
         [ Meta.EnumItem { Meta.enumName = "INVALID"
                         , Meta.enumValue = 0
-                        , Meta.enumComment = ""
+                        , Meta.enumComment = "无权限"
                         }
         , Meta.EnumItem { Meta.enumName = "LEVEL1"
                         , Meta.enumValue = 1
-                        , Meta.enumComment = ""
+                        , Meta.enumComment = "具备数据读的权限,当用户可以读某个数据，而无法写任何数据时返回这一权限值。"
                         }
         , Meta.EnumItem { Meta.enumName = "LEVEL2"
                         , Meta.enumValue = 2
-                        , Meta.enumComment = ""
+                        , Meta.enumComment = "具备数据读、写的权限，当用户对某个数据具有读写权限时返回这一权限值。"
                         }
         ]
-    , Meta.fieldComment = "Right level."
+    , Meta.fieldComment = "监控系统下级SC向上级SC提供的权限定义"
     }
 
 

@@ -2,6 +2,8 @@
 # git log --pretty="[%ci] %H %an %s" > CHANGELOG
 # git log --pretty="[%ci] %H %an %s" --name-only
 
+target
+
 # Compiled class file
 *.class
 
