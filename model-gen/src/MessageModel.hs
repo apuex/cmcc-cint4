@@ -1,4 +1,4 @@
-¿{-# LANGUAGE QuasiQuotes #-}
+{-# LANGUAGE QuasiQuotes #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE BangPatterns #-}
 {-# LANGUAGE BinaryLiterals #-}
@@ -875,6 +875,7 @@ model = Meta.Model
         , enumUpdateType
         , enumNodeType
         , enumNeStatusType
-        , enumPKType        ]
+        , enumPKType
+        ]
     }
 
