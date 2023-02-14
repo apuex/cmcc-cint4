@@ -52,7 +52,7 @@ genField prefix field = case field of
     Meta.Float64Field n v c -> [st|double #{prefix}#{n}; // #{c}|]
     Meta.ByteStringField n s v c -> [st|std::vector<char> #{prefix}#{n}; // #{c}|]
     Meta.StringField n s v c -> [st|std::string #{prefix}#{n}; // #{c}|]
-    Meta.NTStringField n s v c -> [st|char[#{fromMaybe 0 s}] #{prefix}#{n}; // #{c}|]
+    Meta.NTStringField n s v c -> [st|char[#{s}] #{prefix}#{n}; // #{c}|]
     Meta.EnumerateField n t s v es c -> [st|#{t} #{prefix}#{n}; // #{c}|]
     Meta.EntityField n t v c -> [st|#{t} #{prefix}#{n}; // #{c}|]
 
@@ -132,7 +132,7 @@ genCompare prefix field = case field of
     Meta.Float64Field n v c -> [st|l.#{prefix}#{n} == r.#{prefix}#{n}|]
     Meta.ByteStringField n s v c -> [st|l.#{prefix}#{n} == r.#{prefix}#{n}|]
     Meta.StringField n s v c -> [st|l.#{prefix}#{n} == r.#{prefix}#{n}|]
-    Meta.NTStringField n s v c -> [st|strncmp(l.#{prefix}#{n}, r.#{prefix}#{n}, #{fromMaybe 0 s})|]
+    Meta.NTStringField n s v c -> [st|strncmp(l.#{prefix}#{n}, r.#{prefix}#{n}, #{s})|]
     Meta.EnumerateField n t s v es c -> [st|l.#{prefix}#{n} == r.#{prefix}#{n}|]
     Meta.EntityField n t v c -> [st|l.#{prefix}#{n} == r.#{prefix}#{n}|]
 

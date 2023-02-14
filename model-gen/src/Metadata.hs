@@ -23,49 +23,49 @@ data EnumItem
 data Field
     = Int8Field
     { fieldName    :: !T.Text
-    , fieldSize    :: !(Maybe Int) -- (0, 8) bits
+    , fieldSize    :: !T.Text
     , fieldValue   :: !T.Text
     , fieldComment :: !T.Text
     }
     | UInt8Field
     { fieldName    :: !T.Text
-    , fieldSize    :: !(Maybe Int) -- (0, 8) bits
+    , fieldSize    :: !T.Text
     , fieldValue   :: !T.Text
     , fieldComment :: !T.Text
     }
     | Int16Field
     { fieldName    :: !T.Text
-    , fieldSize    :: !(Maybe Int) -- (0, 16) bits
+    , fieldSize    :: !T.Text
     , fieldValue   :: !T.Text
     , fieldComment :: !T.Text
     }
     | UInt16Field
     { fieldName    :: !T.Text
-    , fieldSize    :: !(Maybe Int) -- (0, 16) bits
+    , fieldSize    :: !T.Text
     , fieldValue   :: !T.Text
     , fieldComment :: !T.Text
     }
     | Int32Field
     { fieldName    :: !T.Text
-    , fieldSize    :: !(Maybe Int) -- (0, 32) bits
+    , fieldSize    :: !T.Text
     , fieldValue   :: !T.Text
     , fieldComment :: !T.Text
     }
     | UInt32Field
     { fieldName    :: !T.Text
-    , fieldSize    :: !(Maybe Int) -- (0, 32) bits
+    , fieldSize    :: !T.Text
     , fieldValue   :: !T.Text
     , fieldComment :: !T.Text
     }
     | Int64Field
     { fieldName    :: !T.Text
-    , fieldSize    :: !(Maybe Int) -- (0, 64) bits
+    , fieldSize    :: !T.Text
     , fieldValue   :: !T.Text
     , fieldComment :: !T.Text
     }
     | UInt64Field
     { fieldName    :: !T.Text
-    , fieldSize    :: !(Maybe Int) -- (0, 64) bits
+    , fieldSize    :: !T.Text
     , fieldValue   :: !T.Text
     , fieldComment :: !T.Text
     }
@@ -81,26 +81,26 @@ data Field
     }
     | ByteStringField
     { fieldName    :: !T.Text
-    , fieldSize    :: !(Maybe Int) -- Just a Number
+    , fieldSize    :: !T.Text
     , fieldValue   :: !T.Text
     , fieldComment :: !T.Text
     }
     | StringField
     { fieldName    :: !T.Text
-    , fieldSize    :: !(Maybe Int) -- Just a Number
+    , fieldSize    :: !T.Text
     , fieldValue   :: !T.Text
     , fieldComment :: !T.Text
     }
     | NTStringField
     { fieldName    :: !T.Text
-    , fieldSize    :: !(Maybe Int) -- Just a Number
+    , fieldSize    :: !T.Text
     , fieldValue   :: !T.Text
     , fieldComment :: !T.Text
     }
     | EnumerateField
     { fieldName    :: !T.Text
     , fieldType    :: !T.Text
-    , fieldSize    :: !(Maybe Int) -- Just a Number
+    , fieldSize    :: !T.Text
     , fieldValue   :: !T.Text
     , fieldEnums   :: ![EnumItem]
     , fieldComment :: !T.Text
@@ -108,7 +108,7 @@ data Field
     | EntityField
     { fieldName    :: !T.Text
     , fieldType    :: !T.Text
-    , fieldSize    :: !(Maybe Int) -- Just a Number
+    , fieldSize    :: !T.Text
     , fieldComment :: !T.Text
     }
     deriving (Eq, Show, Generic)
@@ -118,22 +118,26 @@ data Entity
     { entityId      :: !T.Text
     , entityName    :: !T.Text
     , entityFields  :: ![Field] -- order by versionNo
+    , entityComment :: !T.Text
     }
     | Struct
     { entityId      :: !T.Text
     , entityName    :: !T.Text
     , entityFields  :: ![Field] -- order by versionNo
+    , entityComment :: !T.Text
     }
     | State 
     { entityId      :: !T.Text
     , entityName    :: !T.Text
     , entityFields  :: ![Field] -- order by versionNo
+    , entityComment :: !T.Text
     }
     deriving (Eq, Show, Generic)
 
 data Model = Model
     { namespace    :: !T.Text
     , headerFields :: ![Field]
+    , tailFields   :: ![Field]
     , entities     :: ![Entity]
     , enumerates   :: ![Field]
     }
