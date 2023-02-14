@@ -1,4 +1,4 @@
-ï»¿{-# LANGUAGE QuasiQuotes #-}
+¿{-# LANGUAGE QuasiQuotes #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE BangPatterns #-}
 {-# LANGUAGE BinaryLiterals #-}
