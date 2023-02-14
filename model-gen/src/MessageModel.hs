@@ -11,8 +11,8 @@ import qualified Data.Text              as T
 
 -- Enums
 enumRightLevel = Meta.EnumerateField
-    { Meta.fieldName    = "EnumRightLevel"
-    , Meta.fieldType    = "int32_t"
+    { Meta.fieldName    = "RightLevel"
+    , Meta.fieldType    = "EnumRightLevel"
     , Meta.fieldSize    = ""
     , Meta.fieldValue   = ""
     , Meta.fieldEnums   =
@@ -33,8 +33,8 @@ enumRightLevel = Meta.EnumerateField
     }
 
 enumResult = Meta.EnumerateField
-    { Meta.fieldName    = "EnumResult"
-    , Meta.fieldType    = "int32_t"
+    { Meta.fieldName    = "Result"
+    , Meta.fieldType    = "EnumResult"
     , Meta.fieldSize    = ""
     , Meta.fieldValue   = ""
     , Meta.fieldEnums   =
@@ -51,8 +51,8 @@ enumResult = Meta.EnumerateField
     }
 
 enumType = Meta.EnumerateField
-    { Meta.fieldName    = "EnumType"
-    , Meta.fieldType    = "int32_t"
+    { Meta.fieldName    = "Type"
+    , Meta.fieldType    = "EnumType"
     , Meta.fieldSize    = ""
     , Meta.fieldValue   = ""
     , Meta.fieldEnums   =
@@ -97,8 +97,8 @@ enumType = Meta.EnumerateField
     }
 
 enumAlarmLevel = Meta.EnumerateField
-    { Meta.fieldName    = "EnumAlarmLevel"
-    , Meta.fieldType    = "int32_t"
+    { Meta.fieldName    = "AlarmLevel"
+    , Meta.fieldType    = "EnumAlarmLevel"
     , Meta.fieldSize    = ""
     , Meta.fieldValue   = ""
     , Meta.fieldEnums   =
@@ -127,8 +127,8 @@ enumAlarmLevel = Meta.EnumerateField
     }
 
 enumEnable = Meta.EnumerateField
-    { Meta.fieldName    = "EnumEnable"
-    , Meta.fieldType    = "int32_t"
+    { Meta.fieldName    = "Enable"
+    , Meta.fieldType    = "EnumEnable"
     , Meta.fieldSize    = ""
     , Meta.fieldValue   = ""
     , Meta.fieldEnums   =
@@ -145,8 +145,8 @@ enumEnable = Meta.EnumerateField
     }
 
 enumFlag = Meta.EnumerateField
-    { Meta.fieldName    = "EnumFlag"
-    , Meta.fieldType    = "int32_t"
+    { Meta.fieldName    = "Flag"
+    , Meta.fieldType    = "EnumFlag"
     , Meta.fieldSize    = ""
     , Meta.fieldValue   = ""
     , Meta.fieldEnums   =
@@ -164,7 +164,7 @@ enumFlag = Meta.EnumerateField
 
 enumAccessMode = Meta.EnumerateField
     { Meta.fieldName    = "EnumAccessMode"
-    , Meta.fieldType    = "int32_t"
+    , Meta.fieldType    = "AccessMode"
     , Meta.fieldSize    = ""
     , Meta.fieldValue   = ""
     , Meta.fieldEnums   =
@@ -227,8 +227,8 @@ enumState = Meta.EnumerateField
     }
 
 enumAlarmMode = Meta.EnumerateField
-    { Meta.fieldName    = "EnumAlarmMode"
-    , Meta.fieldType    = "int32_t"
+    { Meta.fieldName    = "AlarmMode"
+    , Meta.fieldType    = "EnumAlarmMode"
     , Meta.fieldSize    = ""
     , Meta.fieldValue   = ""
     , Meta.fieldEnums   =
@@ -257,8 +257,8 @@ enumAlarmMode = Meta.EnumerateField
     }
 
 enumSiteType = Meta.EnumerateField
-    { Meta.fieldName    = "EnumSiteType"
-    , Meta.fieldType    = "int32_t"
+    { Meta.fieldName    = "SiteType"
+    , Meta.fieldType    = "EnumSiteType"
     , Meta.fieldSize    = ""
     , Meta.fieldValue   = ""
     , Meta.fieldEnums   =
@@ -284,7 +284,7 @@ enumSiteType = Meta.EnumerateField
 
 enumRoomType = Meta.EnumerateField
     { Meta.fieldName    = "EnumRoomType"
-    , Meta.fieldType    = "int32_t"
+    , Meta.fieldType    = "EnumRoomType"
     , Meta.fieldSize    = ""
     , Meta.fieldValue   = ""
     , Meta.fieldEnums   =
@@ -337,8 +337,8 @@ enumRoomType = Meta.EnumerateField
     }
 
 enumModifyType = Meta.EnumerateField
-    { Meta.fieldName    = "EnumModifyType"
-    , Meta.fieldType    = "int32_t"
+    { Meta.fieldName    = "ModifyType"
+    , Meta.fieldType    = "EnumModifyType"
     , Meta.fieldSize    = ""
     , Meta.fieldValue   = ""
     , Meta.fieldEnums   =
@@ -367,8 +367,8 @@ enumModifyType = Meta.EnumerateField
     }
 
 enumUpdateType = Meta.EnumerateField
-    { Meta.fieldName    = "EnumUpdateType"
-    , Meta.fieldType    = "int32_t"
+    { Meta.fieldName    = "UpdateType"
+    , Meta.fieldType    = "EnumUpdateType"
     , Meta.fieldSize    = ""
     , Meta.fieldValue   = ""
     , Meta.fieldEnums   =
@@ -393,8 +393,8 @@ enumUpdateType = Meta.EnumerateField
     }
 
 enumNodeType = Meta.EnumerateField
-    { Meta.fieldName    = "EnumNodeType"
-    , Meta.fieldType    = "int32_t"
+    { Meta.fieldName    = "NodeType"
+    , Meta.fieldType    = "EnumNodeType"
     , Meta.fieldSize    = ""
     , Meta.fieldValue   = ""
     , Meta.fieldEnums   =
@@ -419,8 +419,8 @@ enumNodeType = Meta.EnumerateField
     }
 
 enumNeStatusType = Meta.EnumerateField
-    { Meta.fieldName    = "EnumNeStatusType"
-    , Meta.fieldType    = "int32_t"
+    { Meta.fieldName    = "NeStatusType"
+    , Meta.fieldType    = "EnumNeStatusType"
     , Meta.fieldSize    = ""
     , Meta.fieldValue   = ""
     , Meta.fieldEnums   =
@@ -588,7 +588,7 @@ second = Meta.Int8Field
     , Meta.fieldComment = "秒"
     }
 
-tTime = Meta.Struct
+tTimeStruct = Meta.Struct
     { Meta.entityId      = ""
     , Meta.entityName    = "TTime"
     , Meta.entityComment = "时间的结构"
@@ -600,6 +600,13 @@ tTime = Meta.Struct
         , minute
         , second
         ]
+    }
+
+tTime = Meta.EntityField
+    { Meta.fieldName    = "Time"
+    , Meta.fieldType    = "TTime"
+    , Meta.fieldSize    = ""
+    , Meta.fieldComment = "本机时间"
     }
 
 -- TA/TD/TID
@@ -631,14 +638,13 @@ signalNumber = Meta.StringField
     , Meta.fieldComment = "同类监控点顺序号"
     }
 
-aiValue = Meta.StringField
+aiValue = Meta.Float32Field
     { Meta.fieldName    = "Value"
-    , Meta.fieldSize    = ""
     , Meta.fieldValue   = ""
     , Meta.fieldComment = "AI值"
     }
 
-ta = Meta.Struct
+taStruct = Meta.Struct
     { Meta.entityId      = ""
     , Meta.entityName    = "TA"
     , Meta.entityComment = "模拟量的值的结构"
@@ -652,14 +658,14 @@ ta = Meta.Struct
         ]
     }
 
-diValue = Meta.StringField
+diValue = Meta.Int32Field
     { Meta.fieldName    = "Value"
     , Meta.fieldSize    = ""
     , Meta.fieldValue   = ""
     , Meta.fieldComment = "DI值"
     }
 
-td = Meta.Struct
+tdStruct = Meta.Struct
     { Meta.entityId      = ""
     , Meta.entityName    = "TD"
     , Meta.entityComment = "数字量的值的结构"
@@ -673,7 +679,7 @@ td = Meta.Struct
         ]
     }
 
-tid = Meta.Struct
+tidStruct = Meta.Struct
     { Meta.entityId      = ""
     , Meta.entityName    = "TID"
     , Meta.entityComment = "数据值的结构"
@@ -728,7 +734,7 @@ alarmDesc = Meta.StringField
     , Meta.fieldComment = "告警描述"
     }
 
-tAlarm = Meta.Struct
+tAlarmStruct = Meta.Struct
     { Meta.entityId      = ""
     , Meta.entityName    = "TAlarm"
     , Meta.entityComment = "当前告警值的结构"
@@ -763,6 +769,63 @@ passWord = Meta.StringField
     , Meta.fieldValue   = ""
     , Meta.fieldComment = "Login password."
     }
+
+terminalID = Meta.Int32Field
+    { Meta.fieldName    = "TerminalID"
+    , Meta.fieldSize    = ""
+    , Meta.fieldValue   = ""
+    , Meta.fieldComment = "上级SCID"
+    }
+
+groupID = Meta.Int32Field
+    { Meta.fieldName    = "GroupID"
+    , Meta.fieldSize    = ""
+    , Meta.fieldValue   = ""
+    , Meta.fieldComment = "相应模式数据包的序号"
+    }
+
+pollingTime = Meta.Int32Field
+    { Meta.fieldName    = "PollingTime"
+    , Meta.fieldSize    = ""
+    , Meta.fieldValue   = ""
+    , Meta.fieldComment = "定时方式时的发送间隔秒数，小于1无效，若出现小于1的值，则按等于1处理。"
+    }
+
+tid = Meta.EntityField
+    { Meta.fieldName    = "Id"
+    , Meta.fieldType    = "TID"
+    , Meta.fieldSize    = ""
+    , Meta.fieldComment = "相应的值，数据的值的类型由相应的数据结构决定，数据结构中已经包含了监控点ID，因此上面的ID是冗余的"
+    }
+
+tids = Meta.EntityField
+    { Meta.fieldName    = "Ids"
+    , Meta.fieldType    = "TIDArray"
+    , Meta.fieldSize    = ""
+    , Meta.fieldComment = "如果类型是站点，即获取站内所有设备下的监控点数据；如果是设备，即获取该设备下所有监控点数据；如果是监控点，即是该点数据。"
+    }
+
+value = Meta.EntityField
+    { Meta.fieldName    = "Value"
+    , Meta.fieldType    = "TATD"
+    , Meta.fieldSize    = ""
+    , Meta.fieldComment = "5.1.8中的TA/TD的数据结构定义"
+    }
+
+values = Meta.EntityField
+    { Meta.fieldName    = "Values"
+    , Meta.fieldType    = "TATDArray"
+    , Meta.fieldSize    = ""
+    , Meta.fieldComment = "返回正确数据值得数量及值对应对应的值5.1.8中的TA/TD的数据结构定义"
+    }
+
+invalidIds = Meta.EntityField
+    { Meta.fieldName    = "InvalidIds"
+    , Meta.fieldType    = "TIDArray"
+    , Meta.fieldSize    = ""
+    , Meta.fieldComment = "返回无效监控点ID的数量，如果返回0则所有数据有效，Values2为空及对应的无效的监控点ID"
+    }
+
 
 -- Message header and tail CRC16 fields
 
@@ -802,17 +865,10 @@ msgCRC16 = Meta.UInt16Field
     }
 
 -- messages
-heartBeat = Meta.Message
-    { Meta.entityId      = "Message::HEART_BEAT"
-    , Meta.entityName   = "HeartBeat"
-    , Meta.entityComment = "当前告警值的结构"
-    , Meta.entityFields = []
-    }
-
 login = Meta.Message
-    { Meta.entityId      = "Message::LOGIN"
+    { Meta.entityId      = "EnumPKType::LOGIN"
     , Meta.entityName   = "Login"
-    , Meta.entityComment = "当前告警值的结构"
+    , Meta.entityComment = "登录"
     , Meta.entityFields =
         [ userName
         , passWord
@@ -820,26 +876,181 @@ login = Meta.Message
     }
 
 loginAck = Meta.Message
-    { Meta.entityId      = "Message::LOGIN_ACK"
+    { Meta.entityId      = "EnumPKType::LOGIN_ACK"
     , Meta.entityName   = "LoginAck"
-    , Meta.entityComment = "当前告警值的结构"
+    , Meta.entityComment = "登录响应"
     , Meta.entityFields =
         [ enumRightLevel
         ]
     }
 
 logout = Meta.Message
-    { Meta.entityId      = "Message::LOGOUT"
+    { Meta.entityId      = "EnumPKType::LOGOUT"
     , Meta.entityName   = "Logout"
-    , Meta.entityComment = "当前告警值的结构"
+    , Meta.entityComment = "登出"
     , Meta.entityFields = []
     }
 
 logoutAck = Meta.Message
-    { Meta.entityId      = "Message::LOGOUT_ACK"
+    { Meta.entityId      = "EnumPKType::LOGOUT_ACK"
     , Meta.entityName   = "LogoutAck"
-    , Meta.entityComment = "当前告警值的结构"
+    , Meta.entityComment = "登出响应"
     , Meta.entityFields = []
+    }
+
+setDynAccessMode = Meta.Message
+    { Meta.entityId      = "EnumPKType::SET_DYN_ACCESS_MODE"
+    , Meta.entityName   = "SetDynAccessMode"
+    , Meta.entityComment = "请求实时数据方式设置"
+    , Meta.entityFields =
+        [ terminalID
+        , groupID
+        , enumAccessMode { Meta.fieldName = "Mode" }
+        , pollingTime
+        , tids
+        ]
+    }
+
+dynAccessModeAck = Meta.Message
+    { Meta.entityId      = "EnumPKType::DYN_ACCESS_MODE_ACK"
+    , Meta.entityName   = "DynAccessModeAck"
+    , Meta.entityComment = "实时数据响应"
+    , Meta.entityFields =
+        [ terminalID
+        , groupID
+        , enumResult
+        , pollingTime
+        , values { Meta.fieldName = "Values1" }
+        , invalidIds { Meta.fieldName = "Values2" }
+        ]
+    }
+
+setAlarmMode = Meta.Message
+    { Meta.entityId      = "EnumPKType::SET_ALARM_MODE"
+    , Meta.entityName   = "SetAlarmMode"
+    , Meta.entityComment = "请求告警数据方式设置"
+    , Meta.entityFields =
+        [ groupID
+        , enumAlarmMode { Meta.fieldName = "Mode" }
+        , tids
+        ]
+    }
+
+alarmModeAck = Meta.Message
+    { Meta.entityId      = "EnumPKType::ALARM_MODE_ACK"
+    , Meta.entityName   = "AlarmModeAck"
+    , Meta.entityComment = "告警方式设置响应"
+    , Meta.entityFields =
+        [ groupID
+        , enumResult
+        ]
+    }
+
+sendAlarm = Meta.Message
+    { Meta.entityId      = "EnumPKType::SEND_ALARM"
+    , Meta.entityName   = "SendAlarm"
+    , Meta.entityComment = "实时告警发送"
+    , Meta.entityFields =
+        [ groupID
+        , enumResult
+        ]
+    }
+
+sendAlarmAck = Meta.Message
+    { Meta.entityId      = "EnumPKType::SEND_ALARM_ACK"
+    , Meta.entityName   = "SendAlarmAck"
+    , Meta.entityComment = "实时告警发送确认"
+    , Meta.entityFields =
+        [ groupID
+        , enumResult
+        ]
+    }
+
+syncAlarm = Meta.Message
+    { Meta.entityId      = "EnumPKType::SYNC_ALARM"
+    , Meta.entityName   = "SyncAlarm"
+    , Meta.entityComment = "告警同步"
+    , Meta.entityFields = []
+    }
+
+syncAlarmAck = Meta.Message
+    { Meta.entityId      = "EnumPKType::SYNC_ALARM_ACK"
+    , Meta.entityName   = "SyncAlarmAck"
+    , Meta.entityComment = "告警同步确认"
+    , Meta.entityFields =
+        [ enumResult
+        ]
+    }
+
+setPoint = Meta.Message
+    { Meta.entityId      = "EnumPKType::SET_POINT"
+    , Meta.entityName   = "SetPoint"
+    , Meta.entityComment = "写数据请求"
+    , Meta.entityFields =
+        [ value
+        ]
+    }
+
+setPointAck = Meta.Message
+    { Meta.entityId      = "EnumPKType::SET_POINT_ACK"
+    , Meta.entityName   = "SetPointAck"
+    , Meta.entityComment = "写数据响应"
+    , Meta.entityFields =
+        [ tid
+        , enumResult
+        ]
+    }
+
+modifyPA = Meta.Message
+    { Meta.entityId      = "EnumPKType::MODIFY_PA"
+    , Meta.entityName   = "ModifyPA"
+    , Meta.entityComment = "改口令请求"
+    , Meta.entityFields =
+        [ userName
+        , passWord { Meta.fieldName = "OldPassWord" }
+        , passWord { Meta.fieldName = "NewPassWord" }
+        ]
+    }
+
+modifyPAAck = Meta.Message
+    { Meta.entityId      = "EnumPKType::MODIFY_PA_ACK"
+    , Meta.entityName   = "ModifyPAAck"
+    , Meta.entityComment = "改口令响应"
+    , Meta.entityFields =
+        [ enumResult
+        ]
+    }
+
+heartBeat = Meta.Message
+    { Meta.entityId      = "EnumPKType::HEART_BEAT"
+    , Meta.entityName   = "HeartBeat"
+    , Meta.entityComment = "确认连接"
+    , Meta.entityFields = []
+    }
+
+heartBeatAck = Meta.Message
+    { Meta.entityId      = "EnumPKType::HEART_BEAT_ACK"
+    , Meta.entityName   = "HeartBeatAck"
+    , Meta.entityComment = "回应连接"
+    , Meta.entityFields = []
+    }
+
+timeCheck = Meta.Message
+    { Meta.entityId      = "EnumPKType::TIME_CHECK"
+    , Meta.entityName   = "TimeCheck"
+    , Meta.entityComment = "发送时钟消息"
+    , Meta.entityFields =
+        [ tTime
+        ]
+    }
+
+timeCheckAck = Meta.Message
+    { Meta.entityId      = "EnumPKType::TIME_CHECK_ACK"
+    , Meta.entityName   = "TimeCheckAck"
+    , Meta.entityComment = "时钟同步响应"
+    , Meta.entityFields =
+        [ enumResult
+        ]
     }
 
 
@@ -855,9 +1066,29 @@ model = Meta.Model
         [ msgCRC16
         ]
     , Meta.entities =
-        [ heartBeat
-        , login, loginAck
-        , logout, logoutAck
+        [ tTimeStruct
+        , taStruct
+        , tdStruct
+        , tidStruct
+        , tAlarmStruct
+        , login
+        , loginAck
+        , logout
+        , logoutAck
+        , setDynAccessMode
+        , dynAccessModeAck
+        , setAlarmMode
+        , alarmModeAck
+        , sendAlarm
+        , sendAlarmAck
+        , syncAlarm
+        , syncAlarmAck
+        , setPoint
+        , setPointAck
+        , modifyPA
+        , modifyPAAck
+        , heartBeat
+        , heartBeatAck
         ]
     , Meta.enumerates =
         [ enumRightLevel
