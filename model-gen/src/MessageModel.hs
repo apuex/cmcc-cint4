@@ -163,8 +163,8 @@ enumFlag = Meta.EnumerateField
     }
 
 enumAccessMode = Meta.EnumerateField
-    { Meta.fieldName    = "EnumAccessMode"
-    , Meta.fieldType    = "AccessMode"
+    { Meta.fieldName    = "AccessMode"
+    , Meta.fieldType    = "EnumAccessMode"
     , Meta.fieldSize    = ""
     , Meta.fieldValue   = ""
     , Meta.fieldEnums   =
@@ -839,28 +839,28 @@ msgHeader = Meta.Int32Field
 msgLength = Meta.Int32Field
     { Meta.fieldName    = "Length"
     , Meta.fieldSize    = ""
-    , Meta.fieldValue   = ""
+    , Meta.fieldValue   = "0"
     , Meta.fieldComment = "Message length."
     }
 
 msgSerialNo = Meta.Int32Field
     { Meta.fieldName    = "SerialNo"
     , Meta.fieldSize    = ""
-    , Meta.fieldValue   = ""
+    , Meta.fieldValue   = "0"
     , Meta.fieldComment = "Message serial number."
     }
 
 msgPKType = Meta.Int32Field
     { Meta.fieldName    = "PKType"
     , Meta.fieldSize    = ""
-    , Meta.fieldValue   = ""
+    , Meta.fieldValue   = "EnumPKType::HEAT_BEAT"
     , Meta.fieldComment = "PKType."
     }
 
 msgCRC16 = Meta.UInt16Field
     { Meta.fieldName    = "CRC16"
     , Meta.fieldSize    = ""
-    , Meta.fieldValue   = ""
+    , Meta.fieldValue   = "0"
     , Meta.fieldComment = "Message CRC16."
     }
 
@@ -1055,12 +1055,12 @@ timeCheckAck = Meta.Message
 
 
 model = Meta.Model
-    { Meta.namespace = "message"
+    { Meta.namespace = "cmcc::cint4"
     , Meta.headerFields = 
         [ msgHeader
         , msgLength
         , msgSerialNo
-        , msgPKType
+        , enumPKType
         ]
     , Meta.tailFields = 
         [ msgCRC16
