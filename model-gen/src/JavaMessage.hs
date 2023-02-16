@@ -127,12 +127,6 @@ import java.nio.ByteBuffer;
  * #{c}
  */
 public class #{n} implements Serializable {
-    public #{n}
-    ( #{Util.combinePrefix 4 ", " $ DL.map genParam fields}
-    ) {
-        #{Util.combinePrefix 8 "" $ DL.map (genInitializer "") fields}
-    }
-
     #{Util.combinePrefix 4 "" $ DL.map (genField "") fields}
 }
 
@@ -261,6 +255,48 @@ genInitializer prefix field = case field of
     Meta.NTStringField n s v c -> [st|this.#{prefix}#{n} = #{n};|]
     Meta.EnumerateField n t s v es c -> [st|this.#{prefix}#{n} = #{n};|]
     Meta.EntityField n t v c -> [st|this.#{prefix}#{n} = #{n};|]
+
+genEncode :: T.Text
+          -> Meta.Field
+          -> T.Text
+genEncode prefix field = case field of
+    Meta.Int8Field n s v c -> [st|this.#{prefix}#{n} = #{n};|]
+    Meta.UInt8Field n s v c -> [st|this.#{prefix}#{n} = #{n};|]
+    Meta.Int16Field n s v c -> [st|this.#{prefix}#{n} = #{n};|]
+    Meta.UInt16Field n s v c -> [st|this.#{prefix}#{n} = #{n};|]
+    Meta.Int32Field n s v c -> [st|this.#{prefix}#{n} = #{n};|]
+    Meta.UInt32Field n s v c -> [st|this.#{prefix}#{n} = #{n};|]
+    Meta.Int64Field n s v c -> [st|this.#{prefix}#{n} = #{n};|]
+    Meta.UInt64Field n s v c -> [st|this.#{prefix}#{n} = #{n};|]
+    Meta.Float32Field n v c -> [st|this.#{prefix}#{n} = #{n};|]
+    Meta.Float64Field n v c -> [st|this.#{prefix}#{n} = #{n};|]
+    Meta.ByteStringField n s v c -> [st|this.#{prefix}#{n} = #{n};|]
+    Meta.StringField n s v c -> [st|this.#{prefix}#{n} = #{n};|]
+    Meta.NTStringField n s v c -> [st|this.#{prefix}#{n} = #{n};|]
+    Meta.EnumerateField n t s v es c -> [st|this.#{prefix}#{n} = #{n};|]
+    Meta.EntityField n t v c -> [st|this.#{prefix}#{n} = #{n};|]
+
+genDecode :: T.Text
+          -> Meta.Field
+          -> T.Text
+genDecode prefix field = case field of
+    Meta.Int8Field n s v c -> [st|this.#{prefix}#{n} = buf.get();|]
+    Meta.UInt8Field n s v c -> [st|this.#{prefix}#{n} = buf.get();|]
+    Meta.Int16Field n s v c -> [st|this.#{prefix}#{n} = buf.getShort();|]
+    Meta.UInt16Field n s v c -> [st|this.#{prefix}#{n} = buf.getShort();|]
+    Meta.Int32Field n s v c -> [st|this.#{prefix}#{n} = buf.getInt();|]
+    Meta.UInt32Field n s v c -> [st|this.#{prefix}#{n} = buf.getInt();|]
+    Meta.Int64Field n s v c -> [st|this.#{prefix}#{n} = buf.getLong();|]
+    Meta.UInt64Field n s v c -> [st|this.#{prefix}#{n} = buf.getLong();|]
+    Meta.Float32Field n v c -> [st|this.#{prefix}#{n} = buf.getFloat();|]
+    Meta.Float64Field n v c -> [st|this.#{prefix}#{n} = buf.getDouble();|]
+    Meta.ByteStringField n s v c -> [st|this.#{prefix}#{n} = #{n};|]
+    Meta.StringField n s v c -> [st|this.#{prefix}#{n} = Util.;|]
+    Meta.NTStringField n s v c -> [st|this.#{prefix}#{n} = #{n};|]
+    Meta.EnumerateField n t s v es c -> [st|this.#{prefix}#{n} = #{n};|]
+    Meta.EntityField n t v c -> [st|this.#{prefix}#{n} = #{n};|]
+
+
 
 genToString :: T.Text
             -> Meta.Field
