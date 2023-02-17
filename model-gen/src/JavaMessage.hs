@@ -125,15 +125,23 @@ public class #{n} extends Message { #{genMsgDefConstructor t n fields c}
     }
 
     public static void encode(ByteBuffer buf, #{n} v) {
+        // Message HEAD - envelope fields
         #{Util.combinePrefix 8 "" $ DL.map (genEncode "") $ Meta.headerFields model}
+        // Message CONTENT BEGIN 
         #{Util.combinePrefix 8 "" $ DL.map (genEncode "") fields}
+        // Message CONTENT END 
+        // Message TAIL - envelope fields
         #{Util.combinePrefix 8 "" $ DL.map (genEncode "") $ Meta.tailFields model}
     }
 
     public static #{n} decode(ByteBuffer buf) {
         #{n} v = new #{n}();
+        // Message HEAD - envelope fields
         #{Util.combinePrefix 8 "" $ DL.map (genDecode "") $ Meta.headerFields model}
+        // Message CONTENT BEGIN 
         #{Util.combinePrefix 8 "" $ DL.map (genDecode "") fields}
+        // Message CONTENT END 
+        // Message TAIL - envelope fields
         #{Util.combinePrefix 8 "" $ DL.map (genDecode "") $ Meta.tailFields model}
         return v;
     }

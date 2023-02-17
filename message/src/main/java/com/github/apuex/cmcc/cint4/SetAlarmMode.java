@@ -34,25 +34,33 @@ public class SetAlarmMode extends Message {
     }
 
     public static void encode(ByteBuffer buf, SetAlarmMode v) {
+        // Message HEAD - envelope fields
         buf.putInt(v.Header);
         buf.putInt(v.Length);
         buf.putInt(v.SerialNo);
         buf.putInt(v.PKType.getValue());
+        // Message CONTENT BEGIN 
         buf.putInt(v.GroupID);
         buf.putInt(v.Mode.getValue());
         TIDArray.encode(buf, v.Ids);
+        // Message CONTENT END 
+        // Message TAIL - envelope fields
         buf.putShort(v.CRC16);
     }
 
     public static SetAlarmMode decode(ByteBuffer buf) {
         SetAlarmMode v = new SetAlarmMode();
+        // Message HEAD - envelope fields
         v.Header = buf.getInt();
         v.Length = buf.getInt();
         v.SerialNo = buf.getInt();
         v.PKType = EnumPKType.fromValue(buf.getInt());
+        // Message CONTENT BEGIN 
         v.GroupID = buf.getInt();
         v.Mode = EnumAlarmMode.fromValue(buf.getInt());
         v.Ids = TIDArray.decode(buf);
+        // Message CONTENT END 
+        // Message TAIL - envelope fields
         v.CRC16 = buf.getShort();
         return v;
     }

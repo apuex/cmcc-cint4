@@ -42,29 +42,37 @@ public class SetDynAccessMode extends Message {
     }
 
     public static void encode(ByteBuffer buf, SetDynAccessMode v) {
+        // Message HEAD - envelope fields
         buf.putInt(v.Header);
         buf.putInt(v.Length);
         buf.putInt(v.SerialNo);
         buf.putInt(v.PKType.getValue());
+        // Message CONTENT BEGIN 
         buf.putInt(v.TerminalID);
         buf.putInt(v.GroupID);
         buf.putInt(v.Mode.getValue());
         buf.putInt(v.PollingTime);
         TIDArray.encode(buf, v.Ids);
+        // Message CONTENT END 
+        // Message TAIL - envelope fields
         buf.putShort(v.CRC16);
     }
 
     public static SetDynAccessMode decode(ByteBuffer buf) {
         SetDynAccessMode v = new SetDynAccessMode();
+        // Message HEAD - envelope fields
         v.Header = buf.getInt();
         v.Length = buf.getInt();
         v.SerialNo = buf.getInt();
         v.PKType = EnumPKType.fromValue(buf.getInt());
+        // Message CONTENT BEGIN 
         v.TerminalID = buf.getInt();
         v.GroupID = buf.getInt();
         v.Mode = EnumAccessMode.fromValue(buf.getInt());
         v.PollingTime = buf.getInt();
         v.Ids = TIDArray.decode(buf);
+        // Message CONTENT END 
+        // Message TAIL - envelope fields
         v.CRC16 = buf.getShort();
         return v;
     }

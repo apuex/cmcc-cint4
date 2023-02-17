@@ -30,23 +30,31 @@ public class SetPointAck extends Message {
     }
 
     public static void encode(ByteBuffer buf, SetPointAck v) {
+        // Message HEAD - envelope fields
         buf.putInt(v.Header);
         buf.putInt(v.Length);
         buf.putInt(v.SerialNo);
         buf.putInt(v.PKType.getValue());
+        // Message CONTENT BEGIN 
         TID.encode(buf, v.Id);
         buf.putInt(v.Result.getValue());
+        // Message CONTENT END 
+        // Message TAIL - envelope fields
         buf.putShort(v.CRC16);
     }
 
     public static SetPointAck decode(ByteBuffer buf) {
         SetPointAck v = new SetPointAck();
+        // Message HEAD - envelope fields
         v.Header = buf.getInt();
         v.Length = buf.getInt();
         v.SerialNo = buf.getInt();
         v.PKType = EnumPKType.fromValue(buf.getInt());
+        // Message CONTENT BEGIN 
         v.Id = TID.decode(buf);
         v.Result = EnumResult.fromValue(buf.getInt());
+        // Message CONTENT END 
+        // Message TAIL - envelope fields
         v.CRC16 = buf.getShort();
         return v;
     }

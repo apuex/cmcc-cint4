@@ -26,21 +26,29 @@ public class SetPoint extends Message {
     }
 
     public static void encode(ByteBuffer buf, SetPoint v) {
+        // Message HEAD - envelope fields
         buf.putInt(v.Header);
         buf.putInt(v.Length);
         buf.putInt(v.SerialNo);
         buf.putInt(v.PKType.getValue());
+        // Message CONTENT BEGIN 
         TATD.encode(buf, v.Value);
+        // Message CONTENT END 
+        // Message TAIL - envelope fields
         buf.putShort(v.CRC16);
     }
 
     public static SetPoint decode(ByteBuffer buf) {
         SetPoint v = new SetPoint();
+        // Message HEAD - envelope fields
         v.Header = buf.getInt();
         v.Length = buf.getInt();
         v.SerialNo = buf.getInt();
         v.PKType = EnumPKType.fromValue(buf.getInt());
+        // Message CONTENT BEGIN 
         v.Value = TATD.decode(buf);
+        // Message CONTENT END 
+        // Message TAIL - envelope fields
         v.CRC16 = buf.getShort();
         return v;
     }
