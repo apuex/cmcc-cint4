@@ -13,8 +13,17 @@ public enum EnumRightLevel {
         this.value = v;
     }
 
-    int getValue() {
+    public int getValue() {
         return this.value;
+    }
+
+    public static EnumRightLevel fromValue(int v) {
+        switch(v) {
+        case 0: return INVALID;
+        case 1: return LEVEL1;
+        case 2: return LEVEL2;
+        default: throw new IllegalArgumentException(String.format("%d is an invalid enum value.", v));
+        }
     }
  
     private final int value;

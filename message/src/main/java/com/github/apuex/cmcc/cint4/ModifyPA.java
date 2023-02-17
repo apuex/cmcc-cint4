@@ -5,7 +5,11 @@ import java.nio.ByteBuffer;
 /**
  * 改口令请求
  */
-public class ModifyPA extends Message {
+public class ModifyPA extends Message { 
+    public ModifyPA() {
+        super(EnumPKType.MODIFY_PA);
+    }
+
     public ModifyPA
     ( String UserName
     , String OldPassWord
@@ -27,6 +31,30 @@ public class ModifyPA extends Message {
         this.UserName = UserName;
         this.OldPassWord = OldPassWord;
         this.NewPassWord = NewPassWord;
+    }
+
+    public static void encode(ByteBuffer buf, ModifyPA v) {
+        buf.putInt(v.Header);
+        buf.putInt(v.Length);
+        buf.putInt(v.SerialNo);
+        buf.putInt(v.PKType.getValue());
+        Util.encodeString(buf, v.UserName, Lengths.USER_LENGTH);
+        Util.encodeString(buf, v.OldPassWord, Lengths.PASSWORD_LENGTH);
+        Util.encodeString(buf, v.NewPassWord, Lengths.PASSWORD_LENGTH);
+        buf.putShort(v.CRC16);
+    }
+
+    public static ModifyPA decode(ByteBuffer buf) {
+        ModifyPA v = new ModifyPA();
+        v.Header = buf.getInt();
+        v.Length = buf.getInt();
+        v.SerialNo = buf.getInt();
+        v.PKType = EnumPKType.fromValue(buf.getInt());
+        v.UserName = Util.decodeString(buf, Lengths.USER_LENGTH);
+        v.OldPassWord = Util.decodeString(buf, Lengths.PASSWORD_LENGTH);
+        v.NewPassWord = Util.decodeString(buf, Lengths.PASSWORD_LENGTH);
+        v.CRC16 = buf.getShort();
+        return v;
     }
 
     public String UserName; // Login user name.

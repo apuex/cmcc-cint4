@@ -19,8 +19,23 @@ public enum EnumType {
         this.value = v;
     }
 
-    int getValue() {
+    public int getValue() {
         return this.value;
+    }
+
+    public static EnumType fromValue(int v) {
+        switch(v) {
+        case 0: return ALARM;
+        case 1: return DO;
+        case 2: return AO;
+        case 3: return AI;
+        case 4: return DI;
+        case 5: return DEVICE;
+        case 6: return ROOM;
+        case 7: return SITE;
+        case 8: return AREA;
+        default: throw new IllegalArgumentException(String.format("%d is an invalid enum value.", v));
+        }
     }
  
     private final int value;

@@ -5,7 +5,11 @@ import java.nio.ByteBuffer;
 /**
  * 请求实时数据方式设置
  */
-public class SetDynAccessMode extends Message {
+public class SetDynAccessMode extends Message { 
+    public SetDynAccessMode() {
+        super(EnumPKType.SET_DYN_ACCESS_MODE);
+    }
+
     public SetDynAccessMode
     ( int TerminalID
     , int GroupID
@@ -35,6 +39,34 @@ public class SetDynAccessMode extends Message {
         this.Mode = Mode;
         this.PollingTime = PollingTime;
         this.Ids = Ids;
+    }
+
+    public static void encode(ByteBuffer buf, SetDynAccessMode v) {
+        buf.putInt(v.Header);
+        buf.putInt(v.Length);
+        buf.putInt(v.SerialNo);
+        buf.putInt(v.PKType.getValue());
+        buf.putInt(v.TerminalID);
+        buf.putInt(v.GroupID);
+        buf.putInt(v.Mode.getValue());
+        buf.putInt(v.PollingTime);
+        TIDArray.encode(buf, v.Ids);
+        buf.putShort(v.CRC16);
+    }
+
+    public static SetDynAccessMode decode(ByteBuffer buf) {
+        SetDynAccessMode v = new SetDynAccessMode();
+        v.Header = buf.getInt();
+        v.Length = buf.getInt();
+        v.SerialNo = buf.getInt();
+        v.PKType = EnumPKType.fromValue(buf.getInt());
+        v.TerminalID = buf.getInt();
+        v.GroupID = buf.getInt();
+        v.Mode = EnumAccessMode.fromValue(buf.getInt());
+        v.PollingTime = buf.getInt();
+        v.Ids = TIDArray.decode(buf);
+        v.CRC16 = buf.getShort();
+        return v;
     }
 
     public int TerminalID; // 上级SCID

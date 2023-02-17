@@ -17,8 +17,21 @@ public enum EnumState {
         this.value = v;
     }
 
-    int getValue() {
+    public int getValue() {
         return this.value;
+    }
+
+    public static EnumState fromValue(int v) {
+        switch(v) {
+        case 0: return NOALARM;
+        case 1: return CRITICAL;
+        case 2: return MAJOR;
+        case 3: return MINOR;
+        case 4: return HINT;
+        case 5: return OPEVENT;
+        case 6: return INVALID;
+        default: throw new IllegalArgumentException(String.format("%d is an invalid enum value.", v));
+        }
     }
  
     private final int value;

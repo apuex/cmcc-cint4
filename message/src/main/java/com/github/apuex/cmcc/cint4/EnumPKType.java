@@ -30,8 +30,34 @@ public enum EnumPKType {
         this.value = v;
     }
 
-    int getValue() {
+    public int getValue() {
         return this.value;
+    }
+
+    public static EnumPKType fromValue(int v) {
+        switch(v) {
+        case 101: return LOGIN;
+        case 102: return LOGIN_ACK;
+        case 103: return LOGOUT;
+        case 104: return LOGOUT_ACK;
+        case 401: return SET_DYN_ACCESS_MODE;
+        case 402: return DYN_ACCESS_MODE_ACK;
+        case 501: return SET_ALARM_MODE;
+        case 502: return ALARM_MODE_ACK;
+        case 503: return SEND_ALARM;
+        case 504: return SEND_ALARM_ACK;
+        case 505: return SYNC_ALARM;
+        case 506: return SYNC_ALARM_ACK;
+        case 1001: return SET_POINT;
+        case 1002: return SET_POINT_ACK;
+        case 1101: return MODIFY_PA;
+        case 1102: return MODIFY_PA_ACK;
+        case 1201: return HEART_BEAT;
+        case 1202: return HEART_BEAT_ACK;
+        case 1301: return TIME_CHECK;
+        case 1302: return TIME_CHECK_ACK;
+        default: throw new IllegalArgumentException(String.format("%d is an invalid enum value.", v));
+        }
     }
  
     private final int value;

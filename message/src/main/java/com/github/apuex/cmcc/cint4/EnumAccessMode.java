@@ -14,8 +14,18 @@ public enum EnumAccessMode {
         this.value = v;
     }
 
-    int getValue() {
+    public int getValue() {
         return this.value;
+    }
+
+    public static EnumAccessMode fromValue(int v) {
+        switch(v) {
+        case 0: return ASK_ANSWER;
+        case 1: return CHANGE_TRIGGER;
+        case 2: return TIME_TRIGGER;
+        case 3: return STOP;
+        default: throw new IllegalArgumentException(String.format("%d is an invalid enum value.", v));
+        }
     }
  
     private final int value;

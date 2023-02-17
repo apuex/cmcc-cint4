@@ -14,8 +14,18 @@ public enum EnumUpdateType {
         this.value = v;
     }
 
-    int getValue() {
+    public int getValue() {
         return this.value;
+    }
+
+    public static EnumUpdateType fromValue(int v) {
+        switch(v) {
+        case 0: return StoragePeriod;
+        case 1: return Absolute;
+        case 2: return Relative;
+        case 3: return Static;
+        default: throw new IllegalArgumentException(String.format("%d is an invalid enum value.", v));
+        }
     }
  
     private final int value;

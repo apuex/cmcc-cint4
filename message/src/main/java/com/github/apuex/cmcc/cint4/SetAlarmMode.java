@@ -5,7 +5,11 @@ import java.nio.ByteBuffer;
 /**
  * 请求告警数据方式设置
  */
-public class SetAlarmMode extends Message {
+public class SetAlarmMode extends Message { 
+    public SetAlarmMode() {
+        super(EnumPKType.SET_ALARM_MODE);
+    }
+
     public SetAlarmMode
     ( int GroupID
     , EnumAlarmMode Mode
@@ -27,6 +31,30 @@ public class SetAlarmMode extends Message {
         this.GroupID = GroupID;
         this.Mode = Mode;
         this.Ids = Ids;
+    }
+
+    public static void encode(ByteBuffer buf, SetAlarmMode v) {
+        buf.putInt(v.Header);
+        buf.putInt(v.Length);
+        buf.putInt(v.SerialNo);
+        buf.putInt(v.PKType.getValue());
+        buf.putInt(v.GroupID);
+        buf.putInt(v.Mode.getValue());
+        TIDArray.encode(buf, v.Ids);
+        buf.putShort(v.CRC16);
+    }
+
+    public static SetAlarmMode decode(ByteBuffer buf) {
+        SetAlarmMode v = new SetAlarmMode();
+        v.Header = buf.getInt();
+        v.Length = buf.getInt();
+        v.SerialNo = buf.getInt();
+        v.PKType = EnumPKType.fromValue(buf.getInt());
+        v.GroupID = buf.getInt();
+        v.Mode = EnumAlarmMode.fromValue(buf.getInt());
+        v.Ids = TIDArray.decode(buf);
+        v.CRC16 = buf.getShort();
+        return v;
     }
 
     public int GroupID; // 相应模式数据包的序号

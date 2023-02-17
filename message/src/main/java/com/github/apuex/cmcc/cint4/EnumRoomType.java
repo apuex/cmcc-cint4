@@ -14,15 +14,32 @@ public enum EnumRoomType {
     , EXCHANGE(52) //交换机房
     , DATA(53) //数据机房
     , IDC(54) //IDC机房
-    , COLLIGATION(54) //综合机房
+    , COLLIGATION(55) //综合机房
     ;
 
     EnumRoomType(int v) {
         this.value = v;
     }
 
-    int getValue() {
+    public int getValue() {
         return this.value;
+    }
+
+    public static EnumRoomType fromValue(int v) {
+        switch(v) {
+        case 1: return CONVERGE;
+        case 2: return BASESTATION;
+        case 11: return GENERATION;
+        case 12: return ELECTRIC;
+        case 13: return BATTERY;
+        case 14: return AIRCONDITION;
+        case 51: return TRANSFERS;
+        case 52: return EXCHANGE;
+        case 53: return DATA;
+        case 54: return IDC;
+        case 55: return COLLIGATION;
+        default: throw new IllegalArgumentException(String.format("%d is an invalid enum value.", v));
+        }
     }
  
     private final int value;

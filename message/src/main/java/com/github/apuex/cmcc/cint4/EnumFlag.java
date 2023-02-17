@@ -12,8 +12,16 @@ public enum EnumFlag {
         this.value = v;
     }
 
-    int getValue() {
+    public int getValue() {
         return this.value;
+    }
+
+    public static EnumFlag fromValue(int v) {
+        switch(v) {
+        case 0: return BEGIN;
+        case 1: return END;
+        default: throw new IllegalArgumentException(String.format("%d is an invalid enum value.", v));
+        }
     }
  
     private final int value;

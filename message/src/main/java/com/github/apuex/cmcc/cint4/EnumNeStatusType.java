@@ -16,8 +16,20 @@ public enum EnumNeStatusType {
         this.value = v;
     }
 
-    int getValue() {
+    public int getValue() {
         return this.value;
+    }
+
+    public static EnumNeStatusType fromValue(int v) {
+        switch(v) {
+        case 1: return NeStatusType1;
+        case 2: return NeStatusType2;
+        case 3: return NeStatusType3;
+        case 4: return NeStatusType4;
+        case 5: return NeStatusType5;
+        case 6: return NeStatusType6;
+        default: throw new IllegalArgumentException(String.format("%d is an invalid enum value.", v));
+        }
     }
  
     private final int value;

@@ -329,7 +329,7 @@ enumRoomType = Meta.EnumerateField
                         , Meta.enumComment = "IDC机房"
                         }
         , Meta.EnumItem { Meta.enumName = "COLLIGATION"
-                        , Meta.enumValue = 54
+                        , Meta.enumValue = 55
                         , Meta.enumComment = "综合机房"
                         }
         ]
@@ -612,28 +612,28 @@ tTime = Meta.EntityField
 -- TA/TD/TID
 siteID = Meta.StringField
     { Meta.fieldName    = "SiteID"
-    , Meta.fieldSize    = "Length::SITEID_LEN"
+    , Meta.fieldSize    = "Lengths::SITEID_LENGTH"
     , Meta.fieldValue   = ""
     , Meta.fieldComment = "站点编号"
     }
 
 deviceID = Meta.StringField
     { Meta.fieldName    = "DeviceID"
-    , Meta.fieldSize    = "Length::DEVICEID_LEN"
+    , Meta.fieldSize    = "Lengths::DEVICEID_LENGTH"
     , Meta.fieldValue   = ""
     , Meta.fieldComment = "设备编号"
     }
 
 signalID = Meta.StringField
     { Meta.fieldName    = "SignalID"
-    , Meta.fieldSize    = "Length::ID_LEN"
+    , Meta.fieldSize    = "Lengths::ID_LENGTH"
     , Meta.fieldValue   = ""
     , Meta.fieldComment = "监控点的6位信号编码，即《动环信号标准化字典表(20170927)》中的信号编码ID"
     }
 
 signalNumber = Meta.StringField
     { Meta.fieldName    = "SignalNumber"
-    , Meta.fieldSize    = "Length::SIGNALNUM_LEN"
+    , Meta.fieldSize    = "Lengths::SIGNALNUM_LENGTH"
     , Meta.fieldValue   = ""
     , Meta.fieldComment = "同类监控点顺序号"
     }
@@ -695,28 +695,28 @@ tidStruct = Meta.Struct
 -- TAlarm
 scID = Meta.StringField
     { Meta.fieldName    = "SCID"
-    , Meta.fieldSize    = "SCID_LEN"
+    , Meta.fieldSize    = "Lengths::SCID_LENGTH"
     , Meta.fieldValue   = ""
     , Meta.fieldComment = "SC ID编号（7位数字，全网范围唯一，采用6位行政地区编码+1位序号组成）"
     }
 
 serialNo = Meta.StringField
     { Meta.fieldName    = "SerialNo"
-    , Meta.fieldSize    = "ALARMSERIALNO_LEN"
+    , Meta.fieldSize    = "Lengths::ALARMSERIALNO_LENGTH"
     , Meta.fieldValue   = ""
     , Meta.fieldComment = "告警序号（10位数字，范围0~4294967295，是下级SC范围的，不足10位前面补0）"
     }
 
 nmAlarmID = Meta.StringField
     { Meta.fieldName    = "NMAlarmID"
-    , Meta.fieldSize    = "ID_LEN"
+    , Meta.fieldSize    = "Lengths::ID_LENGTH"
     , Meta.fieldValue   = ""
     , Meta.fieldComment = "6位告警编码ID"
     }
 
 alarmTime = Meta.StringField
     { Meta.fieldName    = "AlarmTime"
-    , Meta.fieldSize    = "TIME_LEN"
+    , Meta.fieldSize    = "Lengths::TIME_LENGTH"
     , Meta.fieldValue   = ""
     , Meta.fieldComment = "告警时间，YYYY-MM-DD<SPACE键>hh:mm:ss（采用24小时的时间制式）"
     }
@@ -729,7 +729,7 @@ eventValue = Meta.Float32Field
 
 alarmDesc = Meta.StringField
     { Meta.fieldName    = "AlarmDesc"
-    , Meta.fieldSize    = "DES_LENGTH"
+    , Meta.fieldSize    = "Lengths::DES_LENGTH"
     , Meta.fieldValue   = ""
     , Meta.fieldComment = "告警描述"
     }
@@ -758,14 +758,14 @@ tAlarmStruct = Meta.Struct
 -- Info Fields
 userName = Meta.StringField
     { Meta.fieldName    = "UserName"
-    , Meta.fieldSize    = "USER_LENGTH"
+    , Meta.fieldSize    = "Lengths::USER_LENGTH"
     , Meta.fieldValue   = ""
     , Meta.fieldComment = "Login user name."
     }
 
 passWord = Meta.StringField
     { Meta.fieldName    = "PassWord"
-    , Meta.fieldSize    = "PASSWORD_LEN"
+    , Meta.fieldSize    = "Lengths::PASSWORD_LENGTH"
     , Meta.fieldValue   = ""
     , Meta.fieldComment = "Login password."
     }

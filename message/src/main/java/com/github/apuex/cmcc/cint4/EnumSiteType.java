@@ -14,8 +14,18 @@ public enum EnumSiteType {
         this.value = v;
     }
 
-    int getValue() {
+    public int getValue() {
         return this.value;
+    }
+
+    public static EnumSiteType fromValue(int v) {
+        switch(v) {
+        case 1: return DATACENTER;
+        case 2: return ROOM;
+        case 3: return LOCALTRANS;
+        case 4: return STATION;
+        default: throw new IllegalArgumentException(String.format("%d is an invalid enum value.", v));
+        }
     }
  
     private final int value;

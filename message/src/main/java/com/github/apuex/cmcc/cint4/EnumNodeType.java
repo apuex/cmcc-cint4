@@ -14,8 +14,18 @@ public enum EnumNodeType {
         this.value = v;
     }
 
-    int getValue() {
+    public int getValue() {
         return this.value;
+    }
+
+    public static EnumNodeType fromValue(int v) {
+        switch(v) {
+        case 0: return NodeType0;
+        case 1: return NodeType1;
+        case 2: return NodeType2;
+        case 3: return NodeType3;
+        default: throw new IllegalArgumentException(String.format("%d is an invalid enum value.", v));
+        }
     }
  
     private final int value;

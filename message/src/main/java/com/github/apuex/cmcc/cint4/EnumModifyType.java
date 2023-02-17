@@ -15,8 +15,19 @@ public enum EnumModifyType {
         this.value = v;
     }
 
-    int getValue() {
+    public int getValue() {
         return this.value;
+    }
+
+    public static EnumModifyType fromValue(int v) {
+        switch(v) {
+        case 0: return ADDNONODES;
+        case 1: return ADDINNODES;
+        case 2: return DELETE;
+        case 3: return MODIFYNONODES;
+        case 4: return MODIFYINNODES;
+        default: throw new IllegalArgumentException(String.format("%d is an invalid enum value.", v));
+        }
     }
  
     private final int value;

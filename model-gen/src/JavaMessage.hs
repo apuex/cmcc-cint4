@@ -57,8 +57,15 @@ public enum #{t} {
         this.value = v;
     }
 
-    int getValue() {
+    public int getValue() {
         return this.value;
+    }
+
+    public static #{t} fromValue(int v) {
+        switch(v) {
+        #{Util.combinePrefix 8 "" $ DL.map genEnumFromValue es}
+        default: throw new IllegalArgumentException(String.format("%d is an invalid enum value.", v));
+        }
     }
  
     private final int value;
@@ -72,6 +79,10 @@ public enum #{t} {
 genEnumItem :: Meta.EnumItem
             -> T.Text
 genEnumItem (Meta.EnumItem n v c) = [st|#{n}(#{v}) //#{c}|]
+
+genEnumFromValue :: Meta.EnumItem
+                 -> T.Text
+genEnumFromValue (Meta.EnumItem n v c) = [st|case #{v}: return #{n};|]
 
 genEntity :: String
           -> T.Text
@@ -98,7 +109,7 @@ import java.nio.ByteBuffer;
 /**
  * #{c}
  */
-public class #{n} extends Message {
+public class #{n} extends Message { #{genMsgDefConstructor t n fields c}
     public #{n}
     ( #{Util.combinePrefix 4 ", " $ DL.map genParam fields}
     ) {
@@ -111,6 +122,20 @@ public class #{n} extends Message {
     ) {
         super(SerialNo, #{T.replace "::" "." t});
         #{Util.combinePrefix 8 "" $ DL.map (genInitializer "") fields}
+    }
+
+    public static void encode(ByteBuffer buf, #{n} v) {
+        #{Util.combinePrefix 8 "" $ DL.map (genEncode "") $ Meta.headerFields model}
+        #{Util.combinePrefix 8 "" $ DL.map (genEncode "") fields}
+        #{Util.combinePrefix 8 "" $ DL.map (genEncode "") $ Meta.tailFields model}
+    }
+
+    public static #{n} decode(ByteBuffer buf) {
+        #{n} v = new #{n}();
+        #{Util.combinePrefix 8 "" $ DL.map (genDecode "") $ Meta.headerFields model}
+        #{Util.combinePrefix 8 "" $ DL.map (genDecode "") fields}
+        #{Util.combinePrefix 8 "" $ DL.map (genDecode "") $ Meta.tailFields model}
+        return v;
     }
 
     #{Util.combinePrefix 4 "" $ DL.map (genField "") fields}
@@ -127,6 +152,16 @@ import java.nio.ByteBuffer;
  * #{c}
  */
 public class #{n} implements Serializable {
+    public static void encode(ByteBuffer buf, #{n} v) {
+        #{Util.combinePrefix 8 "" $ DL.map (genEncode "") fields}
+    }
+
+    public static #{n} decode(ByteBuffer buf) {
+        #{n} v = new #{n}();
+        #{Util.combinePrefix 8 "" $ DL.map (genDecode "") fields}
+        return v;
+    }
+
     #{Util.combinePrefix 4 "" $ DL.map (genField "") fields}
 }
 
@@ -134,6 +169,19 @@ public class #{n} implements Serializable {
 
 genEntityContent fp ns model (Meta.State t n fields c) = [st|package #{ns};
 
+|]
+
+genMsgDefConstructor :: T.Text
+                     -> T.Text
+                     -> [Meta.Field]
+                     -> T.Text
+                     -> T.Text
+genMsgDefConstructor t n fields c = if DL.null fields 
+    then [st||]
+    else [st|
+    public #{n}() {
+        super(#{T.replace "::" "." t});
+    }
 |]
 
 genMessage :: String
@@ -260,41 +308,41 @@ genEncode :: T.Text
           -> Meta.Field
           -> T.Text
 genEncode prefix field = case field of
-    Meta.Int8Field n s v c -> [st|this.#{prefix}#{n} = #{n};|]
-    Meta.UInt8Field n s v c -> [st|this.#{prefix}#{n} = #{n};|]
-    Meta.Int16Field n s v c -> [st|this.#{prefix}#{n} = #{n};|]
-    Meta.UInt16Field n s v c -> [st|this.#{prefix}#{n} = #{n};|]
-    Meta.Int32Field n s v c -> [st|this.#{prefix}#{n} = #{n};|]
-    Meta.UInt32Field n s v c -> [st|this.#{prefix}#{n} = #{n};|]
-    Meta.Int64Field n s v c -> [st|this.#{prefix}#{n} = #{n};|]
-    Meta.UInt64Field n s v c -> [st|this.#{prefix}#{n} = #{n};|]
-    Meta.Float32Field n v c -> [st|this.#{prefix}#{n} = #{n};|]
-    Meta.Float64Field n v c -> [st|this.#{prefix}#{n} = #{n};|]
-    Meta.ByteStringField n s v c -> [st|this.#{prefix}#{n} = #{n};|]
-    Meta.StringField n s v c -> [st|this.#{prefix}#{n} = #{n};|]
-    Meta.NTStringField n s v c -> [st|this.#{prefix}#{n} = #{n};|]
-    Meta.EnumerateField n t s v es c -> [st|this.#{prefix}#{n} = #{n};|]
-    Meta.EntityField n t v c -> [st|this.#{prefix}#{n} = #{n};|]
+    Meta.Int8Field n s v c -> [st|buf.put(v.#{prefix}#{n});|]
+    Meta.UInt8Field n s v c -> [st|buf.put(v.#{prefix}#{n});|]
+    Meta.Int16Field n s v c -> [st|buf.putShort(v.#{prefix}#{n});|]
+    Meta.UInt16Field n s v c -> [st|buf.putShort(v.#{prefix}#{n});|]
+    Meta.Int32Field n s v c -> [st|buf.putInt(v.#{prefix}#{n});|]
+    Meta.UInt32Field n s v c -> [st|buf.putInt(v.#{prefix}#{n});|]
+    Meta.Int64Field n s v c -> [st|buf.putLong(v.#{prefix}#{n});|]
+    Meta.UInt64Field n s v c -> [st|buf.putLong(v.#{prefix}#{n});|]
+    Meta.Float32Field n v c -> [st|buf.putFloat(v.#{prefix}#{n});|]
+    Meta.Float64Field n v c -> [st|buf.putDouble(v.#{prefix}#{n});|]
+    Meta.ByteStringField n s v c -> [st|Util.encodeString(buf, v.#{prefix}#{n}, #{T.replace "::" "." s});|]
+    Meta.StringField n s v c -> [st|Util.encodeString(buf, v.#{prefix}#{n}, #{T.replace "::" "." s});|]
+    Meta.NTStringField n s v c -> [st|Util.encodeString(buf, v.#{prefix}#{n}, #{T.replace "::" "." s});|]
+    Meta.EnumerateField n t s v es c -> [st|buf.putInt(v.#{prefix}#{n}.getValue());|]
+    Meta.EntityField n t v c -> [st|#{t}.encode(buf, v.#{prefix}#{n});|]
 
 genDecode :: T.Text
           -> Meta.Field
           -> T.Text
 genDecode prefix field = case field of
-    Meta.Int8Field n s v c -> [st|this.#{prefix}#{n} = buf.get();|]
-    Meta.UInt8Field n s v c -> [st|this.#{prefix}#{n} = buf.get();|]
-    Meta.Int16Field n s v c -> [st|this.#{prefix}#{n} = buf.getShort();|]
-    Meta.UInt16Field n s v c -> [st|this.#{prefix}#{n} = buf.getShort();|]
-    Meta.Int32Field n s v c -> [st|this.#{prefix}#{n} = buf.getInt();|]
-    Meta.UInt32Field n s v c -> [st|this.#{prefix}#{n} = buf.getInt();|]
-    Meta.Int64Field n s v c -> [st|this.#{prefix}#{n} = buf.getLong();|]
-    Meta.UInt64Field n s v c -> [st|this.#{prefix}#{n} = buf.getLong();|]
-    Meta.Float32Field n v c -> [st|this.#{prefix}#{n} = buf.getFloat();|]
-    Meta.Float64Field n v c -> [st|this.#{prefix}#{n} = buf.getDouble();|]
-    Meta.ByteStringField n s v c -> [st|this.#{prefix}#{n} = #{n};|]
-    Meta.StringField n s v c -> [st|this.#{prefix}#{n} = Util.;|]
-    Meta.NTStringField n s v c -> [st|this.#{prefix}#{n} = #{n};|]
-    Meta.EnumerateField n t s v es c -> [st|this.#{prefix}#{n} = #{n};|]
-    Meta.EntityField n t v c -> [st|this.#{prefix}#{n} = #{n};|]
+    Meta.Int8Field n s v c -> [st|v.#{prefix}#{n} = buf.get();|]
+    Meta.UInt8Field n s v c -> [st|v.#{prefix}#{n} = buf.get();|]
+    Meta.Int16Field n s v c -> [st|v.#{prefix}#{n} = buf.getShort();|]
+    Meta.UInt16Field n s v c -> [st|v.#{prefix}#{n} = buf.getShort();|]
+    Meta.Int32Field n s v c -> [st|v.#{prefix}#{n} = buf.getInt();|]
+    Meta.UInt32Field n s v c -> [st|v.#{prefix}#{n} = buf.getInt();|]
+    Meta.Int64Field n s v c -> [st|v.#{prefix}#{n} = buf.getLong();|]
+    Meta.UInt64Field n s v c -> [st|v.#{prefix}#{n} = buf.getLong();|]
+    Meta.Float32Field n v c -> [st|v.#{prefix}#{n} = buf.getFloat();|]
+    Meta.Float64Field n v c -> [st|v.#{prefix}#{n} = buf.getDouble();|]
+    Meta.ByteStringField n s v c -> [st|v.#{prefix}#{n} = Util.decodeString(buf, #{T.replace "::" "." s});|]
+    Meta.StringField n s v c -> [st|v.#{prefix}#{n} = Util.decodeString(buf, #{T.replace "::" "." s});|]
+    Meta.NTStringField n s v c -> [st|v.#{prefix}#{n} = Util.decodeString(buf, #{T.replace "::" "." s});|]
+    Meta.EnumerateField n t s v es c -> [st|v.#{prefix}#{n} = #{t}.fromValue(buf.getInt());|]
+    Meta.EntityField n t v c -> [st|v.#{prefix}#{n} = #{t}.decode(buf);|]
 
 
 
