@@ -28,5 +28,9 @@ public class Util {
 	String s = new String(ba, charset);
 	return s.trim();
     }
-}
 
+    static public short CRC16(byte[] ba, int begin, int end) {
+	return (short)0xCAFE;
+    }
+
+}

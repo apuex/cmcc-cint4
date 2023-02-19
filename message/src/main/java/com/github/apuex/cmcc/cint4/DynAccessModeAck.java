@@ -46,6 +46,7 @@ public class DynAccessModeAck extends Message {
     }
 
     public static void encode(ByteBuffer buf, DynAccessModeAck v) {
+        final int initialPos = buf.position();
         // Message HEAD - envelope fields
         buf.putInt(v.Header);
         buf.putInt(v.Length);
@@ -61,6 +62,12 @@ public class DynAccessModeAck extends Message {
         // Message CONTENT END 
         // Message TAIL - envelope fields
         buf.putShort(v.CRC16);
+        final int pos = buf.position();
+        // Message LENGTH - envelope fields
+	buf.position(initialPos + 4);
+	buf.putInt(pos - initialPos);
+	buf.position(pos - 2);
+	buf.putShort(Util.CRC16(buf.array(), initialPos, pos));
     }
 
     public static DynAccessModeAck decode(ByteBuffer buf) {

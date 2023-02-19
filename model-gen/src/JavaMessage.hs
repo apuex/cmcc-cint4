@@ -125,6 +125,7 @@ public class #{n} extends Message { #{genMsgDefConstructor t n fields c}
     }
 
     public static void encode(ByteBuffer buf, #{n} v) {
+        final int initialPos = buf.position();
         // Message HEAD - envelope fields
         #{Util.combinePrefix 8 "" $ DL.map (genEncode "") $ Meta.headerFields model}
         // Message CONTENT BEGIN 
@@ -132,6 +133,12 @@ public class #{n} extends Message { #{genMsgDefConstructor t n fields c}
         // Message CONTENT END 
         // Message TAIL - envelope fields
         #{Util.combinePrefix 8 "" $ DL.map (genEncode "") $ Meta.tailFields model}
+        final int pos = buf.position();
+        // Message LENGTH - envelope fields
+	buf.position(initialPos + 4);
+	buf.putInt(pos - initialPos);
+	buf.position(pos - 2);
+	buf.putShort(Util.CRC16(buf.array(), initialPos, pos));
     }
 
     public static #{n} decode(ByteBuffer buf) {
