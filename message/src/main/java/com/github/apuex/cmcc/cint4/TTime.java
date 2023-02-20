@@ -7,6 +7,7 @@ import java.nio.ByteBuffer;
  * 时间的结构
  */
 public class TTime implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     public static void encode(ByteBuffer buf, TTime v) {
         buf.putShort(v.Years);

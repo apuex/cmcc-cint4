@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
  * 登录响应
  */
 public class LoginAck extends Message {
+    private static final long serialVersionUID = 1L;
     
     public LoginAck() {
         super(EnumPKType.LOGIN_ACK);

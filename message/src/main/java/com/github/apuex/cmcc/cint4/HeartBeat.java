@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
  * 确认连接
  */
 public class HeartBeat extends Message {
+    private static final long serialVersionUID = 1L;
     
     public HeartBeat
     ( 

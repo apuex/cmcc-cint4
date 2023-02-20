@@ -110,6 +110,7 @@ import java.nio.ByteBuffer;
  * #{c}
  */
 public class #{n} extends Message {
+    private static final long serialVersionUID = 1L;
     #{genMsgDefConstructor t n fields c}
     public #{n}
     ( #{Util.combinePrefix 4 ", " $ DL.map genParam fields}
@@ -195,6 +196,7 @@ import java.nio.ByteBuffer;
  * #{c}
  */
 public class #{n} implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     public static void encode(ByteBuffer buf, #{n} v) {
         #{Util.combinePrefix 8 "" $ DL.map (genEncode "") fields}

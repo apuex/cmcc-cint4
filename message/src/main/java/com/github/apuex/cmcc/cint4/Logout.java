@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
  * 登出
  */
 public class Logout extends Message {
+    private static final long serialVersionUID = 1L;
     
     public Logout
     ( 

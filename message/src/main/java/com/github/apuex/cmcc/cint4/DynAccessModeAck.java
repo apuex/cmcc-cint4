@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
  * 实时数据响应
  */
 public class DynAccessModeAck extends Message {
+    private static final long serialVersionUID = 1L;
     
     public DynAccessModeAck() {
         super(EnumPKType.DYN_ACCESS_MODE_ACK);

@@ -7,6 +7,7 @@ import java.nio.ByteBuffer;
  * 当前告警值的结构
  */
 public class TAlarm implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     public static void encode(ByteBuffer buf, TAlarm v) {
         Util.encodeString(buf, v.SCID, Lengths.SCID_LENGTH);

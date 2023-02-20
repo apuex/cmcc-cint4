@@ -7,6 +7,7 @@ import java.nio.ByteBuffer;
  * 数字量的值的结构
  */
 public class TD implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     public static void encode(ByteBuffer buf, TD v) {
         Util.encodeString(buf, v.SiteID, Lengths.SITEID_LENGTH);

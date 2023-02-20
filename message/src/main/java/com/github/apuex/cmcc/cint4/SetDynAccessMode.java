@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
  * 请求实时数据方式设置
  */
 public class SetDynAccessMode extends Message {
+    private static final long serialVersionUID = 1L;
     
     public SetDynAccessMode() {
         super(EnumPKType.SET_DYN_ACCESS_MODE);

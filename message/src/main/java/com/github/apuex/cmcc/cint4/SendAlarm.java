@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
  * 实时告警发送
  */
 public class SendAlarm extends Message {
+    private static final long serialVersionUID = 1L;
     
     public SendAlarm() {
         super(EnumPKType.SEND_ALARM);

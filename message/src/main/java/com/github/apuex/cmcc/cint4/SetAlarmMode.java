@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
  * 请求告警数据方式设置
  */
 public class SetAlarmMode extends Message {
+    private static final long serialVersionUID = 1L;
     
     public SetAlarmMode() {
         super(EnumPKType.SET_ALARM_MODE);

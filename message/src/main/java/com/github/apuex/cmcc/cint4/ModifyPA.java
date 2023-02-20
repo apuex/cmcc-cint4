@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
  * 改口令请求
  */
 public class ModifyPA extends Message {
+    private static final long serialVersionUID = 1L;
     
     public ModifyPA() {
         super(EnumPKType.MODIFY_PA);

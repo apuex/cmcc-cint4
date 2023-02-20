@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
  * 实时告警发送确认
  */
 public class SendAlarmAck extends Message {
+    private static final long serialVersionUID = 1L;
     
     public SendAlarmAck() {
         super(EnumPKType.SEND_ALARM_ACK);

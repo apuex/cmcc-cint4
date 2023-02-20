@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
  * 告警同步
  */
 public class SyncAlarm extends Message {
+    private static final long serialVersionUID = 1L;
     
     public SyncAlarm
     ( 

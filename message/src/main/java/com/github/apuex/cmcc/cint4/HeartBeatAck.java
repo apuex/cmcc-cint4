@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
  * 回应连接
  */
 public class HeartBeatAck extends Message {
+    private static final long serialVersionUID = 1L;
     
     public HeartBeatAck
     ( 

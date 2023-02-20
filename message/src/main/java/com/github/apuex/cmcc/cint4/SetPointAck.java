@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
  * 写数据响应
  */
 public class SetPointAck extends Message {
+    private static final long serialVersionUID = 1L;
     
     public SetPointAck() {
         super(EnumPKType.SET_POINT_ACK);

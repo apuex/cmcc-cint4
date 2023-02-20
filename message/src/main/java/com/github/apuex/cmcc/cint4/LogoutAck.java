@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
  * 登出响应
  */
 public class LogoutAck extends Message {
+    private static final long serialVersionUID = 1L;
     
     public LogoutAck
     ( 

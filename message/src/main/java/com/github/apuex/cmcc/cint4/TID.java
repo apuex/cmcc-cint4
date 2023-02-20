@@ -7,6 +7,7 @@ import java.nio.ByteBuffer;
  * 数据值的结构
  */
 public class TID implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     public static void encode(ByteBuffer buf, TID v) {
         Util.encodeString(buf, v.SiteID, Lengths.SITEID_LENGTH);

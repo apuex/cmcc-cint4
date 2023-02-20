@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
  * 写数据请求
  */
 public class SetPoint extends Message {
+    private static final long serialVersionUID = 1L;
     
     public SetPoint() {
         super(EnumPKType.SET_POINT);

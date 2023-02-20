@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
  * 告警方式设置响应
  */
 public class AlarmModeAck extends Message {
+    private static final long serialVersionUID = 1L;
     
     public AlarmModeAck() {
         super(EnumPKType.ALARM_MODE_ACK);
