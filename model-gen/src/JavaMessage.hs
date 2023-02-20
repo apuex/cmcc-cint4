@@ -109,7 +109,8 @@ import java.nio.ByteBuffer;
 /**
  * #{c}
  */
-public class #{n} extends Message { #{genMsgDefConstructor t n fields c}
+public class #{n} extends Message {
+    #{genMsgDefConstructor t n fields c}
     public #{n}
     ( #{Util.combinePrefix 4 ", " $ DL.map genParam fields}
     ) {
@@ -138,7 +139,7 @@ public class #{n} extends Message { #{genMsgDefConstructor t n fields c}
 	buf.position(initialPos + 4);
 	buf.putInt(pos - initialPos);
 	buf.position(pos - 2);
-	buf.putShort(Util.CRC16(buf.array(), initialPos, pos));
+	buf.putShort(Util.CRC16(buf.array(), initialPos, pos - 2));
     }
 
     public static #{n} decode(ByteBuffer buf) {
@@ -151,6 +152,33 @@ public class #{n} extends Message { #{genMsgDefConstructor t n fields c}
         // Message TAIL - envelope fields
         #{Util.combinePrefix 8 "" $ DL.map (genDecode "") $ Meta.tailFields model}
         return v;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        #{n} r = null;
+        if(o instanceof #{n}) {
+            r = (#{n}) o;
+        } else {
+            return false;
+        }
+
+        boolean result =
+            ( #{Util.combinePrefix 12 "&& " $ DL.map (genEquals "") $ DL.concat [Meta.headerFields model, fields, Meta.tailFields model]}
+            );
+
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder
+            .append("#{n} { ")
+            #{Util.combinePrefix 12 ".append(\", \")" $ DL.map (genToString "") $ DL.concat [Meta.headerFields model, fields, Meta.tailFields model]}
+            .append(" }");
+
+        return builder.toString();
     }
 
     #{Util.combinePrefix 4 "" $ DL.map (genField "") fields}
@@ -167,6 +195,7 @@ import java.nio.ByteBuffer;
  * #{c}
  */
 public class #{n} implements Serializable {
+
     public static void encode(ByteBuffer buf, #{n} v) {
         #{Util.combinePrefix 8 "" $ DL.map (genEncode "") fields}
     }
@@ -175,6 +204,33 @@ public class #{n} implements Serializable {
         #{n} v = new #{n}();
         #{Util.combinePrefix 8 "" $ DL.map (genDecode "") fields}
         return v;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        #{n} r = null;
+        if(o instanceof #{n}) {
+            r = (#{n}) o;
+        } else {
+            return false;
+        }
+
+        boolean result =
+            ( #{Util.combinePrefix 12 "&& " $ DL.map (genEquals "") fields}
+            );
+
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder
+            .append("#{n} { ")
+            #{Util.combinePrefix 12 ".append(\", \")" $ DL.map (genToString "") fields}
+            .append(" }");
+
+        return builder.toString();
     }
 
     #{Util.combinePrefix 4 "" $ DL.map (genField "") fields}
@@ -365,40 +421,40 @@ genToString :: T.Text
             -> Meta.Field
             -> T.Text
 genToString prefix field = case field of
-    Meta.Int8Field n s v c -> [st|+ ", #{prefix}#{n}=" + v.#{prefix}#{n}|]
-    Meta.UInt8Field n s v c -> [st|+ ", #{prefix}#{n}=" + v.#{prefix}#{n}|]
-    Meta.Int16Field n s v c -> [st|+ ", #{prefix}#{n}=" + v.#{prefix}#{n}|]
-    Meta.UInt16Field n s v c -> [st|+ ", #{prefix}#{n}=" + v.#{prefix}#{n}|]
-    Meta.Int32Field n s v c -> [st|+ ", #{prefix}#{n}=" + v.#{prefix}#{n}|]
-    Meta.UInt32Field n s v c -> [st|+ ", #{prefix}#{n}=" + v.#{prefix}#{n}|]
-    Meta.Int64Field n s v c -> [st|+ ", #{prefix}#{n}=" + v.#{prefix}#{n}|]
-    Meta.UInt64Field n s v c -> [st|+ ", #{prefix}#{n}=" + v.#{prefix}#{n}|]
-    Meta.Float32Field n v c -> [st|+ ", #{prefix}#{n}=" + v.#{prefix}#{n}|]
-    Meta.Float64Field n v c -> [st|+ ", #{prefix}#{n}=" + v.#{prefix}#{n}|]
-    Meta.ByteStringField n s v c -> [st|+ ", #{prefix}#{n}=" + v.#{prefix}#{n}|]
-    Meta.StringField n s v c -> [st|+ ", #{prefix}#{n}=" + v.#{prefix}#{n}|]
-    Meta.NTStringField n s v c -> [st|+ ", #{prefix}#{n}=" + v.#{prefix}#{n}|]
-    Meta.EnumerateField n t s v es c -> [st|+ ", #{prefix}#{n}=" + v.#{prefix}#{n}|]
-    Meta.EntityField n t v c -> [st|+ ", #{prefix}#{n}=" + v.#{prefix}#{n}|]
+    Meta.Int8Field n s v c -> [st|.append("#{prefix}#{n}=").append(this.#{prefix}#{n})|]
+    Meta.UInt8Field n s v c -> [st|.append("#{prefix}#{n}=").append(this.#{prefix}#{n})|]
+    Meta.Int16Field n s v c -> [st|.append("#{prefix}#{n}=").append(this.#{prefix}#{n})|]
+    Meta.UInt16Field n s v c -> [st|.append("#{prefix}#{n}=").append(this.#{prefix}#{n})|]
+    Meta.Int32Field n s v c -> [st|.append("#{prefix}#{n}=").append(this.#{prefix}#{n})|]
+    Meta.UInt32Field n s v c -> [st|.append("#{prefix}#{n}=").append(this.#{prefix}#{n})|]
+    Meta.Int64Field n s v c -> [st|.append("#{prefix}#{n}=").append(this.#{prefix}#{n})|]
+    Meta.UInt64Field n s v c -> [st|.append("#{prefix}#{n}=").append(this.#{prefix}#{n})|]
+    Meta.Float32Field n v c -> [st|.append("#{prefix}#{n}=").append(this.#{prefix}#{n})|]
+    Meta.Float64Field n v c -> [st|.append("#{prefix}#{n}=").append(this.#{prefix}#{n})|]
+    Meta.ByteStringField n s v c -> [st|.append("#{prefix}#{n}=").append(this.#{prefix}#{n})|]
+    Meta.StringField n s v c -> [st|.append("#{prefix}#{n}=").append(this.#{prefix}#{n})|]
+    Meta.NTStringField n s v c -> [st|.append("#{prefix}#{n}=").append(this.#{prefix}#{n})|]
+    Meta.EnumerateField n t s v es c -> [st|.append("#{prefix}#{n}=").append(this.#{prefix}#{n})|]
+    Meta.EntityField n t v c -> [st|.append("#{prefix}#{n}=").append(this.#{prefix}#{n})|]
 
 genEquals :: T.Text
           -> Meta.Field
           -> T.Text
 genEquals prefix field = case field of
-    Meta.Int8Field n s v c -> [st|l.#{prefix}#{n} == r.#{prefix}#{n}|]
-    Meta.UInt8Field n s v c -> [st|l.#{prefix}#{n} == r.#{prefix}#{n}|]
-    Meta.Int16Field n s v c -> [st|l.#{prefix}#{n} == r.#{prefix}#{n}|]
-    Meta.UInt16Field n s v c -> [st|l.#{prefix}#{n} == r.#{prefix}#{n}|]
-    Meta.Int32Field n s v c -> [st|l.#{prefix}#{n} == r.#{prefix}#{n}|]
-    Meta.UInt32Field n s v c -> [st|l.#{prefix}#{n} == r.#{prefix}#{n}|]
-    Meta.Int64Field n s v c -> [st|l.#{prefix}#{n} == r.#{prefix}#{n}|]
-    Meta.UInt64Field n s v c -> [st|l.#{prefix}#{n} == r.#{prefix}#{n}|]
-    Meta.Float32Field n v c -> [st|l.#{prefix}#{n} == r.#{prefix}#{n}|]
-    Meta.Float64Field n v c -> [st|l.#{prefix}#{n} == r.#{prefix}#{n}|]
-    Meta.ByteStringField n s v c -> [st|l.#{prefix}#{n}.equals(r.#{prefix}#{n})|]
-    Meta.StringField n s v c -> [st|l.#{prefix}#{n}.equals(r.#{prefix}#{n})|]
-    Meta.NTStringField n s v c -> [st|l.#{prefix}#{n}.equals(r.#{prefix}#{n})|]
-    Meta.EnumerateField n t s v es c -> [st|l.#{prefix}#{n} == r.#{prefix}#{n}|]
-    Meta.EntityField n t v c -> [st|l.#{prefix}#{n}.equals(r.#{prefix}#{n})|]
+    Meta.Int8Field n s v c -> [st|this.#{prefix}#{n} == r.#{prefix}#{n}|]
+    Meta.UInt8Field n s v c -> [st|this.#{prefix}#{n} == r.#{prefix}#{n}|]
+    Meta.Int16Field n s v c -> [st|this.#{prefix}#{n} == r.#{prefix}#{n}|]
+    Meta.UInt16Field n s v c -> [st|this.#{prefix}#{n} == r.#{prefix}#{n}|]
+    Meta.Int32Field n s v c -> [st|this.#{prefix}#{n} == r.#{prefix}#{n}|]
+    Meta.UInt32Field n s v c -> [st|this.#{prefix}#{n} == r.#{prefix}#{n}|]
+    Meta.Int64Field n s v c -> [st|this.#{prefix}#{n} == r.#{prefix}#{n}|]
+    Meta.UInt64Field n s v c -> [st|this.#{prefix}#{n} == r.#{prefix}#{n}|]
+    Meta.Float32Field n v c -> [st|this.#{prefix}#{n} == r.#{prefix}#{n}|]
+    Meta.Float64Field n v c -> [st|this.#{prefix}#{n} == r.#{prefix}#{n}|]
+    Meta.ByteStringField n s v c -> [st|this.#{prefix}#{n}.equals(r.#{prefix}#{n})|]
+    Meta.StringField n s v c -> [st|this.#{prefix}#{n}.equals(r.#{prefix}#{n})|]
+    Meta.NTStringField n s v c -> [st|this.#{prefix}#{n}.equals(r.#{prefix}#{n})|]
+    Meta.EnumerateField n t s v es c -> [st|this.#{prefix}#{n} == r.#{prefix}#{n}|]
+    Meta.EntityField n t v c -> [st|this.#{prefix}#{n}.equals(r.#{prefix}#{n})|]
 
 

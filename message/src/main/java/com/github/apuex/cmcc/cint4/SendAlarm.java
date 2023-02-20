@@ -5,7 +5,8 @@ import java.nio.ByteBuffer;
 /**
  * 实时告警发送
  */
-public class SendAlarm extends Message { 
+public class SendAlarm extends Message {
+    
     public SendAlarm() {
         super(EnumPKType.SEND_ALARM);
     }
@@ -47,7 +48,7 @@ public class SendAlarm extends Message {
 	buf.position(initialPos + 4);
 	buf.putInt(pos - initialPos);
 	buf.position(pos - 2);
-	buf.putShort(Util.CRC16(buf.array(), initialPos, pos));
+	buf.putShort(Util.CRC16(buf.array(), initialPos, pos - 2));
     }
 
     public static SendAlarm decode(ByteBuffer buf) {
@@ -64,6 +65,45 @@ public class SendAlarm extends Message {
         // Message TAIL - envelope fields
         v.CRC16 = buf.getShort();
         return v;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        SendAlarm r = null;
+        if(o instanceof SendAlarm) {
+            r = (SendAlarm) o;
+        } else {
+            return false;
+        }
+
+        boolean result =
+            ( this.Header == r.Header
+            && this.Length == r.Length
+            && this.SerialNo == r.SerialNo
+            && this.PKType == r.PKType
+            && this.GroupID == r.GroupID
+            && this.Result == r.Result
+            && this.CRC16 == r.CRC16
+            );
+
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder
+            .append("SendAlarm { ")
+            .append("Header=").append(this.Header)
+            .append(", ").append("Length=").append(this.Length)
+            .append(", ").append("SerialNo=").append(this.SerialNo)
+            .append(", ").append("PKType=").append(this.PKType)
+            .append(", ").append("GroupID=").append(this.GroupID)
+            .append(", ").append("Result=").append(this.Result)
+            .append(", ").append("CRC16=").append(this.CRC16)
+            .append(" }");
+
+        return builder.toString();
     }
 
     public int GroupID; // 相应模式数据包的序号

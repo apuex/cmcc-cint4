@@ -7,6 +7,7 @@ import java.nio.ByteBuffer;
  * 模拟量的值的结构
  */
 public class TA implements Serializable {
+
     public static void encode(ByteBuffer buf, TA v) {
         Util.encodeString(buf, v.SiteID, Lengths.SITEID_LENGTH);
         Util.encodeString(buf, v.DeviceID, Lengths.DEVICEID_LENGTH);
@@ -25,6 +26,43 @@ public class TA implements Serializable {
         v.Value = buf.getFloat();
         v.Status = EnumState.fromValue(buf.getInt());
         return v;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        TA r = null;
+        if(o instanceof TA) {
+            r = (TA) o;
+        } else {
+            return false;
+        }
+
+        boolean result =
+            ( this.SiteID.equals(r.SiteID)
+            && this.DeviceID.equals(r.DeviceID)
+            && this.SignalID.equals(r.SignalID)
+            && this.SignalNumber.equals(r.SignalNumber)
+            && this.Value == r.Value
+            && this.Status == r.Status
+            );
+
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder
+            .append("TA { ")
+            .append("SiteID=").append(this.SiteID)
+            .append(", ").append("DeviceID=").append(this.DeviceID)
+            .append(", ").append("SignalID=").append(this.SignalID)
+            .append(", ").append("SignalNumber=").append(this.SignalNumber)
+            .append(", ").append("Value=").append(this.Value)
+            .append(", ").append("Status=").append(this.Status)
+            .append(" }");
+
+        return builder.toString();
     }
 
     public String SiteID; // 站点编号

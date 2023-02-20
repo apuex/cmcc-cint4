@@ -5,7 +5,8 @@ import java.nio.ByteBuffer;
 /**
  * 写数据请求
  */
-public class SetPoint extends Message { 
+public class SetPoint extends Message {
+    
     public SetPoint() {
         super(EnumPKType.SET_POINT);
     }
@@ -42,7 +43,7 @@ public class SetPoint extends Message {
 	buf.position(initialPos + 4);
 	buf.putInt(pos - initialPos);
 	buf.position(pos - 2);
-	buf.putShort(Util.CRC16(buf.array(), initialPos, pos));
+	buf.putShort(Util.CRC16(buf.array(), initialPos, pos - 2));
     }
 
     public static SetPoint decode(ByteBuffer buf) {
@@ -58,6 +59,43 @@ public class SetPoint extends Message {
         // Message TAIL - envelope fields
         v.CRC16 = buf.getShort();
         return v;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        SetPoint r = null;
+        if(o instanceof SetPoint) {
+            r = (SetPoint) o;
+        } else {
+            return false;
+        }
+
+        boolean result =
+            ( this.Header == r.Header
+            && this.Length == r.Length
+            && this.SerialNo == r.SerialNo
+            && this.PKType == r.PKType
+            && this.Value.equals(r.Value)
+            && this.CRC16 == r.CRC16
+            );
+
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder
+            .append("SetPoint { ")
+            .append("Header=").append(this.Header)
+            .append(", ").append("Length=").append(this.Length)
+            .append(", ").append("SerialNo=").append(this.SerialNo)
+            .append(", ").append("PKType=").append(this.PKType)
+            .append(", ").append("Value=").append(this.Value)
+            .append(", ").append("CRC16=").append(this.CRC16)
+            .append(" }");
+
+        return builder.toString();
     }
 
     public TATD Value; // 5.1.8中的TA/TD的数据结构定义

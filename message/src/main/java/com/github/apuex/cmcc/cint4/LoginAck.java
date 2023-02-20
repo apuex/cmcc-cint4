@@ -5,7 +5,8 @@ import java.nio.ByteBuffer;
 /**
  * 登录响应
  */
-public class LoginAck extends Message { 
+public class LoginAck extends Message {
+    
     public LoginAck() {
         super(EnumPKType.LOGIN_ACK);
     }
@@ -42,7 +43,7 @@ public class LoginAck extends Message {
 	buf.position(initialPos + 4);
 	buf.putInt(pos - initialPos);
 	buf.position(pos - 2);
-	buf.putShort(Util.CRC16(buf.array(), initialPos, pos));
+	buf.putShort(Util.CRC16(buf.array(), initialPos, pos - 2));
     }
 
     public static LoginAck decode(ByteBuffer buf) {
@@ -58,6 +59,43 @@ public class LoginAck extends Message {
         // Message TAIL - envelope fields
         v.CRC16 = buf.getShort();
         return v;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        LoginAck r = null;
+        if(o instanceof LoginAck) {
+            r = (LoginAck) o;
+        } else {
+            return false;
+        }
+
+        boolean result =
+            ( this.Header == r.Header
+            && this.Length == r.Length
+            && this.SerialNo == r.SerialNo
+            && this.PKType == r.PKType
+            && this.RightLevel == r.RightLevel
+            && this.CRC16 == r.CRC16
+            );
+
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder
+            .append("LoginAck { ")
+            .append("Header=").append(this.Header)
+            .append(", ").append("Length=").append(this.Length)
+            .append(", ").append("SerialNo=").append(this.SerialNo)
+            .append(", ").append("PKType=").append(this.PKType)
+            .append(", ").append("RightLevel=").append(this.RightLevel)
+            .append(", ").append("CRC16=").append(this.CRC16)
+            .append(" }");
+
+        return builder.toString();
     }
 
     public EnumRightLevel RightLevel; // 监控系统下级SC向上级SC提供的权限定义

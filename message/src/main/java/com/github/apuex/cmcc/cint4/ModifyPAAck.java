@@ -5,7 +5,8 @@ import java.nio.ByteBuffer;
 /**
  * 改口令响应
  */
-public class ModifyPAAck extends Message { 
+public class ModifyPAAck extends Message {
+    
     public ModifyPAAck() {
         super(EnumPKType.MODIFY_PA_ACK);
     }
@@ -42,7 +43,7 @@ public class ModifyPAAck extends Message {
 	buf.position(initialPos + 4);
 	buf.putInt(pos - initialPos);
 	buf.position(pos - 2);
-	buf.putShort(Util.CRC16(buf.array(), initialPos, pos));
+	buf.putShort(Util.CRC16(buf.array(), initialPos, pos - 2));
     }
 
     public static ModifyPAAck decode(ByteBuffer buf) {
@@ -58,6 +59,43 @@ public class ModifyPAAck extends Message {
         // Message TAIL - envelope fields
         v.CRC16 = buf.getShort();
         return v;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        ModifyPAAck r = null;
+        if(o instanceof ModifyPAAck) {
+            r = (ModifyPAAck) o;
+        } else {
+            return false;
+        }
+
+        boolean result =
+            ( this.Header == r.Header
+            && this.Length == r.Length
+            && this.SerialNo == r.SerialNo
+            && this.PKType == r.PKType
+            && this.Result == r.Result
+            && this.CRC16 == r.CRC16
+            );
+
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder
+            .append("ModifyPAAck { ")
+            .append("Header=").append(this.Header)
+            .append(", ").append("Length=").append(this.Length)
+            .append(", ").append("SerialNo=").append(this.SerialNo)
+            .append(", ").append("PKType=").append(this.PKType)
+            .append(", ").append("Result=").append(this.Result)
+            .append(", ").append("CRC16=").append(this.CRC16)
+            .append(" }");
+
+        return builder.toString();
     }
 
     public EnumResult Result; // 报文返回结果

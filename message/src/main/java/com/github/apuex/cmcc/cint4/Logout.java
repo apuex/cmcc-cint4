@@ -5,7 +5,8 @@ import java.nio.ByteBuffer;
 /**
  * 登出
  */
-public class Logout extends Message { 
+public class Logout extends Message {
+    
     public Logout
     ( 
     ) {
@@ -37,7 +38,7 @@ public class Logout extends Message {
 	buf.position(initialPos + 4);
 	buf.putInt(pos - initialPos);
 	buf.position(pos - 2);
-	buf.putShort(Util.CRC16(buf.array(), initialPos, pos));
+	buf.putShort(Util.CRC16(buf.array(), initialPos, pos - 2));
     }
 
     public static Logout decode(ByteBuffer buf) {
@@ -53,6 +54,41 @@ public class Logout extends Message {
         // Message TAIL - envelope fields
         v.CRC16 = buf.getShort();
         return v;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        Logout r = null;
+        if(o instanceof Logout) {
+            r = (Logout) o;
+        } else {
+            return false;
+        }
+
+        boolean result =
+            ( this.Header == r.Header
+            && this.Length == r.Length
+            && this.SerialNo == r.SerialNo
+            && this.PKType == r.PKType
+            && this.CRC16 == r.CRC16
+            );
+
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder
+            .append("Logout { ")
+            .append("Header=").append(this.Header)
+            .append(", ").append("Length=").append(this.Length)
+            .append(", ").append("SerialNo=").append(this.SerialNo)
+            .append(", ").append("PKType=").append(this.PKType)
+            .append(", ").append("CRC16=").append(this.CRC16)
+            .append(" }");
+
+        return builder.toString();
     }
 
     

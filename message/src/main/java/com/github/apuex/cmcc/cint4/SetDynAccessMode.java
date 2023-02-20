@@ -5,7 +5,8 @@ import java.nio.ByteBuffer;
 /**
  * 请求实时数据方式设置
  */
-public class SetDynAccessMode extends Message { 
+public class SetDynAccessMode extends Message {
+    
     public SetDynAccessMode() {
         super(EnumPKType.SET_DYN_ACCESS_MODE);
     }
@@ -62,7 +63,7 @@ public class SetDynAccessMode extends Message {
 	buf.position(initialPos + 4);
 	buf.putInt(pos - initialPos);
 	buf.position(pos - 2);
-	buf.putShort(Util.CRC16(buf.array(), initialPos, pos));
+	buf.putShort(Util.CRC16(buf.array(), initialPos, pos - 2));
     }
 
     public static SetDynAccessMode decode(ByteBuffer buf) {
@@ -82,6 +83,51 @@ public class SetDynAccessMode extends Message {
         // Message TAIL - envelope fields
         v.CRC16 = buf.getShort();
         return v;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        SetDynAccessMode r = null;
+        if(o instanceof SetDynAccessMode) {
+            r = (SetDynAccessMode) o;
+        } else {
+            return false;
+        }
+
+        boolean result =
+            ( this.Header == r.Header
+            && this.Length == r.Length
+            && this.SerialNo == r.SerialNo
+            && this.PKType == r.PKType
+            && this.TerminalID == r.TerminalID
+            && this.GroupID == r.GroupID
+            && this.Mode == r.Mode
+            && this.PollingTime == r.PollingTime
+            && this.Ids.equals(r.Ids)
+            && this.CRC16 == r.CRC16
+            );
+
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder
+            .append("SetDynAccessMode { ")
+            .append("Header=").append(this.Header)
+            .append(", ").append("Length=").append(this.Length)
+            .append(", ").append("SerialNo=").append(this.SerialNo)
+            .append(", ").append("PKType=").append(this.PKType)
+            .append(", ").append("TerminalID=").append(this.TerminalID)
+            .append(", ").append("GroupID=").append(this.GroupID)
+            .append(", ").append("Mode=").append(this.Mode)
+            .append(", ").append("PollingTime=").append(this.PollingTime)
+            .append(", ").append("Ids=").append(this.Ids)
+            .append(", ").append("CRC16=").append(this.CRC16)
+            .append(" }");
+
+        return builder.toString();
     }
 
     public int TerminalID; // 上级SCID

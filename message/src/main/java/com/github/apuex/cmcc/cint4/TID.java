@@ -7,6 +7,7 @@ import java.nio.ByteBuffer;
  * 数据值的结构
  */
 public class TID implements Serializable {
+
     public static void encode(ByteBuffer buf, TID v) {
         Util.encodeString(buf, v.SiteID, Lengths.SITEID_LENGTH);
         Util.encodeString(buf, v.DeviceID, Lengths.DEVICEID_LENGTH);
@@ -21,6 +22,39 @@ public class TID implements Serializable {
         v.SignalID = Util.decodeString(buf, Lengths.ID_LENGTH);
         v.SignalNumber = Util.decodeString(buf, Lengths.SIGNALNUM_LENGTH);
         return v;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        TID r = null;
+        if(o instanceof TID) {
+            r = (TID) o;
+        } else {
+            return false;
+        }
+
+        boolean result =
+            ( this.SiteID.equals(r.SiteID)
+            && this.DeviceID.equals(r.DeviceID)
+            && this.SignalID.equals(r.SignalID)
+            && this.SignalNumber.equals(r.SignalNumber)
+            );
+
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder
+            .append("TID { ")
+            .append("SiteID=").append(this.SiteID)
+            .append(", ").append("DeviceID=").append(this.DeviceID)
+            .append(", ").append("SignalID=").append(this.SignalID)
+            .append(", ").append("SignalNumber=").append(this.SignalNumber)
+            .append(" }");
+
+        return builder.toString();
     }
 
     public String SiteID; // 站点编号

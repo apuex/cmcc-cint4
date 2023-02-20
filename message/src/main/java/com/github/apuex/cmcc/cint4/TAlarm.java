@@ -7,6 +7,7 @@ import java.nio.ByteBuffer;
  * 当前告警值的结构
  */
 public class TAlarm implements Serializable {
+
     public static void encode(ByteBuffer buf, TAlarm v) {
         Util.encodeString(buf, v.SCID, Lengths.SCID_LENGTH);
         Util.encodeString(buf, v.SerialNo, Lengths.ALARMSERIALNO_LENGTH);
@@ -37,6 +38,55 @@ public class TAlarm implements Serializable {
         v.EventValue = buf.getFloat();
         v.AlarmDesc = Util.decodeString(buf, Lengths.DES_LENGTH);
         return v;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        TAlarm r = null;
+        if(o instanceof TAlarm) {
+            r = (TAlarm) o;
+        } else {
+            return false;
+        }
+
+        boolean result =
+            ( this.SCID.equals(r.SCID)
+            && this.SerialNo.equals(r.SerialNo)
+            && this.SiteID.equals(r.SiteID)
+            && this.DeviceID.equals(r.DeviceID)
+            && this.SignalID.equals(r.SignalID)
+            && this.SignalNumber.equals(r.SignalNumber)
+            && this.NMAlarmID.equals(r.NMAlarmID)
+            && this.AlarmTime.equals(r.AlarmTime)
+            && this.AlarmLevel == r.AlarmLevel
+            && this.AlarmFlag == r.AlarmFlag
+            && this.EventValue == r.EventValue
+            && this.AlarmDesc.equals(r.AlarmDesc)
+            );
+
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder
+            .append("TAlarm { ")
+            .append("SCID=").append(this.SCID)
+            .append(", ").append("SerialNo=").append(this.SerialNo)
+            .append(", ").append("SiteID=").append(this.SiteID)
+            .append(", ").append("DeviceID=").append(this.DeviceID)
+            .append(", ").append("SignalID=").append(this.SignalID)
+            .append(", ").append("SignalNumber=").append(this.SignalNumber)
+            .append(", ").append("NMAlarmID=").append(this.NMAlarmID)
+            .append(", ").append("AlarmTime=").append(this.AlarmTime)
+            .append(", ").append("AlarmLevel=").append(this.AlarmLevel)
+            .append(", ").append("AlarmFlag=").append(this.AlarmFlag)
+            .append(", ").append("EventValue=").append(this.EventValue)
+            .append(", ").append("AlarmDesc=").append(this.AlarmDesc)
+            .append(" }");
+
+        return builder.toString();
     }
 
     public String SCID; // SC ID编号（7位数字，全网范围唯一，采用6位行政地区编码+1位序号组成）

@@ -5,7 +5,8 @@ import java.nio.ByteBuffer;
 /**
  * 登录
  */
-public class Login extends Message { 
+public class Login extends Message {
+    
     public Login() {
         super(EnumPKType.LOGIN);
     }
@@ -47,7 +48,7 @@ public class Login extends Message {
 	buf.position(initialPos + 4);
 	buf.putInt(pos - initialPos);
 	buf.position(pos - 2);
-	buf.putShort(Util.CRC16(buf.array(), initialPos, pos));
+	buf.putShort(Util.CRC16(buf.array(), initialPos, pos - 2));
     }
 
     public static Login decode(ByteBuffer buf) {
@@ -64,6 +65,45 @@ public class Login extends Message {
         // Message TAIL - envelope fields
         v.CRC16 = buf.getShort();
         return v;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        Login r = null;
+        if(o instanceof Login) {
+            r = (Login) o;
+        } else {
+            return false;
+        }
+
+        boolean result =
+            ( this.Header == r.Header
+            && this.Length == r.Length
+            && this.SerialNo == r.SerialNo
+            && this.PKType == r.PKType
+            && this.UserName.equals(r.UserName)
+            && this.PassWord.equals(r.PassWord)
+            && this.CRC16 == r.CRC16
+            );
+
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder
+            .append("Login { ")
+            .append("Header=").append(this.Header)
+            .append(", ").append("Length=").append(this.Length)
+            .append(", ").append("SerialNo=").append(this.SerialNo)
+            .append(", ").append("PKType=").append(this.PKType)
+            .append(", ").append("UserName=").append(this.UserName)
+            .append(", ").append("PassWord=").append(this.PassWord)
+            .append(", ").append("CRC16=").append(this.CRC16)
+            .append(" }");
+
+        return builder.toString();
     }
 
     public String UserName; // Login user name.

@@ -5,7 +5,8 @@ import java.nio.ByteBuffer;
 /**
  * 请求告警数据方式设置
  */
-public class SetAlarmMode extends Message { 
+public class SetAlarmMode extends Message {
+    
     public SetAlarmMode() {
         super(EnumPKType.SET_ALARM_MODE);
     }
@@ -52,7 +53,7 @@ public class SetAlarmMode extends Message {
 	buf.position(initialPos + 4);
 	buf.putInt(pos - initialPos);
 	buf.position(pos - 2);
-	buf.putShort(Util.CRC16(buf.array(), initialPos, pos));
+	buf.putShort(Util.CRC16(buf.array(), initialPos, pos - 2));
     }
 
     public static SetAlarmMode decode(ByteBuffer buf) {
@@ -70,6 +71,47 @@ public class SetAlarmMode extends Message {
         // Message TAIL - envelope fields
         v.CRC16 = buf.getShort();
         return v;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        SetAlarmMode r = null;
+        if(o instanceof SetAlarmMode) {
+            r = (SetAlarmMode) o;
+        } else {
+            return false;
+        }
+
+        boolean result =
+            ( this.Header == r.Header
+            && this.Length == r.Length
+            && this.SerialNo == r.SerialNo
+            && this.PKType == r.PKType
+            && this.GroupID == r.GroupID
+            && this.Mode == r.Mode
+            && this.Ids.equals(r.Ids)
+            && this.CRC16 == r.CRC16
+            );
+
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder
+            .append("SetAlarmMode { ")
+            .append("Header=").append(this.Header)
+            .append(", ").append("Length=").append(this.Length)
+            .append(", ").append("SerialNo=").append(this.SerialNo)
+            .append(", ").append("PKType=").append(this.PKType)
+            .append(", ").append("GroupID=").append(this.GroupID)
+            .append(", ").append("Mode=").append(this.Mode)
+            .append(", ").append("Ids=").append(this.Ids)
+            .append(", ").append("CRC16=").append(this.CRC16)
+            .append(" }");
+
+        return builder.toString();
     }
 
     public int GroupID; // 相应模式数据包的序号

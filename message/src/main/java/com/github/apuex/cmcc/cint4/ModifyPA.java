@@ -5,7 +5,8 @@ import java.nio.ByteBuffer;
 /**
  * 改口令请求
  */
-public class ModifyPA extends Message { 
+public class ModifyPA extends Message {
+    
     public ModifyPA() {
         super(EnumPKType.MODIFY_PA);
     }
@@ -52,7 +53,7 @@ public class ModifyPA extends Message {
 	buf.position(initialPos + 4);
 	buf.putInt(pos - initialPos);
 	buf.position(pos - 2);
-	buf.putShort(Util.CRC16(buf.array(), initialPos, pos));
+	buf.putShort(Util.CRC16(buf.array(), initialPos, pos - 2));
     }
 
     public static ModifyPA decode(ByteBuffer buf) {
@@ -70,6 +71,47 @@ public class ModifyPA extends Message {
         // Message TAIL - envelope fields
         v.CRC16 = buf.getShort();
         return v;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        ModifyPA r = null;
+        if(o instanceof ModifyPA) {
+            r = (ModifyPA) o;
+        } else {
+            return false;
+        }
+
+        boolean result =
+            ( this.Header == r.Header
+            && this.Length == r.Length
+            && this.SerialNo == r.SerialNo
+            && this.PKType == r.PKType
+            && this.UserName.equals(r.UserName)
+            && this.OldPassWord.equals(r.OldPassWord)
+            && this.NewPassWord.equals(r.NewPassWord)
+            && this.CRC16 == r.CRC16
+            );
+
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder
+            .append("ModifyPA { ")
+            .append("Header=").append(this.Header)
+            .append(", ").append("Length=").append(this.Length)
+            .append(", ").append("SerialNo=").append(this.SerialNo)
+            .append(", ").append("PKType=").append(this.PKType)
+            .append(", ").append("UserName=").append(this.UserName)
+            .append(", ").append("OldPassWord=").append(this.OldPassWord)
+            .append(", ").append("NewPassWord=").append(this.NewPassWord)
+            .append(", ").append("CRC16=").append(this.CRC16)
+            .append(" }");
+
+        return builder.toString();
     }
 
     public String UserName; // Login user name.

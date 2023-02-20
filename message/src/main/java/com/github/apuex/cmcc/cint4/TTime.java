@@ -7,6 +7,7 @@ import java.nio.ByteBuffer;
  * 时间的结构
  */
 public class TTime implements Serializable {
+
     public static void encode(ByteBuffer buf, TTime v) {
         buf.putShort(v.Years);
         buf.put(v.Month);
@@ -25,6 +26,43 @@ public class TTime implements Serializable {
         v.Minute = buf.get();
         v.Second = buf.get();
         return v;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        TTime r = null;
+        if(o instanceof TTime) {
+            r = (TTime) o;
+        } else {
+            return false;
+        }
+
+        boolean result =
+            ( this.Years == r.Years
+            && this.Month == r.Month
+            && this.Day == r.Day
+            && this.Hour == r.Hour
+            && this.Minute == r.Minute
+            && this.Second == r.Second
+            );
+
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder
+            .append("TTime { ")
+            .append("Years=").append(this.Years)
+            .append(", ").append("Month=").append(this.Month)
+            .append(", ").append("Day=").append(this.Day)
+            .append(", ").append("Hour=").append(this.Hour)
+            .append(", ").append("Minute=").append(this.Minute)
+            .append(", ").append("Second=").append(this.Second)
+            .append(" }");
+
+        return builder.toString();
     }
 
     public short Years; // 年
