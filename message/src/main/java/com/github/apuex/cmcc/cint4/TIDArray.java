@@ -24,6 +24,14 @@ import java.util.List;
 public class TIDArray implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	public TIDArray() {
+		
+	}
+	
+	public TIDArray(List<TID> l) {
+		this.values.addAll(l);
+	}
+
 	public static void encode(ByteBuffer buf, TIDArray v) {
 		buf.putInt(v.values.size());
 		for (TID e : v.values) {
@@ -40,5 +48,32 @@ public class TIDArray implements Serializable {
 		return v;
 	}
 
-	public List<TID> values = new LinkedList<TID>();
+  @Override
+  public boolean equals(Object o) {
+  	TIDArray r = null;
+      if(o instanceof TIDArray) {
+          r = (TIDArray) o;
+      } else {
+          return false;
+      }
+
+      boolean result =
+          ( this.values.equals(r.values)
+          );
+
+      return result;
+  }
+
+  @Override
+  public String toString() {
+      StringBuilder builder = new StringBuilder();
+      builder
+          .append("TIDArray { ")
+          .append("values=").append(this.values)
+          .append(" }");
+
+      return builder.toString();
+  }
+
+  public List<TID> values = new LinkedList<TID>();
 }

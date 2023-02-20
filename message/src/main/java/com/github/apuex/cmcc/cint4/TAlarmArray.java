@@ -24,6 +24,14 @@ import java.util.List;
 public class TAlarmArray implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	public TAlarmArray() {
+		
+	}
+	
+	public TAlarmArray(List<TAlarm> l) {
+		this.values.addAll(l);
+	}
+
 	public static void encode(ByteBuffer buf, TAlarmArray v) {
 		buf.putInt(v.values.size());
 		for (TAlarm e : v.values) {
@@ -39,6 +47,33 @@ public class TAlarmArray implements Serializable {
 		}
 		return v;
 	}
+
+  @Override
+  public boolean equals(Object o) {
+  	TAlarmArray r = null;
+      if(o instanceof TAlarmArray) {
+          r = (TAlarmArray) o;
+      } else {
+          return false;
+      }
+
+      boolean result =
+          ( this.values.equals(r.values)
+          );
+
+      return result;
+  }
+
+  @Override
+  public String toString() {
+      StringBuilder builder = new StringBuilder();
+      builder
+          .append("TAlarmArray { ")
+          .append("values=").append(this.values)
+          .append(" }");
+
+      return builder.toString();
+  }
 
 	public List<TAlarm> values = new LinkedList<TAlarm>();
 }

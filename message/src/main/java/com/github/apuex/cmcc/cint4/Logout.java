@@ -51,10 +51,10 @@ public class Logout extends Message {
         buf.putShort(v.CRC16);
         final int pos = buf.position();
         // Message LENGTH - envelope fields
-	buf.position(initialPos + 4);
-	buf.putInt(pos - initialPos);
-	buf.position(pos - 2);
-	buf.putShort(Util.CRC16(buf.array(), initialPos, pos - 2));
+        buf.position(initialPos + 4);
+        buf.putInt(pos - initialPos);
+        buf.position(pos - 2);
+        buf.putShort(Util.CRC16(buf.array(), initialPos, pos - 2));
     }
 
     public static Logout decode(ByteBuffer buf) {

@@ -49,17 +49,22 @@ public class SetPoint extends Message {
         buf.putInt(v.Length);
         buf.putInt(v.SerialNo);
         buf.putInt(v.PKType.getValue());
-        // Message CONTENT BEGIN 
-        TATD.encode(buf, v.Value);
+        // Message CONTENT BEGIN
+        if(v.Value instanceof TA) {
+          TA.encode(buf, (TA)v.Value);
+        } else if(v.Value instanceof TD) {
+          TD.encode(buf, (TD)v.Value);
+        } else {
+        }
         // Message CONTENT END 
         // Message TAIL - envelope fields
         buf.putShort(v.CRC16);
         final int pos = buf.position();
         // Message LENGTH - envelope fields
-	buf.position(initialPos + 4);
-	buf.putInt(pos - initialPos);
-	buf.position(pos - 2);
-	buf.putShort(Util.CRC16(buf.array(), initialPos, pos - 2));
+        buf.position(initialPos + 4);
+        buf.putInt(pos - initialPos);
+        buf.position(pos - 2);
+        buf.putShort(Util.CRC16(buf.array(), initialPos, pos - 2));
     }
 
     public static SetPoint decode(ByteBuffer buf) {
@@ -70,7 +75,7 @@ public class SetPoint extends Message {
         v.SerialNo = buf.getInt();
         v.PKType = EnumPKType.fromValue(buf.getInt());
         // Message CONTENT BEGIN 
-        v.Value = TATD.decode(buf);
+        v.Value = TD.decode(buf);
         // Message CONTENT END 
         // Message TAIL - envelope fields
         v.CRC16 = buf.getShort();

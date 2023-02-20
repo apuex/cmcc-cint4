@@ -24,6 +24,14 @@ import java.util.List;
 public class TATDArray implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	public TATDArray() {
+		
+	}
+	
+	public TATDArray(List<TATD> l) {
+		this.values.addAll(l);
+	}
+
 	public static void encode(ByteBuffer buf, TATDArray v) {
 		buf.putInt(v.values.size());
 		for (TATD e : v.values) {
@@ -39,6 +47,33 @@ public class TATDArray implements Serializable {
 		}
 		return v;
 	}
+
+  @Override
+  public boolean equals(Object o) {
+  	TATDArray r = null;
+      if(o instanceof TATDArray) {
+          r = (TATDArray) o;
+      } else {
+          return false;
+      }
+
+      boolean result =
+          ( this.values.equals(r.values)
+          );
+
+      return result;
+  }
+
+  @Override
+  public String toString() {
+      StringBuilder builder = new StringBuilder();
+      builder
+          .append("TATDArray { ")
+          .append("values=").append(this.values)
+          .append(" }");
+
+      return builder.toString();
+  }
 
 	public List<TATD> values = new LinkedList<TATD>();
 }
