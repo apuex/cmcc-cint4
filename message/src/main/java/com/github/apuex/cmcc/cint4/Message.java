@@ -3,6 +3,11 @@ package com.github.apuex.cmcc.cint4;
 import java.io.Serializable;
 import java.nio.ByteBuffer;
 
+/**
+ * Parent class for all PKType of messages.
+ *
+ * @author Wangxy
+ */
 public class Message implements Serializable {
     public Message
     ( EnumPKType PKType

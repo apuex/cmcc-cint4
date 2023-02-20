@@ -44,10 +44,25 @@ genEnum :: String
 genEnum fp ns field = case field of
     Meta.EnumerateField n t s v es c -> do
         let fileName = DL.concat [fp, "/", T.unpack t, ".java"]
-        let content = [st|package #{ns};
+        let content = [st|/*
+ * Copyright (c) 2021-2023 WINCOM.
+ * Copyright (c) 2021-2023 Wangxy <xtwxy@hotmail.com>
+ *
+ * All rights reserved. 
+ *
+ * This program and the accompanying materials
+ * are made available under the terms of the Mozilla Public License 2.0.
+ *
+ * Contributors:
+ *   Wangxy - initial implementation and documentation.
+*/
+
+package #{ns};
 
 /**
  * #{c}
+ *
+ * @author Wangxy
  */
 public enum #{t} {
     #{Util.combinePrefix 4 ", " $ DL.map genEnumItem es}
@@ -102,12 +117,27 @@ genEntityContent :: String
                  -> Meta.Model
                  -> Meta.Entity
                  -> T.Text
-genEntityContent fp ns model (Meta.Message t n fields c) = [st|package #{ns};
+genEntityContent fp ns model (Meta.Message t n fields c) = [st|/*
+ * Copyright (c) 2021-2023 WINCOM.
+ * Copyright (c) 2021-2023 Wangxy <xtwxy@hotmail.com>
+ *
+ * All rights reserved. 
+ *
+ * This program and the accompanying materials
+ * are made available under the terms of the Mozilla Public License 2.0.
+ *
+ * Contributors:
+ *   Wangxy - initial implementation and documentation.
+*/
+
+package #{ns};
 
 import java.nio.ByteBuffer;
 
 /**
  * #{c}
+ *
+ * @author Wangxy
  */
 public class #{n} extends Message {
     private static final long serialVersionUID = 1L;
@@ -187,13 +217,28 @@ public class #{n} extends Message {
 
 |]
 
-genEntityContent fp ns model (Meta.Struct t n fields c) = [st|package #{ns};
+genEntityContent fp ns model (Meta.Struct t n fields c) = [st|/*
+ * Copyright (c) 2021-2023 WINCOM.
+ * Copyright (c) 2021-2023 Wangxy <xtwxy@hotmail.com>
+ *
+ * All rights reserved. 
+ *
+ * This program and the accompanying materials
+ * are made available under the terms of the Mozilla Public License 2.0.
+ *
+ * Contributors:
+ *   Wangxy - initial implementation and documentation.
+*/
+
+package #{ns};
 
 import java.io.Serializable;
 import java.nio.ByteBuffer;
 
 /**
  * #{c}
+ *
+ * @author Wangxy
  */
 public class #{n} implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -240,7 +285,20 @@ public class #{n} implements Serializable {
 
 |]
 
-genEntityContent fp ns model (Meta.State t n fields c) = [st|package #{ns};
+genEntityContent fp ns model (Meta.State t n fields c) = [st|/*
+ * Copyright (c) 2021-2023 WINCOM.
+ * Copyright (c) 2021-2023 Wangxy <xtwxy@hotmail.com>
+ *
+ * All rights reserved. 
+ *
+ * This program and the accompanying materials
+ * are made available under the terms of the Mozilla Public License 2.0.
+ *
+ * Contributors:
+ *   Wangxy - initial implementation and documentation.
+*/
+
+package #{ns};
 
 |]
 
@@ -266,6 +324,11 @@ genMessage fp ns model = [st|package #{ns};
 import java.io.Serializable;
 import java.nio.ByteBuffer;
 
+/**
+ * Parent class for all PKType of messages.
+ *
+ * @author Wangxy
+ */
 public class Message implements Serializable {
     public Message
     ( EnumPKType PKType
