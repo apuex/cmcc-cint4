@@ -12,22 +12,18 @@ public class SendAlarmAck extends Message {
     }
 
     public SendAlarmAck
-    ( int GroupID
-    , EnumResult Result
+    ( TAlarmArray Values
     ) {
         super(EnumPKType.SEND_ALARM_ACK);
-        this.GroupID = GroupID;
-        this.Result = Result;
+        this.Values = Values;
     }
 
     public SendAlarmAck
     ( int SerialNo
-    , int GroupID
-    , EnumResult Result
+    , TAlarmArray Values
     ) {
         super(SerialNo, EnumPKType.SEND_ALARM_ACK);
-        this.GroupID = GroupID;
-        this.Result = Result;
+        this.Values = Values;
     }
 
     public static void encode(ByteBuffer buf, SendAlarmAck v) {
@@ -38,8 +34,7 @@ public class SendAlarmAck extends Message {
         buf.putInt(v.SerialNo);
         buf.putInt(v.PKType.getValue());
         // Message CONTENT BEGIN 
-        buf.putInt(v.GroupID);
-        buf.putInt(v.Result.getValue());
+        TAlarmArray.encode(buf, v.Values);
         // Message CONTENT END 
         // Message TAIL - envelope fields
         buf.putShort(v.CRC16);
@@ -59,8 +54,7 @@ public class SendAlarmAck extends Message {
         v.SerialNo = buf.getInt();
         v.PKType = EnumPKType.fromValue(buf.getInt());
         // Message CONTENT BEGIN 
-        v.GroupID = buf.getInt();
-        v.Result = EnumResult.fromValue(buf.getInt());
+        v.Values = TAlarmArray.decode(buf);
         // Message CONTENT END 
         // Message TAIL - envelope fields
         v.CRC16 = buf.getShort();
@@ -81,8 +75,7 @@ public class SendAlarmAck extends Message {
             && this.Length == r.Length
             && this.SerialNo == r.SerialNo
             && this.PKType == r.PKType
-            && this.GroupID == r.GroupID
-            && this.Result == r.Result
+            && this.Values.equals(r.Values)
             && this.CRC16 == r.CRC16
             );
 
@@ -98,15 +91,13 @@ public class SendAlarmAck extends Message {
             .append(", ").append("Length=").append(this.Length)
             .append(", ").append("SerialNo=").append(this.SerialNo)
             .append(", ").append("PKType=").append(this.PKType)
-            .append(", ").append("GroupID=").append(this.GroupID)
-            .append(", ").append("Result=").append(this.Result)
+            .append(", ").append("Values=").append(this.Values)
             .append(", ").append("CRC16=").append(this.CRC16)
             .append(" }");
 
         return builder.toString();
     }
 
-    public int GroupID; // 相应模式数据包的序号
-    public EnumResult Result; // 报文返回结果
+    public TAlarmArray Values; // 告警信息数量及清单。见TAlarm的数据结构定义
 }
 

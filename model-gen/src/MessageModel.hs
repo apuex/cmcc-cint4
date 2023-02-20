@@ -826,6 +826,13 @@ invalidIds = Meta.EntityField
     , Meta.fieldComment = "返回无效监控点ID的数量，如果返回0则所有数据有效，Values2为空及对应的无效的监控点ID"
     }
 
+alarms = Meta.EntityField
+    { Meta.fieldName    = "Values"
+    , Meta.fieldType    = "TAlarmArray"
+    , Meta.fieldSize    = ""
+    , Meta.fieldComment = "告警信息数量及清单。见TAlarm的数据结构定义"
+    }
+
 
 -- Message header and tail CRC16 fields
 
@@ -951,8 +958,7 @@ sendAlarm = Meta.Message
     , Meta.entityName   = "SendAlarm"
     , Meta.entityComment = "实时告警发送"
     , Meta.entityFields =
-        [ groupID
-        , enumResult
+        [ alarms
         ]
     }
 
@@ -961,8 +967,7 @@ sendAlarmAck = Meta.Message
     , Meta.entityName   = "SendAlarmAck"
     , Meta.entityComment = "实时告警发送确认"
     , Meta.entityFields =
-        [ groupID
-        , enumResult
+        [ alarms
         ]
     }
 
