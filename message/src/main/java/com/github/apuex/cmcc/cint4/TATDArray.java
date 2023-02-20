@@ -15,6 +15,8 @@ package com.github.apuex.cmcc.cint4;
 
 import java.io.Serializable;
 import java.nio.ByteBuffer;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * 值的数组
@@ -23,12 +25,20 @@ public class TATDArray implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public static void encode(ByteBuffer buf, TATDArray v) {
-    }
+		buf.putInt(v.values.size());
+		for (TATD e : v.values) {
+			TATD.encode(buf, e);
+		}
+	}
 
-    public static TATDArray decode(ByteBuffer buf) {
-        TATDArray v = new TATDArray();
-	return v;
-    }
+	public static TATDArray decode(ByteBuffer buf) {
+		TATDArray v = new TATDArray();
+		final int size = buf.getInt();
+		for (int i = 0; i != size; ++i) {
+			v.values.add(TATD.decode(buf));
+		}
+		return v;
+	}
 
+	public List<TATD> values = new LinkedList<TATD>();
 }
-

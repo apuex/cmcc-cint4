@@ -15,18 +15,30 @@ package com.github.apuex.cmcc.cint4;
 
 import java.io.Serializable;
 import java.nio.ByteBuffer;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * TID数组
  */
 public class TIDArray implements Serializable {
-    public static void encode(ByteBuffer buf, TIDArray v) {
-    }
+	private static final long serialVersionUID = 1L;
 
-    public static TIDArray decode(ByteBuffer buf) {
-        TIDArray v = new TIDArray();
-	return v;
-    }
+	public static void encode(ByteBuffer buf, TIDArray v) {
+		buf.putInt(v.values.size());
+		for (TID e : v.values) {
+			TID.encode(buf, e);
+		}
+	}
 
+	public static TIDArray decode(ByteBuffer buf) {
+		TIDArray v = new TIDArray();
+		final int size = buf.getInt();
+		for (int i = 0; i != size; ++i) {
+			v.values.add(TID.decode(buf));
+		}
+		return v;
+	}
+
+	public List<TID> values = new LinkedList<TID>();
 }
-

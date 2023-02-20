@@ -13,7 +13,6 @@
 
 package com.github.apuex.cmcc.cint4;
 
-import java.io.Serializable;
 import java.nio.ByteBuffer;
 
 /**
@@ -21,7 +20,7 @@ import java.nio.ByteBuffer;
  *
  * @author Wangxy
  */
-public class TA implements Serializable {
+public class TA extends TATD {
     private static final long serialVersionUID = 1L;
 
     public static void encode(ByteBuffer buf, TA v) {

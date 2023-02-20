@@ -20,13 +20,14 @@ import java.nio.ByteBuffer;
  * AI、DI值的结构的父类
  */
 public class TATD implements Serializable {
-    public static void encode(ByteBuffer buf, TATD v) {
-    }
+	private static final long serialVersionUID = 1L;
 
-    public static TATD decode(ByteBuffer buf) {
-        TATD v = new TATD();
-	return v;
-    }
+	public static void encode(ByteBuffer buf, TATD v) {
+	}
+
+	public static TATD decode(ByteBuffer buf) {
+		TATD v = new TATD();
+		return v;
+	}
 
 }
-

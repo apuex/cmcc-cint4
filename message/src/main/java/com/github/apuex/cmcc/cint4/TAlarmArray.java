@@ -15,18 +15,30 @@ package com.github.apuex.cmcc.cint4;
 
 import java.io.Serializable;
 import java.nio.ByteBuffer;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * 告警的数组
  */
 public class TAlarmArray implements Serializable {
-    public static void encode(ByteBuffer buf, TAlarmArray v) {
-    }
+	private static final long serialVersionUID = 1L;
 
-    public static TAlarmArray decode(ByteBuffer buf) {
-        TAlarmArray v = new TAlarmArray();
-	return v;
-    }
+	public static void encode(ByteBuffer buf, TAlarmArray v) {
+		buf.putInt(v.values.size());
+		for (TAlarm e : v.values) {
+			TAlarm.encode(buf, e);
+		}
+	}
 
+	public static TAlarmArray decode(ByteBuffer buf) {
+		TAlarmArray v = new TAlarmArray();
+		final int size = buf.getInt();
+		for (int i = 0; i != size; ++i) {
+			v.values.add(TAlarm.decode(buf));
+		}
+		return v;
+	}
+
+	public List<TAlarm> values = new LinkedList<TAlarm>();
 }
-

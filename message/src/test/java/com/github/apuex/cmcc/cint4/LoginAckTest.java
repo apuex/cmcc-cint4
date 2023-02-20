@@ -13,13 +13,11 @@
 
 package com.github.apuex.cmcc.cint4;
 
-import org.junit.Assert;
-import org.junit.Test;
-
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 public class LoginAckTest {
 
@@ -31,21 +29,20 @@ public class LoginAckTest {
             , (byte)0x02, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x5A, (byte)0xF7
             };
         LoginAck v = new LoginAck(1, EnumRightLevel.LEVEL2);
-	byte[] actual = new byte[22];
-	ByteBuffer buf = ByteBuffer.wrap(actual);
-	ByteBuffer buffer = ByteBuffer.wrap(actual);
-	buf.order(ByteOrder.LITTLE_ENDIAN);
-
-	LoginAck.encode(buf, v);
-	v.Length = buf.position();
+      	byte[] actual = new byte[22];
+      	ByteBuffer buf = ByteBuffer.wrap(actual);
+      	buf.order(ByteOrder.LITTLE_ENDIAN);
+      
+      	LoginAck.encode(buf, v);
+      	v.Length = buf.position();
 
         System.out.printf("actual[%d] = [ ", v.Length);
-	for(int i = 0; i != v.Length; ++i) {
-            System.out.printf("%02X ", 0xff & actual[i]);
-	}
+      	for(int i = 0; i != v.Length; ++i) {
+          System.out.printf("%02X ", 0xff & actual[i]);
+      	}
         System.out.printf("]\n");
 
-	Assert.assertArrayEquals(expected, actual);
+      	Assert.assertArrayEquals(expected, actual);
     }
 
     @Test
@@ -56,13 +53,13 @@ public class LoginAckTest {
             , (byte)0x02, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x5A, (byte)0xF7
             };
         LoginAck expected = new LoginAck(1, EnumRightLevel.LEVEL2);
-	expected.Length = input.length;
-	expected.CRC16 = (short)0xF75A;
-	ByteBuffer buf = ByteBuffer.wrap(input);
-	buf.order(ByteOrder.LITTLE_ENDIAN);
+      	expected.Length = input.length;
+      	expected.CRC16 = (short)0xF75A;
+      	ByteBuffer buf = ByteBuffer.wrap(input);
+      	buf.order(ByteOrder.LITTLE_ENDIAN);
         LoginAck actual = LoginAck.decode(buf);
 
-	Assert.assertEquals(expected, actual);
+      	Assert.assertEquals(expected, actual);
     }
 }
 
