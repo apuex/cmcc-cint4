@@ -34,7 +34,8 @@ public class SetDynAccessModeTest {
       	ByteBuffer buf = ByteBuffer.wrap(actual);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
 
-      	SetDynAccessMode.encode(buf, v);
+      	SetDynAccessModeCodec codec = new SetDynAccessModeCodec();
+      	codec.encode(buf, v);
       	v.Length = buf.position();
 
         System.out.printf("actual[%d] = [ ", v.Length);
@@ -60,7 +61,8 @@ public class SetDynAccessModeTest {
       	expected.CRC16 = (short)0x194C;
       	ByteBuffer buf = ByteBuffer.wrap(input);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
-        SetDynAccessMode actual = SetDynAccessMode.decode(buf);
+      	SetDynAccessModeCodec codec = new SetDynAccessModeCodec();
+        SetDynAccessMode actual = codec.decode(buf);
 
       	Assert.assertEquals(expected, actual);
     }

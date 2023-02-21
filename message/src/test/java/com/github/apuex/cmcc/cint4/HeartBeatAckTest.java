@@ -32,7 +32,8 @@ public class HeartBeatAckTest {
       	ByteBuffer buf = ByteBuffer.wrap(actual);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
 
-      	HeartBeatAck.encode(buf, v);
+      	HeartBeatAckCodec codec = new HeartBeatAckCodec();
+      	codec.encode(buf, v);
       	v.Length = buf.position();
 
         System.out.printf("actual[%d] = [ ", v.Length);
@@ -56,7 +57,8 @@ public class HeartBeatAckTest {
       	expected.CRC16 = (short)0x1AA8;
       	ByteBuffer buf = ByteBuffer.wrap(input);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
-        HeartBeatAck actual = HeartBeatAck.decode(buf);
+      	HeartBeatAckCodec codec = new HeartBeatAckCodec();
+        HeartBeatAck actual = codec.decode(buf);
 
       	Assert.assertEquals(expected, actual);
     }

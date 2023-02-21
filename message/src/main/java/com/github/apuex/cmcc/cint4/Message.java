@@ -1,7 +1,6 @@
 package com.github.apuex.cmcc.cint4;
 
 import java.io.Serializable;
-import java.nio.ByteBuffer;
 
 /**
  * Parent class for all PKType of messages.
@@ -9,9 +8,9 @@ import java.nio.ByteBuffer;
  * @author Wangxy
  */
 public class Message implements Serializable {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    public Message
+		public Message
     ( EnumPKType PKType
     ) {
         this.Header = 0x7E7C6B5A;
@@ -30,14 +29,6 @@ public class Message implements Serializable {
         this.SerialNo = SerialNo;
         this.PKType = PKType;
         this.CRC16 = 0;
-    }
-
-    public static void encode(ByteBuffer buf, Message v) {
-    }
-
-    public static Message decode(ByteBuffer buf) {
-    	Message v = null;
-      return v;
     }
 
     public int Header; // Message header, 0x7E7C6B5A.

@@ -13,8 +13,6 @@
 
 package com.github.apuex.cmcc.cint4;
 
-import java.nio.ByteBuffer;
-
 /**
  * 数字量的值的结构
  *
@@ -22,26 +20,6 @@ import java.nio.ByteBuffer;
  */
 public class TD extends TATD {
     private static final long serialVersionUID = 1L;
-
-    public static void encode(ByteBuffer buf, TD v) {
-        Util.encodeString(buf, v.SiteID, Lengths.SITEID_LENGTH);
-        Util.encodeString(buf, v.DeviceID, Lengths.DEVICEID_LENGTH);
-        Util.encodeString(buf, v.SignalID, Lengths.ID_LENGTH);
-        Util.encodeString(buf, v.SignalNumber, Lengths.SIGNALNUM_LENGTH);
-        buf.putInt(v.Value);
-        buf.putInt(v.Status.getValue());
-    }
-
-    public static TD decode(ByteBuffer buf) {
-        TD v = new TD();
-        v.SiteID = Util.decodeString(buf, Lengths.SITEID_LENGTH);
-        v.DeviceID = Util.decodeString(buf, Lengths.DEVICEID_LENGTH);
-        v.SignalID = Util.decodeString(buf, Lengths.ID_LENGTH);
-        v.SignalNumber = Util.decodeString(buf, Lengths.SIGNALNUM_LENGTH);
-        v.Value = buf.getInt();
-        v.Status = EnumState.fromValue(buf.getInt());
-        return v;
-    }
 
     @Override
     public boolean equals(Object o) {

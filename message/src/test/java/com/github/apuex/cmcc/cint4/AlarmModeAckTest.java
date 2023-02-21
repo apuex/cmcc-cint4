@@ -33,7 +33,8 @@ public class AlarmModeAckTest {
       	ByteBuffer buf = ByteBuffer.wrap(actual);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
 
-      	AlarmModeAck.encode(buf, v);
+      	AlarmModeAckCodec codec = new AlarmModeAckCodec();
+      	codec.encode(buf, v);
       	v.Length = buf.position();
 
         System.out.printf("actual[%d] = [ ", v.Length);
@@ -58,7 +59,8 @@ public class AlarmModeAckTest {
       	expected.CRC16 = (short)0x0F16;
       	ByteBuffer buf = ByteBuffer.wrap(input);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
-        AlarmModeAck actual = AlarmModeAck.decode(buf);
+      	AlarmModeAckCodec codec = new AlarmModeAckCodec();
+        AlarmModeAck actual = codec.decode(buf);
 
       	Assert.assertEquals(expected, actual);
     }

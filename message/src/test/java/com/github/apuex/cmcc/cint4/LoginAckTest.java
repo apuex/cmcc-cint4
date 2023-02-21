@@ -33,7 +33,8 @@ public class LoginAckTest {
       	ByteBuffer buf = ByteBuffer.wrap(actual);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
       
-      	LoginAck.encode(buf, v);
+      	LoginAckCodec codec = new LoginAckCodec();
+      	codec.encode(buf, v);
       	v.Length = buf.position();
 
         System.out.printf("actual[%d] = [ ", v.Length);
@@ -57,7 +58,8 @@ public class LoginAckTest {
       	expected.CRC16 = (short)0xF75A;
       	ByteBuffer buf = ByteBuffer.wrap(input);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
-        LoginAck actual = LoginAck.decode(buf);
+      	LoginAckCodec codec = new LoginAckCodec();
+        LoginAck actual = codec.decode(buf);
 
       	Assert.assertEquals(expected, actual);
     }

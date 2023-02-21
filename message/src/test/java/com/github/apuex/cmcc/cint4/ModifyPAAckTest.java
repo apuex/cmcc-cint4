@@ -32,7 +32,8 @@ public class ModifyPAAckTest {
       	ByteBuffer buf = ByteBuffer.wrap(actual);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
 
-      	ModifyPAAck.encode(buf, v);
+      	ModifyPAAckCodec codec = new ModifyPAAckCodec();
+      	codec.encode(buf, v);
       	v.Length = buf.position();
 
         System.out.printf("actual[%d] = [ ", v.Length);
@@ -56,7 +57,8 @@ public class ModifyPAAckTest {
       	expected.CRC16 = (short)0xCD6D;
       	ByteBuffer buf = ByteBuffer.wrap(input);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
-        ModifyPAAck actual = ModifyPAAck.decode(buf);
+      	ModifyPAAckCodec codec = new ModifyPAAckCodec();
+        ModifyPAAck actual = codec.decode(buf);
 
       	Assert.assertEquals(expected, actual);
     }

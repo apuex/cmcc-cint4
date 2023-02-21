@@ -43,7 +43,8 @@ public class LoginTest {
         System.out.printf("remaining: %d\n", buf.remaining());
         System.out.printf("limit: %d\n", buf.limit());
         System.out.printf("position: %d\n", buf.position());
-      	Login.encode(buf, v);
+        LoginCodec codec = new LoginCodec();
+      	codec.encode(buf, v);
       	v.Length = buf.position();
         System.out.printf("AFTER:\n");
         System.out.printf("arrayOffset: %d\n", buf.arrayOffset());
@@ -78,7 +79,8 @@ public class LoginTest {
       	expected.CRC16 = (short)0x1CC9;
       	ByteBuffer buf = ByteBuffer.wrap(input);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
-        Login actual = Login.decode(buf);
+      	LoginCodec codec = new LoginCodec();
+        Login actual = codec.decode(buf);
 
       	Assert.assertEquals(expected, actual);
     }

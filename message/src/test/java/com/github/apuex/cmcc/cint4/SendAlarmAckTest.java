@@ -32,7 +32,8 @@ public class SendAlarmAckTest {
       	ByteBuffer buf = ByteBuffer.wrap(actual);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
 
-      	SendAlarmAck.encode(buf, v);
+      	SendAlarmAckCodec codec = new SendAlarmAckCodec();
+      	codec.encode(buf, v);
       	v.Length = buf.position();
 
         System.out.printf("actual[%d] = [ ", v.Length);
@@ -56,7 +57,8 @@ public class SendAlarmAckTest {
       	expected.CRC16 = (short)0xF9E8;
       	ByteBuffer buf = ByteBuffer.wrap(input);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
-        SendAlarmAck actual = SendAlarmAck.decode(buf);
+      	SendAlarmAckCodec codec = new SendAlarmAckCodec();
+        SendAlarmAck actual = codec.decode(buf);
 
       	Assert.assertEquals(expected, actual);
     }

@@ -15,6 +15,8 @@ package com.github.apuex.cmcc.cint4;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -48,7 +50,10 @@ public class SetPointTest {
       	ByteBuffer buf = ByteBuffer.wrap(actual);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
 
-      	SetPoint.encode(buf, v);
+      	Map<TID, EnumType> typeMap = new TreeMap<TID, EnumType>(new TIDComparator());
+      	typeMap.put(Util.tidFrom(td), EnumType.DI);
+      	SetPointCodec codec = new SetPointCodec(new TATDCodec(typeMap));
+      	codec.encode(buf, v);
       	v.Length = buf.position();
 
         System.out.printf("actual[%d] = [ ", v.Length);
@@ -88,7 +93,11 @@ public class SetPointTest {
       	expected.CRC16 = (short)0x86C7;
       	ByteBuffer buf = ByteBuffer.wrap(input);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
-        SetPoint actual = SetPoint.decode(buf);
+
+      	Map<TID, EnumType> typeMap = new TreeMap<TID, EnumType>(new TIDComparator());
+      	typeMap.put(Util.tidFrom(td), EnumType.DI);
+      	SetPointCodec codec = new SetPointCodec(new TATDCodec(typeMap));
+        SetPoint actual = codec.decode(buf);
 
       	Assert.assertEquals(expected, actual);
     }

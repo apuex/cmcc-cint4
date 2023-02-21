@@ -46,7 +46,8 @@ public class SetPointAckTest {
       	ByteBuffer buf = ByteBuffer.wrap(actual);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
 
-      	SetPointAck.encode(buf, v);
+      	SetPointAckCodec codec = new SetPointAckCodec();
+      	codec.encode(buf, v);
       	v.Length = buf.position();
 
         System.out.printf("actual[%d] = [ ", v.Length);
@@ -84,7 +85,8 @@ public class SetPointAckTest {
       	expected.CRC16 = (short)0x124C;
       	ByteBuffer buf = ByteBuffer.wrap(input);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
-        SetPointAck actual = SetPointAck.decode(buf);
+      	SetPointAckCodec codec = new SetPointAckCodec();
+        SetPointAck actual = codec.decode(buf);
 
       	Assert.assertEquals(expected, actual);
     }

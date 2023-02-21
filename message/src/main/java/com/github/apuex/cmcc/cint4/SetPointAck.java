@@ -13,8 +13,6 @@
 
 package com.github.apuex.cmcc.cint4;
 
-import java.nio.ByteBuffer;
-
 /**
  * 写数据响应
  *
@@ -44,43 +42,6 @@ public class SetPointAck extends Message {
         super(SerialNo, EnumPKType.SET_POINT_ACK);
         this.Id = Id;
         this.Result = Result;
-    }
-
-    public static void encode(ByteBuffer buf, SetPointAck v) {
-        final int initialPos = buf.position();
-        // Message HEAD - envelope fields
-        buf.putInt(v.Header);
-        buf.putInt(v.Length);
-        buf.putInt(v.SerialNo);
-        buf.putInt(v.PKType.getValue());
-        // Message CONTENT BEGIN 
-        TID.encode(buf, v.Id);
-        buf.putInt(v.Result.getValue());
-        // Message CONTENT END 
-        // Message TAIL - envelope fields
-        buf.putShort(v.CRC16);
-        final int pos = buf.position();
-        // Message LENGTH - envelope fields
-        buf.position(initialPos + 4);
-        buf.putInt(pos - initialPos);
-        buf.position(pos - 2);
-        buf.putShort(Util.CRC16(buf.array(), initialPos, pos - 2));
-    }
-
-    public static SetPointAck decode(ByteBuffer buf) {
-        SetPointAck v = new SetPointAck();
-        // Message HEAD - envelope fields
-        v.Header = buf.getInt();
-        v.Length = buf.getInt();
-        v.SerialNo = buf.getInt();
-        v.PKType = EnumPKType.fromValue(buf.getInt());
-        // Message CONTENT BEGIN 
-        v.Id = TID.decode(buf);
-        v.Result = EnumResult.fromValue(buf.getInt());
-        // Message CONTENT END 
-        // Message TAIL - envelope fields
-        v.CRC16 = buf.getShort();
-        return v;
     }
 
     @Override

@@ -32,7 +32,8 @@ public class LogoutAckTest {
       	ByteBuffer buf = ByteBuffer.wrap(actual);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
 
-      	LogoutAck.encode(buf, v);
+      	LogoutAckCodec codec = new LogoutAckCodec();
+      	codec.encode(buf, v);
       	v.Length = buf.position();
 
         System.out.printf("actual[%d] = [ ", v.Length);
@@ -56,7 +57,8 @@ public class LogoutAckTest {
       	expected.CRC16 = (short)0x06C0;
       	ByteBuffer buf = ByteBuffer.wrap(input);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
-        LogoutAck actual = LogoutAck.decode(buf);
+      	LogoutAckCodec codec = new LogoutAckCodec();
+        LogoutAck actual = codec.decode(buf);
 
       	Assert.assertEquals(expected, actual);
     }

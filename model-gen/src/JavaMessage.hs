@@ -36,6 +36,7 @@ gen opts model = do
         hPrintf h "%s\n" $ genMessage fp namespace model
     mapM_ (genEnum fp namespace) $ Meta.enumerates model 
     mapM_ (genEntity fp namespace model) $ Meta.entities model 
+    mapM_ (genEntityCodec fp namespace model) $ Meta.entities model 
 
 genEnum :: String
         -> T.Text
@@ -132,8 +133,6 @@ genEntityContent fp ns model (Meta.Message t n fields c) = [st|/*
 
 package #{ns};
 
-import java.nio.ByteBuffer;
-
 /**
  * #{c}
  *
@@ -154,35 +153,6 @@ public class #{n} extends Message {
     ) {
         super(SerialNo, #{T.replace "::" "." t});
         #{Util.combinePrefix 8 "" $ DL.map (genInitializer "") fields}
-    }
-
-    public static void encode(ByteBuffer buf, #{n} v) {
-        final int initialPos = buf.position();
-        // Message HEAD - envelope fields
-        #{Util.combinePrefix 8 "" $ DL.map (genEncode "") $ Meta.headerFields model}
-        // Message CONTENT BEGIN 
-        #{Util.combinePrefix 8 "" $ DL.map (genEncode "") fields}
-        // Message CONTENT END 
-        // Message TAIL - envelope fields
-        #{Util.combinePrefix 8 "" $ DL.map (genEncode "") $ Meta.tailFields model}
-        final int pos = buf.position();
-        // Message LENGTH - envelope fields
-        buf.position(initialPos + 4);
-        buf.putInt(pos - initialPos);
-        buf.position(pos - 2);
-        buf.putShort(Util.CRC16(buf.array(), initialPos, pos - 2));
-    }
-
-    public static #{n} decode(ByteBuffer buf) {
-        #{n} v = new #{n}();
-        // Message HEAD - envelope fields
-        #{Util.combinePrefix 8 "" $ DL.map (genDecode "") $ Meta.headerFields model}
-        // Message CONTENT BEGIN 
-        #{Util.combinePrefix 8 "" $ DL.map (genDecode "") fields}
-        // Message CONTENT END 
-        // Message TAIL - envelope fields
-        #{Util.combinePrefix 8 "" $ DL.map (genDecode "") $ Meta.tailFields model}
-        return v;
     }
 
     @Override
@@ -233,7 +203,6 @@ genEntityContent fp ns model (Meta.Struct t n fields c) = [st|/*
 package #{ns};
 
 import java.io.Serializable;
-import java.nio.ByteBuffer;
 
 /**
  * #{c}
@@ -242,16 +211,6 @@ import java.nio.ByteBuffer;
  */
 public class #{n} implements Serializable {
     private static final long serialVersionUID = 1L;
-
-    public static void encode(ByteBuffer buf, #{n} v) {
-        #{Util.combinePrefix 8 "" $ DL.map (genEncode "") fields}
-    }
-
-    public static #{n} decode(ByteBuffer buf) {
-        #{n} v = new #{n}();
-        #{Util.combinePrefix 8 "" $ DL.map (genDecode "") fields}
-        return v;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -300,6 +259,44 @@ genEntityContent fp ns model (Meta.State t n fields c) = [st|/*
 
 package #{ns};
 
+/**
+ * #{c}
+ *
+ * @author Wangxy
+ */
+public class #{n} implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    public boolean equals(Object o) {
+        #{n} r = null;
+        if(o instanceof #{n}) {
+            r = (#{n}) o;
+        } else {
+            return false;
+        }
+
+        boolean result =
+            ( #{Util.combinePrefix 12 "&& " $ DL.map (genEquals "") fields}
+            );
+
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder
+            .append("#{n} { ")
+            #{Util.combinePrefix 12 ".append(\", \")" $ DL.map (genToString "") fields}
+            .append(" }");
+
+        return builder.toString();
+    }
+
+    #{Util.combinePrefix 4 "" $ DL.map (genField "") fields}
+}
+
 |]
 
 genMsgDefConstructor :: T.Text
@@ -322,7 +319,6 @@ genMessage :: String
 genMessage fp ns model = [st|package #{ns};
 
 import java.io.Serializable;
-import java.nio.ByteBuffer;
 
 /**
  * Parent class for all PKType of messages.
@@ -360,6 +356,160 @@ public class Message implements Serializable {
 
 |]
 
+genEntityCodec :: String
+               -> T.Text
+               -> Meta.Model
+               -> Meta.Entity
+               -> IO ()
+genEntityCodec fp ns model entity = do
+    let fileName = DL.concat [fp, "/", T.unpack $ Meta.entityName entity, "Codec.java"]
+    let content = genEntityCodecContent fp ns model entity
+    withFile fileName WriteMode $ \ h -> do
+        hPrintf h "%s" content
+        return ()
+    return ()
+
+genEntityCodecContent :: String
+                 -> T.Text
+                 -> Meta.Model
+                 -> Meta.Entity
+                 -> T.Text
+genEntityCodecContent fp ns model (Meta.Message t n fields c) = [st|/*
+ * Copyright (c) 2021-2023 WINCOM.
+ * Copyright (c) 2021-2023 Wangxy <xtwxy@hotmail.com>
+ *
+ * All rights reserved. 
+ *
+ * This program and the accompanying materials
+ * are made available under the terms of the Mozilla Public License 2.0.
+ *
+ * Contributors:
+ *   Wangxy - initial implementation and documentation.
+*/
+
+package #{ns};
+
+import java.nio.ByteBuffer;
+
+/**
+ * #{c}
+ *
+ * @author Wangxy
+ */
+public class #{n}Codec {
+
+    public void encode(ByteBuffer buf, #{n} v) {
+        final int initialPos = buf.position();
+        // Message HEAD - envelope fields
+        #{Util.combinePrefix 8 "" $ DL.map (genEncode "") $ Meta.headerFields model}
+        // Message CONTENT BEGIN 
+        #{Util.combinePrefix 8 "" $ DL.map (genEncode "") fields}
+        // Message CONTENT END 
+        // Message TAIL - envelope fields
+        #{Util.combinePrefix 8 "" $ DL.map (genEncode "") $ Meta.tailFields model}
+        final int pos = buf.position();
+        // Message LENGTH - envelope fields
+        buf.position(initialPos + 4);
+        buf.putInt(pos - initialPos);
+        buf.position(pos - 2);
+        buf.putShort(Util.CRC16(buf.array(), initialPos, pos - 2));
+    }
+
+    public #{n} decode(ByteBuffer buf) {
+        #{n} v = new #{n}();
+        // Message HEAD - envelope fields
+        #{Util.combinePrefix 8 "" $ DL.map (genDecode "") $ Meta.headerFields model}
+        // Message CONTENT BEGIN 
+        #{Util.combinePrefix 8 "" $ DL.map (genDecode "") fields}
+        // Message CONTENT END 
+        // Message TAIL - envelope fields
+        #{Util.combinePrefix 8 "" $ DL.map (genDecode "") $ Meta.tailFields model}
+        return v;
+    }
+
+    #{Util.combinePrefix 4 "" $ DL.map (genFieldCodec "") $ DL.filter isEntityField fields}
+}
+
+|]
+
+genEntityCodecContent fp ns model (Meta.Struct t n fields c) = [st|/*
+ * Copyright (c) 2021-2023 WINCOM.
+ * Copyright (c) 2021-2023 Wangxy <xtwxy@hotmail.com>
+ *
+ * All rights reserved. 
+ *
+ * This program and the accompanying materials
+ * are made available under the terms of the Mozilla Public License 2.0.
+ *
+ * Contributors:
+ *   Wangxy - initial implementation and documentation.
+*/
+
+package #{ns};
+
+import java.nio.ByteBuffer;
+
+/**
+ * #{c}
+ *
+ * @author Wangxy
+ */
+public class #{n}Codec {
+
+    public void encode(ByteBuffer buf, #{n} v) {
+        #{Util.combinePrefix 8 "" $ DL.map (genEncode "") fields}
+    }
+
+    public #{n} decode(ByteBuffer buf) {
+        #{n} v = new #{n}();
+        #{Util.combinePrefix 8 "" $ DL.map (genDecode "") fields}
+        return v;
+    }
+
+    #{Util.combinePrefix 4 "" $ DL.map (genFieldCodec "") $ DL.filter isEntityField fields}
+}
+
+|]
+
+genEntityCodecContent fp ns model (Meta.State t n fields c) = [st|/*
+ * Copyright (c) 2021-2023 WINCOM.
+ * Copyright (c) 2021-2023 Wangxy <xtwxy@hotmail.com>
+ *
+ * All rights reserved. 
+ *
+ * This program and the accompanying materials
+ * are made available under the terms of the Mozilla Public License 2.0.
+ *
+ * Contributors:
+ *   Wangxy - initial implementation and documentation.
+*/
+
+package #{ns};
+
+import java.nio.ByteBuffer;
+
+/**
+ * #{c}
+ *
+ * @author Wangxy
+ */
+public class #{n}Codec {
+
+    public void encode(ByteBuffer buf, #{n} v) {
+        #{Util.combinePrefix 8 "" $ DL.map (genEncode "") fields}
+    }
+
+    public #{n} decode(ByteBuffer buf) {
+        #{n} v = new #{n}();
+        #{Util.combinePrefix 8 "" $ DL.map (genDecode "") fields}
+        return v;
+    }
+
+    #{Util.combinePrefix 4 "" $ DL.map (genFieldCodec "") $ DL.filter isEntityField fields}
+}
+
+|]
+
 genField :: T.Text
          -> Meta.Field
          -> T.Text
@@ -379,6 +529,19 @@ genField prefix field = case field of
     Meta.NTStringField n s v c -> [st|public String #{prefix}#{n}; // #{c}|]
     Meta.EnumerateField n t s v es c -> [st|public #{t} #{prefix}#{n}; // #{c}|]
     Meta.EntityField n t v c -> [st|public #{t} #{prefix}#{n}; // #{c}|]
+
+isEntityField :: Meta.Field
+              -> Bool
+isEntityField (Meta.EntityField _ _ _ _) = True
+
+isEntityField _ = False
+ 
+genFieldCodec :: T.Text
+              -> Meta.Field
+              -> T.Text
+genFieldCodec prefix field = case field of
+    Meta.EntityField n t v c -> [st|public #{t}Codec #{prefix}#{n}Codec = new #{t}Codec(); // #{c}|]
+    _ -> [st||]
 
 genParam :: Meta.Field
          -> T.Text
@@ -458,7 +621,7 @@ genEncode prefix field = case field of
     Meta.StringField n s v c -> [st|Util.encodeString(buf, v.#{prefix}#{n}, #{T.replace "::" "." s});|]
     Meta.NTStringField n s v c -> [st|Util.encodeString(buf, v.#{prefix}#{n}, #{T.replace "::" "." s});|]
     Meta.EnumerateField n t s v es c -> [st|buf.putInt(v.#{prefix}#{n}.getValue());|]
-    Meta.EntityField n t v c -> [st|#{t}.encode(buf, v.#{prefix}#{n});|]
+    Meta.EntityField n t v c -> [st|this.#{prefix}#{n}Codec.encode(buf, v.#{prefix}#{n});|]
 
 genDecode :: T.Text
           -> Meta.Field
@@ -478,7 +641,7 @@ genDecode prefix field = case field of
     Meta.StringField n s v c -> [st|v.#{prefix}#{n} = Util.decodeString(buf, #{T.replace "::" "." s});|]
     Meta.NTStringField n s v c -> [st|v.#{prefix}#{n} = Util.decodeString(buf, #{T.replace "::" "." s});|]
     Meta.EnumerateField n t s v es c -> [st|v.#{prefix}#{n} = #{t}.fromValue(buf.getInt());|]
-    Meta.EntityField n t v c -> [st|v.#{prefix}#{n} = #{t}.decode(buf);|]
+    Meta.EntityField n t v c -> [st|v.#{prefix}#{n} = this.#{prefix}#{n}Codec.decode(buf);|]
 
 
 

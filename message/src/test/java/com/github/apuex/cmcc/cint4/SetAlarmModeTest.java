@@ -33,7 +33,8 @@ public class SetAlarmModeTest {
       	ByteBuffer buf = ByteBuffer.wrap(actual);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
 
-      	SetAlarmMode.encode(buf, v);
+      	SetAlarmModeCodec codec = new SetAlarmModeCodec();
+      	codec.encode(buf, v);
       	v.Length = buf.position();
 
         System.out.printf("actual[%d] = [ ", v.Length);
@@ -58,7 +59,8 @@ public class SetAlarmModeTest {
       	expected.CRC16 = (short)0x6C61;
       	ByteBuffer buf = ByteBuffer.wrap(input);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
-        SetAlarmMode actual = SetAlarmMode.decode(buf);
+      	SetAlarmModeCodec codec = new SetAlarmModeCodec();
+        SetAlarmMode actual = codec.decode(buf);
 
       	Assert.assertEquals(expected, actual);
     }

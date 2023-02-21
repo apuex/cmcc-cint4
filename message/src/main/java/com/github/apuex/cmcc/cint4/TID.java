@@ -14,7 +14,6 @@
 package com.github.apuex.cmcc.cint4;
 
 import java.io.Serializable;
-import java.nio.ByteBuffer;
 
 /**
  * 数据值的结构
@@ -23,22 +22,6 @@ import java.nio.ByteBuffer;
  */
 public class TID implements Serializable {
     private static final long serialVersionUID = 1L;
-
-    public static void encode(ByteBuffer buf, TID v) {
-        Util.encodeString(buf, v.SiteID, Lengths.SITEID_LENGTH);
-        Util.encodeString(buf, v.DeviceID, Lengths.DEVICEID_LENGTH);
-        Util.encodeString(buf, v.SignalID, Lengths.ID_LENGTH);
-        Util.encodeString(buf, v.SignalNumber, Lengths.SIGNALNUM_LENGTH);
-    }
-
-    public static TID decode(ByteBuffer buf) {
-        TID v = new TID();
-        v.SiteID = Util.decodeString(buf, Lengths.SITEID_LENGTH);
-        v.DeviceID = Util.decodeString(buf, Lengths.DEVICEID_LENGTH);
-        v.SignalID = Util.decodeString(buf, Lengths.ID_LENGTH);
-        v.SignalNumber = Util.decodeString(buf, Lengths.SIGNALNUM_LENGTH);
-        return v;
-    }
 
     @Override
     public boolean equals(Object o) {
