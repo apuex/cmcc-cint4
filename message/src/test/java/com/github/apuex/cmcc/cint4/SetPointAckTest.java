@@ -52,7 +52,7 @@ public class SetPointAckTest {
 
         System.out.printf("actual[%d] = [ ", v.Length);
       	for(int i = 0; i != v.Length; ++i) {
-      		System.out.printf("(byte)0x%02X, ", 0xff & actual[i]);
+      		System.out.printf("%02X ", 0xff & actual[i]);
       	}
         System.out.printf("]\n");
 
