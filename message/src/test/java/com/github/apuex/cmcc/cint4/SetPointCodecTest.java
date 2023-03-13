@@ -21,7 +21,7 @@ import java.util.TreeMap;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class SetPointTest {
+public class SetPointCodecTest {
   @Test
   public void testEncodeTA() {
       byte[] expected = new byte[] 

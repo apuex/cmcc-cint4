@@ -19,7 +19,7 @@ import java.nio.ByteOrder;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class ModifyPATest {
+public class ModifyPACodecTest {
     @Test
     public void testEncode() {
         byte[] expected = new byte[] 

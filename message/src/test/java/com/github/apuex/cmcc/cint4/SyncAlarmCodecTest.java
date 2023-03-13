@@ -19,27 +19,26 @@ import java.nio.ByteOrder;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class AlarmModeAckTest {
+public class SyncAlarmCodecTest {
     @Test
     public void testEncode() {
         byte[] expected = new byte[] 
-            { (byte)0x5A, (byte)0x6B, (byte)0x7C, (byte)0x7E, (byte)0x1A, (byte)0x00, (byte)0x00, (byte)0x00
-      	    , (byte)0x01, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0xF6, (byte)0x01, (byte)0x00, (byte)0x00
-      	    , (byte)0x02, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x01, (byte)0x00, (byte)0x00, (byte)0x00
-      	    , (byte)0x16, (byte)0x0F
+            { (byte)0x5A, (byte)0x6B, (byte)0x7C, (byte)0x7E, (byte)0x12, (byte)0x00, (byte)0x00, (byte)0x00
+            , (byte)0x02, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0xF9, (byte)0x01, (byte)0x00, (byte)0x00
+            , (byte)0xDB, (byte)0x81
             };
-        AlarmModeAck v = new AlarmModeAck(1, 2, EnumResult.SUCCESS);
-      	byte[] actual = new byte[26];
+        SyncAlarm v = new SyncAlarm(2);
+      	byte[] actual = new byte[18];
       	ByteBuffer buf = ByteBuffer.wrap(actual);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
 
-      	AlarmModeAckCodec codec = new AlarmModeAckCodec();
+      	SyncAlarmCodec codec = new SyncAlarmCodec();
       	codec.encode(buf, v);
       	v.Length = buf.position();
 
         System.out.printf("actual[%d] = [ ", v.Length);
       	for(int i = 0; i != v.Length; ++i) {
-          System.out.printf("%02X ", 0xff & actual[i]);
+      		System.out.printf("%02X ", 0xff & actual[i]);
       	}
         System.out.printf("]\n");
 
@@ -49,18 +48,17 @@ public class AlarmModeAckTest {
     @Test
     public void testDecode() {
         byte[] input = new byte[] 
-            { (byte)0x5A, (byte)0x6B, (byte)0x7C, (byte)0x7E, (byte)0x1A, (byte)0x00, (byte)0x00, (byte)0x00
-      	    , (byte)0x01, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0xF6, (byte)0x01, (byte)0x00, (byte)0x00
-      	    , (byte)0x02, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x01, (byte)0x00, (byte)0x00, (byte)0x00
-      	    , (byte)0x16, (byte)0x0F
+            { (byte)0x5A, (byte)0x6B, (byte)0x7C, (byte)0x7E, (byte)0x12, (byte)0x00, (byte)0x00, (byte)0x00
+            , (byte)0x02, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0xF9, (byte)0x01, (byte)0x00, (byte)0x00
+            , (byte)0xDB, (byte)0x81
             };
-        AlarmModeAck expected = new AlarmModeAck(1, 2, EnumResult.SUCCESS);
+        SyncAlarm expected = new SyncAlarm(2);
       	expected.Length = input.length;
-      	expected.CRC16 = (short)0x0F16;
+      	expected.CRC16 = (short)0x81DB;
       	ByteBuffer buf = ByteBuffer.wrap(input);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
-      	AlarmModeAckCodec codec = new AlarmModeAckCodec();
-        AlarmModeAck actual = codec.decode(buf);
+      	SyncAlarmCodec codec = new SyncAlarmCodec();
+        SyncAlarm actual = codec.decode(buf);
 
       	Assert.assertEquals(expected, actual);
     }

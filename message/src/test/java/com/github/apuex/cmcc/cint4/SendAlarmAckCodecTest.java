@@ -19,20 +19,20 @@ import java.nio.ByteOrder;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class SendAlarmTest {
+public class SendAlarmAckCodecTest {
     @Test
     public void testEncode() {
         byte[] expected = new byte[] 
             { (byte)0x5A, (byte)0x6B, (byte)0x7C, (byte)0x7E, (byte)0x16, (byte)0x00, (byte)0x00, (byte)0x00
-            , (byte)0x02, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0xF7, (byte)0x01, (byte)0x00, (byte)0x00
-            , (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x2A, (byte)0x20
+            , (byte)0x02, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0xF8, (byte)0x01, (byte)0x00, (byte)0x00
+            , (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0xE8, (byte)0xF9
             };
-        SendAlarm v = new SendAlarm(2, new TAlarmArray());
+        SendAlarmAck v = new SendAlarmAck(2, new TAlarmArray());
       	byte[] actual = new byte[22];
       	ByteBuffer buf = ByteBuffer.wrap(actual);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
 
-      	SendAlarmCodec codec = new SendAlarmCodec();
+      	SendAlarmAckCodec codec = new SendAlarmAckCodec();
       	codec.encode(buf, v);
       	v.Length = buf.position();
 
@@ -49,16 +49,16 @@ public class SendAlarmTest {
     public void testDecode() {
         byte[] input = new byte[] 
             { (byte)0x5A, (byte)0x6B, (byte)0x7C, (byte)0x7E, (byte)0x16, (byte)0x00, (byte)0x00, (byte)0x00
-            , (byte)0x02, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0xF7, (byte)0x01, (byte)0x00, (byte)0x00
-            , (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x2A, (byte)0x20
+            , (byte)0x02, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0xF8, (byte)0x01, (byte)0x00, (byte)0x00
+            , (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0xE8, (byte)0xF9
             };
-        SendAlarm expected = new SendAlarm(2, new TAlarmArray());
+        SendAlarmAck expected = new SendAlarmAck(2, new TAlarmArray());
       	expected.Length = input.length;
-      	expected.CRC16 = (short)0x202A;
+      	expected.CRC16 = (short)0xF9E8;
       	ByteBuffer buf = ByteBuffer.wrap(input);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
-      	SendAlarmCodec codec = new SendAlarmCodec();
-        SendAlarm actual = codec.decode(buf);
+      	SendAlarmAckCodec codec = new SendAlarmAckCodec();
+        SendAlarmAck actual = codec.decode(buf);
 
       	Assert.assertEquals(expected, actual);
     }

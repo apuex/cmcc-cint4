@@ -19,7 +19,7 @@ import java.nio.ByteOrder;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class LoginTest {
+public class LoginCodecTest {
     @Test
     public void testEncode() {
         byte[] expected = new byte[] 

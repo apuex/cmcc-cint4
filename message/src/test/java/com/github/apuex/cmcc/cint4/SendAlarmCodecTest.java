@@ -19,20 +19,20 @@ import java.nio.ByteOrder;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class ModifyPAAckTest {
+public class SendAlarmCodecTest {
     @Test
     public void testEncode() {
         byte[] expected = new byte[] 
             { (byte)0x5A, (byte)0x6B, (byte)0x7C, (byte)0x7E, (byte)0x16, (byte)0x00, (byte)0x00, (byte)0x00
-            , (byte)0x02, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x4E, (byte)0x04, (byte)0x00, (byte)0x00
-            , (byte)0x01, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x6D, (byte)0xCD
+            , (byte)0x02, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0xF7, (byte)0x01, (byte)0x00, (byte)0x00
+            , (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x2A, (byte)0x20
             };
-        ModifyPAAck v = new ModifyPAAck(2, EnumResult.SUCCESS);
+        SendAlarm v = new SendAlarm(2, new TAlarmArray());
       	byte[] actual = new byte[22];
       	ByteBuffer buf = ByteBuffer.wrap(actual);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
 
-      	ModifyPAAckCodec codec = new ModifyPAAckCodec();
+      	SendAlarmCodec codec = new SendAlarmCodec();
       	codec.encode(buf, v);
       	v.Length = buf.position();
 
@@ -49,16 +49,16 @@ public class ModifyPAAckTest {
     public void testDecode() {
         byte[] input = new byte[] 
             { (byte)0x5A, (byte)0x6B, (byte)0x7C, (byte)0x7E, (byte)0x16, (byte)0x00, (byte)0x00, (byte)0x00
-            , (byte)0x02, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x4E, (byte)0x04, (byte)0x00, (byte)0x00
-            , (byte)0x01, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x6D, (byte)0xCD
+            , (byte)0x02, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0xF7, (byte)0x01, (byte)0x00, (byte)0x00
+            , (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x2A, (byte)0x20
             };
-        ModifyPAAck expected = new ModifyPAAck(2, EnumResult.SUCCESS);
+        SendAlarm expected = new SendAlarm(2, new TAlarmArray());
       	expected.Length = input.length;
-      	expected.CRC16 = (short)0xCD6D;
+      	expected.CRC16 = (short)0x202A;
       	ByteBuffer buf = ByteBuffer.wrap(input);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
-      	ModifyPAAckCodec codec = new ModifyPAAckCodec();
-        ModifyPAAck actual = codec.decode(buf);
+      	SendAlarmCodec codec = new SendAlarmCodec();
+        SendAlarm actual = codec.decode(buf);
 
       	Assert.assertEquals(expected, actual);
     }

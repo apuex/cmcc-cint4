@@ -19,20 +19,20 @@ import java.nio.ByteOrder;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class HeartBeatTest {
+public class ModifyPAAckCodecTest {
     @Test
     public void testEncode() {
         byte[] expected = new byte[] 
-            { (byte)0x5A, (byte)0x6B, (byte)0x7C, (byte)0x7E, (byte)0x12, (byte)0x00, (byte)0x00, (byte)0x00
-            , (byte)0x02, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0xB1, (byte)0x04, (byte)0x00, (byte)0x00
-            , (byte)0x74, (byte)0x81
+            { (byte)0x5A, (byte)0x6B, (byte)0x7C, (byte)0x7E, (byte)0x16, (byte)0x00, (byte)0x00, (byte)0x00
+            , (byte)0x02, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x4E, (byte)0x04, (byte)0x00, (byte)0x00
+            , (byte)0x01, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x6D, (byte)0xCD
             };
-        HeartBeat v = new HeartBeat(2);
-      	byte[] actual = new byte[18];
+        ModifyPAAck v = new ModifyPAAck(2, EnumResult.SUCCESS);
+      	byte[] actual = new byte[22];
       	ByteBuffer buf = ByteBuffer.wrap(actual);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
 
-      	HeartBeatCodec codec = new HeartBeatCodec();
+      	ModifyPAAckCodec codec = new ModifyPAAckCodec();
       	codec.encode(buf, v);
       	v.Length = buf.position();
 
@@ -48,17 +48,17 @@ public class HeartBeatTest {
     @Test
     public void testDecode() {
         byte[] input = new byte[] 
-            { (byte)0x5A, (byte)0x6B, (byte)0x7C, (byte)0x7E, (byte)0x12, (byte)0x00, (byte)0x00, (byte)0x00
-            , (byte)0x02, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0xB1, (byte)0x04, (byte)0x00, (byte)0x00
-            , (byte)0x74, (byte)0x81
+            { (byte)0x5A, (byte)0x6B, (byte)0x7C, (byte)0x7E, (byte)0x16, (byte)0x00, (byte)0x00, (byte)0x00
+            , (byte)0x02, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x4E, (byte)0x04, (byte)0x00, (byte)0x00
+            , (byte)0x01, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x6D, (byte)0xCD
             };
-        HeartBeat expected = new HeartBeat(2);
+        ModifyPAAck expected = new ModifyPAAck(2, EnumResult.SUCCESS);
       	expected.Length = input.length;
-      	expected.CRC16 = (short)0x8174;
+      	expected.CRC16 = (short)0xCD6D;
       	ByteBuffer buf = ByteBuffer.wrap(input);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
-      	HeartBeatCodec codec = new HeartBeatCodec();
-        HeartBeat actual = codec.decode(buf);
+      	ModifyPAAckCodec codec = new ModifyPAAckCodec();
+        ModifyPAAck actual = codec.decode(buf);
 
       	Assert.assertEquals(expected, actual);
     }

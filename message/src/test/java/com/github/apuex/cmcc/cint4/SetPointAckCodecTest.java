@@ -19,7 +19,7 @@ import java.nio.ByteOrder;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class SetPointAckTest {
+public class SetPointAckCodecTest {
     @Test
     public void testEncode() {
         byte[] expected = new byte[] 

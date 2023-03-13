@@ -19,20 +19,20 @@ import java.nio.ByteOrder;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class HeartBeatAckTest {
+public class LogoutCodecTest {
     @Test
     public void testEncode() {
         byte[] expected = new byte[] 
             { (byte)0x5A, (byte)0x6B, (byte)0x7C, (byte)0x7E, (byte)0x12, (byte)0x00, (byte)0x00, (byte)0x00
-            , (byte)0x02, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0xB2, (byte)0x04, (byte)0x00, (byte)0x00
-            , (byte)0xA8, (byte)0x1A
+            , (byte)0x02, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x67, (byte)0x00, (byte)0x00, (byte)0x00
+            , (byte)0x2E, (byte)0xD2
             };
-        HeartBeatAck v = new HeartBeatAck(2);
+        Logout v = new Logout(2);
       	byte[] actual = new byte[18];
       	ByteBuffer buf = ByteBuffer.wrap(actual);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
-
-      	HeartBeatAckCodec codec = new HeartBeatAckCodec();
+      	
+      	LogoutCodec codec = new LogoutCodec();
       	codec.encode(buf, v);
       	v.Length = buf.position();
 
@@ -49,16 +49,16 @@ public class HeartBeatAckTest {
     public void testDecode() {
         byte[] input = new byte[] 
             { (byte)0x5A, (byte)0x6B, (byte)0x7C, (byte)0x7E, (byte)0x12, (byte)0x00, (byte)0x00, (byte)0x00
-            , (byte)0x02, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0xB2, (byte)0x04, (byte)0x00, (byte)0x00
-            , (byte)0xA8, (byte)0x1A
+            , (byte)0x02, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x67, (byte)0x00, (byte)0x00, (byte)0x00
+            , (byte)0x2E, (byte)0xD2
             };
-        HeartBeatAck expected = new HeartBeatAck(2);
+        Logout expected = new Logout(2);
       	expected.Length = input.length;
-      	expected.CRC16 = (short)0x1AA8;
+      	expected.CRC16 = (short)0xD22E;
       	ByteBuffer buf = ByteBuffer.wrap(input);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
-      	HeartBeatAckCodec codec = new HeartBeatAckCodec();
-        HeartBeatAck actual = codec.decode(buf);
+      	LogoutCodec codec = new LogoutCodec();
+        Logout actual = codec.decode(buf);
 
       	Assert.assertEquals(expected, actual);
     }
