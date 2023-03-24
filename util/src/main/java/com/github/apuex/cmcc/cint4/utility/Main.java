@@ -20,9 +20,7 @@ public class Main {
 		CommandLine cmd = parser.parse(options, args);
 
 		if (cmd.hasOption("h")) {
-			HelpFormatter formatter = new HelpFormatter();
-			formatter.printHelp("re-send-alarm <options>", options);
-			printOptions(defaultOptions());
+			printHelp(options);
 		} else {
 			final Map<String, String> params = defaultOptions();
 
@@ -32,13 +30,25 @@ public class Main {
 				}
 			});
 
-			printOptions(params);
-			for(String arg : cmd.getArgList()) {
-			  out.printf("  %s\n", arg);
-			  // TODO: perform task.
-			  
+			if (!cmd.getArgList().isEmpty()) {
+				printOptions(params);
+				for (String arg : cmd.getArgList()) {
+					if ("server".equalsIgnoreCase(arg)) {
+						Server.launch(params);
+					} else {
+						out.printf("// TODO: perform %s task.\n", arg);
+						// TODO: perform task.
+					}
+				}
+			} else {
+				printHelp(options);
 			}
 		}
+	}
+
+	private static void printHelp(final Options options) {
+		HelpFormatter formatter = new HelpFormatter();
+		formatter.printHelp("re-send-alarm <options> <command>, wher command = server, ..", options);
 	}
 
 	public static Map<String, String> defaultOptions() {
