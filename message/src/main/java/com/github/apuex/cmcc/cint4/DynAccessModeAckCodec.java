@@ -37,7 +37,6 @@ public class DynAccessModeAckCodec {
         buf.putInt(v.TerminalID);
         buf.putInt(v.GroupID);
         buf.putInt(v.Result.getValue());
-        buf.putInt(v.PollingTime);
         this.Values1Codec.encode(buf, v.Values1);
         this.Values2Codec.encode(buf, v.Values2);
         // Message CONTENT END 
@@ -62,7 +61,6 @@ public class DynAccessModeAckCodec {
         v.TerminalID = buf.getInt();
         v.GroupID = buf.getInt();
         v.Result = EnumResult.fromValue(buf.getInt());
-        v.PollingTime = buf.getInt();
         v.Values1 = this.Values1Codec.decode(buf);
         v.Values2 = this.Values2Codec.decode(buf);
         // Message CONTENT END 
@@ -71,7 +69,7 @@ public class DynAccessModeAckCodec {
         return v;
     }
 
-    public TATDArrayCodec Values1Codec; // 返回正确数据值得数量及值对应对应的值5.1.8中的TA/TD的数据结构定义
-    public TIDArrayCodec Values2Codec = new TIDArrayCodec(); // 返回无效监控点ID的数量，如果返回0则所有数据有效，Values2为空及对应的无效的监控点ID
+    public final TATDArrayCodec Values1Codec; // 返回正确数据值得数量及值对应对应的值5.1.8中的TA/TD的数据结构定义
+    public final TIDArrayCodec Values2Codec = new TIDArrayCodec(); // 返回无效监控点ID的数量，如果返回0则所有数据有效，Values2为空及对应的无效的监控点ID
 }
 

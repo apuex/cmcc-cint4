@@ -58,6 +58,16 @@ public class TD extends TATD {
         return builder.toString();
     }
 
+    @Override
+    public TID toTID() {
+    	TID tid = new TID();
+    	tid.SiteID = SiteID;
+    	tid.DeviceID = DeviceID;
+    	tid.SignalID = SignalID;
+    	tid.SignalNumber = SignalNumber;
+    	return tid;
+    }
+
     public String SiteID; // 站点编号
     public String DeviceID; // 设备编号
     public String SignalID; // 监控点的6位信号编码，即《动环信号标准化字典表(20170927)》中的信号编码ID

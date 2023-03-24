@@ -926,7 +926,6 @@ dynAccessModeAck = Meta.Message
         [ terminalID
         , groupID
         , enumResult
-        , pollingTime
         , values { Meta.fieldName = "Values1" }
         , invalidIds { Meta.fieldName = "Values2" }
         ]

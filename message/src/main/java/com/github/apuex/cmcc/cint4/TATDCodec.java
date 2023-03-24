@@ -14,13 +14,12 @@
 package com.github.apuex.cmcc.cint4;
 
 import java.nio.ByteBuffer;
-import java.util.Map;
 
 /**
  * AI、DI值的结构的父类
  */
 public class TATDCodec {
-	public TATDCodec(Map<TID, EnumType> typeMap) {
+	public TATDCodec(TIDToSignalTypeMap typeMap) {
 		this.typeMap = typeMap;
 	}
 
@@ -43,7 +42,7 @@ public class TATDCodec {
 		// which SHOULD BE AVOIDED!
 		tid = tidCodec.decode(buf);
 		buf.position(pos); // reset to begining.
-		EnumType dataType = typeMap.get(tid);
+		EnumType dataType = typeMap.from(tid);
 		switch (dataType) {
 		case AI:
 			v = taCodec.decode(buf);
@@ -60,5 +59,5 @@ public class TATDCodec {
 	private TIDCodec					 tidCodec	= new TIDCodec();
 	private TACodec						 taCodec	= new TACodec();
 	private TDCodec						 tdCodec	= new TDCodec();
-	private Map<TID, EnumType> typeMap;
+	private TIDToSignalTypeMap typeMap;
 }

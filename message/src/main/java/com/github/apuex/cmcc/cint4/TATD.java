@@ -18,6 +18,7 @@ import java.io.Serializable;
 /**
  * AI、DI值的结构的父类
  */
-public class TATD implements Serializable {
+abstract public class TATD implements Serializable {
 	private static final long serialVersionUID = 1L;
+	abstract public TID toTID();
 }
