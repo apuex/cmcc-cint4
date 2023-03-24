@@ -35,8 +35,20 @@ public class Main {
 				for (String arg : cmd.getArgList()) {
 					if ("server".equalsIgnoreCase(arg)) {
 						Server.launch(params);
-					} else {
+					} else if ("dyn-access".equalsIgnoreCase(arg)) {
 						out.printf("// TODO: perform %s task.\n", arg);
+					} else if ("alarm-mode".equalsIgnoreCase(arg)) {
+						out.printf("// TODO: perform %s task.\n", arg);
+					} else if ("modify-passwd".equalsIgnoreCase(arg)) {
+						out.printf("// TODO: perform %s task.\n", arg);
+					} else if ("set-point".equalsIgnoreCase(arg)) {
+						out.printf("// TODO: perform %s task.\n", arg);
+					} else if ("syn-alarm".equalsIgnoreCase(arg)) {
+						out.printf("// TODO: perform %s task.\n", arg);
+					} else if ("pseudo-csc".equalsIgnoreCase(arg)) {
+						out.printf("// TODO: perform %s task.\n", arg);
+					} else {
+						out.printf("// TODO: unsupported '%s' task.\n", arg);
 						// TODO: perform task.
 					}
 				}
@@ -48,7 +60,16 @@ public class Main {
 
 	private static void printHelp(final Options options) {
 		HelpFormatter formatter = new HelpFormatter();
-		formatter.printHelp("re-send-alarm <options> <command>, wher command = server, ..", options);
+		formatter.printHelp("re-send-alarm <options> <command>,\n"
+				+ "where command = server,\n"
+				+ "                dyn-access,\n"
+				+ "                alarm-mode,\n"
+				+ "                modify-passwd,\n"
+				+ "                set-point,\n"
+				+ "                syn-alarm,\n"
+				+ "                pseudo-csc.\n"
+				+ "and available options are:"
+				, options);
 	}
 
 	public static Map<String, String> defaultOptions() {
