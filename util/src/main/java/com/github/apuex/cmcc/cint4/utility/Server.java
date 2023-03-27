@@ -2,6 +2,9 @@ package com.github.apuex.cmcc.cint4.utility;
 
 import java.util.Map;
 
+import com.github.apuex.cmcc.cint4.EnumType;
+import com.github.apuex.cmcc.cint4.TIDToSignalTypeMap;
+
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -17,27 +20,27 @@ public class Server {
 		EventLoopGroup workerGroup = new NioEventLoopGroup();
 		try {
 			ServerBootstrap bootstrap = new ServerBootstrap();
+			final TIDToSignalTypeMap tidMap = (v -> EnumType.AI);
 			bootstrap.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
 					.childHandler(new ChannelInitializer<SocketChannel>() {
 						@Override
 						public void initChannel(SocketChannel ch) throws Exception {
-							ServerHandler sh = new ServerHandler();
-							ch.pipeline().addLast(sh);
+							ch.pipeline()
+								.addLast(new ByteToCInt4MessageDecoder(tidMap))
+								.addLast(new CInt4MessageToByteEncoder(tidMap))
+								.addLast(new ServerHandler());
 						}
-					})
-					.option(ChannelOption.SO_BACKLOG, 1024)
-					.option(ChannelOption.SO_REUSEADDR, true)
+					}).option(ChannelOption.SO_BACKLOG, 1024).option(ChannelOption.SO_REUSEADDR, true)
 					.childOption(ChannelOption.SO_KEEPALIVE, true);
-		
+
 			// Bind and start to accept incoming connections.
-            ChannelFuture f = bootstrap
-            		.bind(params.get("server-host"), Integer.parseInt(params.get("server-port")))
-            		.sync();
-    
-            // Wait until the server socket is closed,
-            // and shut down the server.
-            f.channel().closeFuture().sync();
-            
+			ChannelFuture f = bootstrap.bind(params.get("server-host"), Integer.parseInt(params.get("server-port")))
+					.sync();
+
+			// Wait until the server socket is closed,
+			// and shut down the server.
+			f.channel().closeFuture().sync();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			workerGroup.shutdownGracefully();

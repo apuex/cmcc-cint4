@@ -23,9 +23,10 @@ public class ServerHandler extends io.netty.channel.ChannelInboundHandlerAdapter
 	    		ByteBuffer buf = (ByteBuffer)msg;
 	    		handleRead(ctx, buf);
 	    	} else {
-	    		
+	    		System.out.printf("RCV%s : %s ", ctx.channel().remoteAddress(), msg);
 	    	}
 	        //ctx.fireChannelRead(msg);
+	    	ctx.writeAndFlush(ctx.alloc().buffer(8).writeBytes("ok.\n".getBytes()));
 	        ReferenceCountUtil.release(msg);
 	    }
 

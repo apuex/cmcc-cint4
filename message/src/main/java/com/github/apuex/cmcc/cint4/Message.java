@@ -10,10 +10,11 @@ import java.io.Serializable;
 public class Message implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	public static final int MESSAGE_HEADER = 0x7E7C6B5A;
 		public Message
     ( EnumPKType PKType
     ) {
-        this.Header = 0x7E7C6B5A;
+        this.Header = MESSAGE_HEADER;
         this.Length = 0;
         this.SerialNo = 0;
         this.PKType = PKType;
@@ -24,7 +25,7 @@ public class Message implements Serializable {
     ( int SerialNo
     , EnumPKType PKType
     ) {
-        this.Header = 0x7E7C6B5A;
+        this.Header = MESSAGE_HEADER;
         this.Length = 0;
         this.SerialNo = SerialNo;
         this.PKType = PKType;
