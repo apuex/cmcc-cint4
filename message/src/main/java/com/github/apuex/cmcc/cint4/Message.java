@@ -8,10 +8,10 @@ import java.io.Serializable;
  * @author Wangxy
  */
 public class Message implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
+    public static final int MESSAGE_HEADER = 0x7E7C6B5A;
 
-	public static final int MESSAGE_HEADER = 0x7E7C6B5A;
-		public Message
+    public Message
     ( EnumPKType PKType
     ) {
         this.Header = MESSAGE_HEADER;

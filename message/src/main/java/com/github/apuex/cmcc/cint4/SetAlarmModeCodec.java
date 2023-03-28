@@ -42,7 +42,8 @@ public class SetAlarmModeCodec {
         buf.position(initialPos + 4);
         buf.putInt(v.Length);
         buf.position(pos - 2);
-        buf.putShort(Util.CRC16(buf.array(), initialPos, pos - 2));
+        v.CRC16 = Util.CRC16(buf.array(), initialPos, pos - 2);
+        buf.putShort(v.CRC16);
     }
 
     public SetAlarmMode decode(ByteBuffer buf) {

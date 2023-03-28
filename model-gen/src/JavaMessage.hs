@@ -140,7 +140,6 @@ package #{ns};
  */
 public class #{n} extends Message {
     private static final long serialVersionUID = 1L;
-
     #{genMsgDefConstructor t n fields c}
     public #{n}
     ( #{Util.combinePrefix 4 ", " $ DL.map genParam fields}
@@ -417,7 +416,8 @@ public class #{n}Codec {
         buf.position(initialPos + 4);
         buf.putInt(v.Length);
         buf.position(pos - 2);
-        buf.putShort(Util.CRC16(buf.array(), initialPos, pos - 2));
+        v.CRC16 = Util.CRC16(buf.array(), initialPos, pos - 2);
+        buf.putShort(v.CRC16);
     }
 
     public #{n} decode(ByteBuffer buf) {
