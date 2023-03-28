@@ -116,7 +116,6 @@ public class CInt4MessageToByteEncoder extends MessageToByteEncoder<Message> {
 			ctx.close();
 			break;
 		}
-		buf.flip();
 		out.writeBytes(array, 0, buf.position());
 	}
 

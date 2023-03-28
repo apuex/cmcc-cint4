@@ -64,7 +64,7 @@ public class ByteToCInt4MessageDecoder extends ByteToMessageDecoder {
 			return; // pk type
 		final EnumPKType PKType = EnumPKType.fromValue(buf.getInt());
 
-		buf = ByteBuffer.wrap(in.array());
+		buf.position(0);
 		switch (PKType) {
 		case LOGIN:
 			out.add(LoginCodec.decode(buf));
@@ -126,6 +126,7 @@ public class ByteToCInt4MessageDecoder extends ByteToMessageDecoder {
 			ctx.close();
 			break;
 		}
+		in.skipBytes(buf.position());
 	}
 
 	public ByteToCInt4MessageDecoder(TIDToSignalTypeMap tidMap) {

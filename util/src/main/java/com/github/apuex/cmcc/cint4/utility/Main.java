@@ -26,7 +26,10 @@ public class Main {
 
 			options.getOptions().stream().forEach(o -> {
 				if (cmd.hasOption(o.getLongOpt())) {
-					params.put(o.getLongOpt(), cmd.getOptionValue(o.getOpt()));
+					System.out.printf("--%s=\n", o.getLongOpt(), cmd.getOptionValue(o.getLongOpt()));
+					params.put(o.getLongOpt(), cmd.getOptionValue(o.getLongOpt()));
+				} else {
+					System.out.printf("--%s: not available\n", o.getLongOpt());
 				}
 			});
 
@@ -41,6 +44,7 @@ public class Main {
 						out.printf("// TODO: perform %s task.\n", arg);
 					} else if ("modify-passwd".equalsIgnoreCase(arg)) {
 						out.printf("// TODO: perform %s task.\n", arg);
+						ModifyPasswd.launch(params);
 					} else if ("set-point".equalsIgnoreCase(arg)) {
 						out.printf("// TODO: perform %s task.\n", arg);
 					} else if ("syn-alarm".equalsIgnoreCase(arg)) {
@@ -80,6 +84,7 @@ public class Main {
 				put("server-port", "8110");
 				put("server-user", "user");
 				put("server-pass", "1234");
+				put("heart-beat", "30");
 				put("mq-host", "localhost");
 				put("mq-port", "7676");
 				put("mq-user", "guest");
@@ -113,6 +118,7 @@ public class Main {
 		options.addOption(new Option("p", "server-port", true, "C Interface server server port"));
 		options.addOption(new Option(null, "server-user", true, "C Interface server user name"));
 		options.addOption(new Option(null, "server-pass", true, "C Interface server password"));
+		options.addOption(new Option(null, "heart-beat", true, "idle timeout in second, to send heart beat message."));
 		options.addOption(new Option(null, "mq-host", true, "message broker host"));
 		options.addOption(new Option(null, "mq-port", true, "message broker port"));
 		options.addOption(new Option(null, "mq-user", true, "message broker user name"));
