@@ -16,13 +16,13 @@ package com.github.apuex.cmcc.cint4;
 import java.nio.ByteBuffer;
 
 /**
- * 改口令响应
+ * 时钟同步响应
  *
  * @author Wangxy
  */
-public class ModifyPAAckCodec {
+public class TimeCheckAckCodec {
 
-    public void encode(ByteBuffer buf, ModifyPAAck v) {
+    public void encode(ByteBuffer buf, TimeCheckAck v) {
         final int initialPos = buf.position();
         // Message HEAD - envelope fields
         buf.putInt(v.Header);
@@ -43,8 +43,8 @@ public class ModifyPAAckCodec {
         buf.putShort(Util.CRC16(buf.array(), initialPos, pos - 2));
     }
 
-    public ModifyPAAck decode(ByteBuffer buf) {
-        ModifyPAAck v = new ModifyPAAck();
+    public TimeCheckAck decode(ByteBuffer buf) {
+        TimeCheckAck v = new TimeCheckAck();
         // Message HEAD - envelope fields
         v.Header = buf.getInt();
         v.Length = buf.getInt();

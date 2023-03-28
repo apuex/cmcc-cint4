@@ -37,8 +37,9 @@ public class AlarmModeAckCodec {
         buf.putShort(v.CRC16);
         final int pos = buf.position();
         // Message LENGTH - envelope fields
+        v.Length = pos - initialPos;
         buf.position(initialPos + 4);
-        buf.putInt(pos - initialPos);
+        buf.putInt(v.Length);
         buf.position(pos - 2);
         buf.putShort(Util.CRC16(buf.array(), initialPos, pos - 2));
     }

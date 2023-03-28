@@ -16,13 +16,13 @@ package com.github.apuex.cmcc.cint4;
 import java.nio.ByteBuffer;
 
 /**
- * 改口令响应
+ * 发送时钟消息
  *
  * @author Wangxy
  */
-public class ModifyPAAckCodec {
+public class TimeCheckCodec {
 
-    public void encode(ByteBuffer buf, ModifyPAAck v) {
+    public void encode(ByteBuffer buf, TimeCheck v) {
         final int initialPos = buf.position();
         // Message HEAD - envelope fields
         buf.putInt(v.Header);
@@ -30,7 +30,7 @@ public class ModifyPAAckCodec {
         buf.putInt(v.SerialNo);
         buf.putInt(v.PKType.getValue());
         // Message CONTENT BEGIN 
-        buf.putInt(v.Result.getValue());
+        this.TimeCodec.encode(buf, v.Time);
         // Message CONTENT END 
         // Message TAIL - envelope fields
         buf.putShort(v.CRC16);
@@ -43,21 +43,21 @@ public class ModifyPAAckCodec {
         buf.putShort(Util.CRC16(buf.array(), initialPos, pos - 2));
     }
 
-    public ModifyPAAck decode(ByteBuffer buf) {
-        ModifyPAAck v = new ModifyPAAck();
+    public TimeCheck decode(ByteBuffer buf) {
+        TimeCheck v = new TimeCheck();
         // Message HEAD - envelope fields
         v.Header = buf.getInt();
         v.Length = buf.getInt();
         v.SerialNo = buf.getInt();
         v.PKType = EnumPKType.fromValue(buf.getInt());
         // Message CONTENT BEGIN 
-        v.Result = EnumResult.fromValue(buf.getInt());
+        v.Time = this.TimeCodec.decode(buf);
         // Message CONTENT END 
         // Message TAIL - envelope fields
         v.CRC16 = buf.getShort();
         return v;
     }
 
-    
+    public TTimeCodec TimeCodec = new TTimeCodec(); // 本机时间
 }
 

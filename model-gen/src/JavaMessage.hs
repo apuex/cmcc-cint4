@@ -140,6 +140,7 @@ package #{ns};
  */
 public class #{n} extends Message {
     private static final long serialVersionUID = 1L;
+
     #{genMsgDefConstructor t n fields c}
     public #{n}
     ( #{Util.combinePrefix 4 ", " $ DL.map genParam fields}
@@ -326,10 +327,13 @@ import java.io.Serializable;
  * @author Wangxy
  */
 public class Message implements Serializable {
+    private static final long serialVersionUID = 1L;
+    public static final int MESSAGE_HEADER = 0x7E7C6B5A;
+
     public Message
     ( EnumPKType PKType
     ) {
-        this.Header = 0x7E7C6B5A;
+        this.Header = MESSAGE_HEADER;
         this.Length = 0;
         this.SerialNo = 0;
         this.PKType = PKType;
@@ -340,7 +344,7 @@ public class Message implements Serializable {
     ( int SerialNo
     , EnumPKType PKType
     ) {
-        this.Header = 0x7E7C6B5A;
+        this.Header = MESSAGE_HEADER;
         this.Length = 0;
         this.SerialNo = SerialNo;
         this.PKType = PKType;
@@ -409,8 +413,9 @@ public class #{n}Codec {
         #{Util.combinePrefix 8 "" $ DL.map (genEncode "") $ Meta.tailFields model}
         final int pos = buf.position();
         // Message LENGTH - envelope fields
+        v.Length = pos - initialPos;
         buf.position(initialPos + 4);
-        buf.putInt(pos - initialPos);
+        buf.putInt(v.Length);
         buf.position(pos - 2);
         buf.putShort(Util.CRC16(buf.array(), initialPos, pos - 2));
     }

@@ -1093,6 +1093,8 @@ model = Meta.Model
         , modifyPAAck
         , heartBeat
         , heartBeatAck
+        , timeCheck
+        , timeCheckAck
         ]
     , Meta.enumerates =
         [ enumRightLevel

@@ -43,6 +43,10 @@ import com.github.apuex.cmcc.cint4.SyncAlarmCodec;
 import com.github.apuex.cmcc.cint4.TATDArrayCodec;
 import com.github.apuex.cmcc.cint4.TATDCodec;
 import com.github.apuex.cmcc.cint4.TIDToSignalTypeMap;
+import com.github.apuex.cmcc.cint4.TimeCheck;
+import com.github.apuex.cmcc.cint4.TimeCheckAck;
+import com.github.apuex.cmcc.cint4.TimeCheckAckCodec;
+import com.github.apuex.cmcc.cint4.TimeCheckCodec;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -111,7 +115,11 @@ public class CInt4MessageToByteEncoder extends MessageToByteEncoder<Message> {
 			HeartBeatAckCodec.encode(buf, (HeartBeatAck) msg);
 			break;
 		case TIME_CHECK:
+			TimeCheckCodec.encode(buf, (TimeCheck) msg);
+			break;
 		case TIME_CHECK_ACK:
+			TimeCheckAckCodec.encode(buf, (TimeCheckAck) msg);
+			break;
 		default: // Unsupported PKType
 			ctx.close();
 			break;
@@ -141,6 +149,8 @@ public class CInt4MessageToByteEncoder extends MessageToByteEncoder<Message> {
 		SetPointCodec = new SetPointCodec(TATDCodec);
 		SyncAlarmAckCodec = new SyncAlarmAckCodec();
 		SyncAlarmCodec = new SyncAlarmCodec();
+		TimeCheckAckCodec = new TimeCheckAckCodec();
+		TimeCheckCodec = new TimeCheckCodec();
 	}
 	
 	private AlarmModeAckCodec AlarmModeAckCodec;
@@ -161,4 +171,6 @@ public class CInt4MessageToByteEncoder extends MessageToByteEncoder<Message> {
 	private SetPointCodec SetPointCodec;
 	private SyncAlarmAckCodec SyncAlarmAckCodec;
 	private SyncAlarmCodec SyncAlarmCodec;
+	private TimeCheckAckCodec TimeCheckAckCodec;
+	private TimeCheckCodec TimeCheckCodec;
 }
