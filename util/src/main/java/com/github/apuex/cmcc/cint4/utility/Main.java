@@ -26,10 +26,10 @@ public class Main {
 
 			options.getOptions().stream().forEach(o -> {
 				if (cmd.hasOption(o.getLongOpt())) {
-					System.out.printf("--%s=\n", o.getLongOpt(), cmd.getOptionValue(o.getLongOpt()));
+					System.out.printf("--%s=%s\n", o.getLongOpt(), cmd.getOptionValue(o.getLongOpt()));
 					params.put(o.getLongOpt(), cmd.getOptionValue(o.getLongOpt()));
 				} else {
-					System.out.printf("--%s=\n", o.getLongOpt(), params.get(o.getLongOpt()));
+					System.out.printf("%s - default\n", paddingRight(String.format("--%s=%s", o.getLongOpt(), params.get(o.getLongOpt())), 24));
 				}
 			});
 
