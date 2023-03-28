@@ -29,7 +29,7 @@ public class Main {
 					System.out.printf("--%s=\n", o.getLongOpt(), cmd.getOptionValue(o.getLongOpt()));
 					params.put(o.getLongOpt(), cmd.getOptionValue(o.getLongOpt()));
 				} else {
-					System.out.printf("--%s: not available\n", o.getLongOpt());
+					System.out.printf("--%s=\n", o.getLongOpt(), params.get(o.getLongOpt()));
 				}
 			});
 
