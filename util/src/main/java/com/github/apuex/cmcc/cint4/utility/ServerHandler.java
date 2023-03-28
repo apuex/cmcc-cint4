@@ -15,13 +15,15 @@ public class ServerHandler extends io.netty.channel.ChannelInboundHandlerAdapter
 	private static final Logger logger = (Logger) LoggerFactory.getLogger(ServerHandler.class);
 	@SuppressWarnings("rawtypes")
 	ScheduledFuture heartBeatTask;
+	private int serialNo = 0;
+
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 		logger.info(String.format("[%s] SYN : connection established.", ctx.channel().remoteAddress()));
 		heartBeatTask = ctx.executor().scheduleWithFixedDelay(() -> {
- 			HeartBeat msg = new HeartBeat();
- 			logger.info(String.format("[%s] SND : %s", ctx.channel().remoteAddress(), msg));
+			HeartBeat msg = new HeartBeat(++serialNo);
 			ctx.writeAndFlush(msg);
+			logger.info(String.format("[%s] SND : %s", ctx.channel().remoteAddress(), msg));
 		}, 5, 5, TimeUnit.SECONDS);
 		
 		ctx.fireChannelActive();
