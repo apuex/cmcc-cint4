@@ -3,6 +3,8 @@ package com.github.apuex.cmcc.cint4.utility;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
+import org.slf4j.LoggerFactory;
+
 import com.github.apuex.cmcc.cint4.AlarmModeAck;
 import com.github.apuex.cmcc.cint4.AlarmModeAckCodec;
 import com.github.apuex.cmcc.cint4.DynAccessModeAck;
@@ -48,18 +50,20 @@ import com.github.apuex.cmcc.cint4.TimeCheckAck;
 import com.github.apuex.cmcc.cint4.TimeCheckAckCodec;
 import com.github.apuex.cmcc.cint4.TimeCheckCodec;
 
+import ch.qos.logback.classic.Logger;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 
 public class CInt4MessageToByteEncoder extends MessageToByteEncoder<Message> {
+	private static final Logger logger = (Logger) LoggerFactory.getLogger(CInt4MessageToByteEncoder.class);
 
 	@Override
 	protected void encode(ChannelHandlerContext ctx, Message msg, ByteBuf out) throws Exception {
-		byte[] array = new byte[64*1024];
+		byte[] array = new byte[64 * 1024];
 		ByteBuffer buf = ByteBuffer.wrap(array);
 		buf.order(ByteOrder.LITTLE_ENDIAN);
-		switch(msg.PKType) {
+		switch (msg.PKType) {
 		case LOGIN:
 			LoginCodec.encode(buf, (Login) msg);
 			break;
@@ -124,9 +128,16 @@ public class CInt4MessageToByteEncoder extends MessageToByteEncoder<Message> {
 			ctx.close();
 			break;
 		}
+		StringBuilder sb = new StringBuilder();
+		sb.append(String.format("[%s] ENC : bytes[%d] = { ", ctx.channel().remoteAddress(), buf.position()));
+		for (int i = 0; i != buf.position(); ++i) {
+			sb.append(String.format("%02X ", 0xff & array[i]));
+		}
+		sb.append("}");
+		logger.info(sb.toString());
+		logger.info(String.format("[%s] SND : %s", ctx.channel().remoteAddress(), msg));
 		out.writeBytes(array, 0, buf.position());
 	}
-
 
 	public CInt4MessageToByteEncoder(TIDToSignalTypeMap tidMap) {
 		TATDCodec TATDCodec = new TATDCodec(tidMap);
@@ -152,7 +163,7 @@ public class CInt4MessageToByteEncoder extends MessageToByteEncoder<Message> {
 		TimeCheckAckCodec = new TimeCheckAckCodec();
 		TimeCheckCodec = new TimeCheckCodec();
 	}
-	
+
 	private AlarmModeAckCodec AlarmModeAckCodec;
 	private DynAccessModeAckCodec DynAccessModeAckCodec;
 	private HeartBeatAckCodec HeartBeatAckCodec;

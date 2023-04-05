@@ -4,6 +4,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.List;
 
+import org.slf4j.LoggerFactory;
+
 import com.github.apuex.cmcc.cint4.AlarmModeAckCodec;
 import com.github.apuex.cmcc.cint4.DynAccessModeAckCodec;
 import com.github.apuex.cmcc.cint4.EnumPKType;
@@ -30,12 +32,14 @@ import com.github.apuex.cmcc.cint4.TIDToSignalTypeMap;
 import com.github.apuex.cmcc.cint4.TimeCheckAckCodec;
 import com.github.apuex.cmcc.cint4.TimeCheckCodec;
 
+import ch.qos.logback.classic.Logger;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 
 public class ByteToCInt4MessageDecoder extends ByteToMessageDecoder {
-
+	private static final Logger logger = (Logger) LoggerFactory.getLogger(ByteToCInt4MessageDecoder.class);
+	
 	@Override
 	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
 		if (in.readableBytes() < 4)
@@ -132,6 +136,13 @@ public class ByteToCInt4MessageDecoder extends ByteToMessageDecoder {
 			ctx.close();
 			break;
 		}
+		StringBuilder sb = new StringBuilder();
+		sb.append(String.format("[%s] DEC : bytes[%d] = { ", ctx.channel().remoteAddress(), buf.position()));
+		for (int i = 0; i != buf.position(); ++i) {
+			sb.append(String.format("%02X ", 0xff & array[i]));
+		}
+		sb.append("}");
+		logger.info(sb.toString());
 		in.skipBytes(buf.position());
 	}
 
@@ -159,7 +170,7 @@ public class ByteToCInt4MessageDecoder extends ByteToMessageDecoder {
 		TimeCheckAckCodec = new TimeCheckAckCodec();
 		TimeCheckCodec = new TimeCheckCodec();
 	}
-	
+
 	private AlarmModeAckCodec AlarmModeAckCodec;
 	private DynAccessModeAckCodec DynAccessModeAckCodec;
 	private HeartBeatAckCodec HeartBeatAckCodec;
