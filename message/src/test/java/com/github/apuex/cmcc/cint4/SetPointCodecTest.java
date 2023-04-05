@@ -36,7 +36,7 @@ public class SetPointCodecTest {
           , (byte)0x39, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
           , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
           , (byte)0x20, (byte)0x20, (byte)0x31, (byte)0x20, (byte)0x20, (byte)0x79, (byte)0xE9, (byte)0xF6
-          , (byte)0x42, (byte)0x01, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x2B, (byte)0xDE
+          , (byte)0x42, (byte)0x01, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x1E, (byte)0x96
           };
       TA ta = new TA();
       ta.SiteID = "123";
@@ -79,7 +79,7 @@ public class SetPointCodecTest {
           , (byte)0x39, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
           , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
           , (byte)0x20, (byte)0x20, (byte)0x31, (byte)0x20, (byte)0x20, (byte)0x79, (byte)0xE9, (byte)0xF6
-          , (byte)0x42, (byte)0x01, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x2B, (byte)0xDE
+          , (byte)0x42, (byte)0x01, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x1E, (byte)0x96
           };
       TA ta = new TA();
       ta.SiteID = "123";
@@ -90,7 +90,7 @@ public class SetPointCodecTest {
       ta.Status = EnumState.CRITICAL;
       SetPoint expected = new SetPoint(2, ta);
     	expected.Length = input.length;
-    	expected.CRC16 = (short)0xDE2B;
+    	expected.CRC16 = (short)0x961E;
     	ByteBuffer buf = ByteBuffer.wrap(input);
     	buf.order(ByteOrder.LITTLE_ENDIAN);
 
@@ -114,7 +114,7 @@ public class SetPointCodecTest {
         , (byte)0x39, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
         , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
         , (byte)0x20, (byte)0x20, (byte)0x31, (byte)0x20, (byte)0x20, (byte)0x40, (byte)0xE2, (byte)0x01
-        , (byte)0x00, (byte)0x01, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0xC7, (byte)0x86
+        , (byte)0x00, (byte)0x01, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x0A, (byte)0x60
         };
     TD td = new TD();
     td.SiteID = "123";
@@ -157,7 +157,7 @@ public void testDecodeTD() {
         , (byte)0x39, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
         , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
         , (byte)0x20, (byte)0x20, (byte)0x31, (byte)0x20, (byte)0x20, (byte)0x40, (byte)0xE2, (byte)0x01
-        , (byte)0x00, (byte)0x01, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0xC7, (byte)0x86
+        , (byte)0x00, (byte)0x01, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x0A, (byte)0x60
         };
     TD td = new TD();
     td.SiteID = "123";
@@ -168,7 +168,7 @@ public void testDecodeTD() {
     td.Status = EnumState.CRITICAL;
     SetPoint expected = new SetPoint(2, td);
   	expected.Length = input.length;
-  	expected.CRC16 = (short)0x86C7;
+  	expected.CRC16 = (short)0x600A;
   	ByteBuffer buf = ByteBuffer.wrap(input);
   	buf.order(ByteOrder.LITTLE_ENDIAN);
 

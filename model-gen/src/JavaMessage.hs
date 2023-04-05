@@ -410,17 +410,18 @@ public class #{n}Codec {
         // Message CONTENT END 
         // Message TAIL - envelope fields
         #{Util.combinePrefix 8 "" $ DL.map (genEncode "") $ Meta.tailFields model}
-        final int pos = buf.position();
         // Message LENGTH - envelope fields
+        final int pos = buf.position();
         v.Length = pos - initialPos;
-        buf.position(initialPos + 4);
+        buf.position(initialPos + 4); 
         buf.putInt(v.Length);
-        buf.position(pos - 2);
-        v.CRC16 = Util.CRC16(buf.array(), initialPos, pos - 2);
-        buf.putShort(v.CRC16);
+        buf.position(pos - 2); 
+        v.CRC16 = Util.CRC16(buf.array(), initialPos + 4, pos - 2); 
+        #{Util.combinePrefix 8 "" $ DL.map (genEncode "") $ Meta.tailFields model}
     }
 
     public #{n} decode(ByteBuffer buf) {
+        final int initialPos = buf.position();
         #{n} v = new #{n}();
         // Message HEAD - envelope fields
         #{Util.combinePrefix 8 "" $ DL.map (genDecode "") $ Meta.headerFields model}
@@ -428,6 +429,7 @@ public class #{n}Codec {
         #{Util.combinePrefix 8 "" $ DL.map (genDecode "") fields}
         // Message CONTENT END 
         // Message TAIL - envelope fields
+        buf.position(initialPos + v.Length - 2);
         #{Util.combinePrefix 8 "" $ DL.map (genDecode "") $ Meta.tailFields model}
         return v;
     }

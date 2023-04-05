@@ -34,7 +34,7 @@ public class SetPointAckCodecTest {
             , (byte)0x39, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
             , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
             , (byte)0x20, (byte)0x20, (byte)0x31, (byte)0x20, (byte)0x20, (byte)0x01, (byte)0x00, (byte)0x00
-            , (byte)0x00, (byte)0x4C, (byte)0x12
+            , (byte)0x00, (byte)0xFE, (byte)0x84
             };
         TID tid = new TID();
         tid.SiteID = "123";
@@ -73,7 +73,7 @@ public class SetPointAckCodecTest {
             , (byte)0x39, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
             , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
             , (byte)0x20, (byte)0x20, (byte)0x31, (byte)0x20, (byte)0x20, (byte)0x01, (byte)0x00, (byte)0x00
-            , (byte)0x00, (byte)0x4C, (byte)0x12
+            , (byte)0x00, (byte)0xFE, (byte)0x84
             };
         TID tid = new TID();
         tid.SiteID = "123";
@@ -82,7 +82,7 @@ public class SetPointAckCodecTest {
         tid.SignalNumber = "1";
         SetPointAck expected = new SetPointAck(2, tid, EnumResult.SUCCESS);
       	expected.Length = input.length;
-      	expected.CRC16 = (short)0x124C;
+      	expected.CRC16 = (short)0x84FE;
       	ByteBuffer buf = ByteBuffer.wrap(input);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
       	SetPointAckCodec codec = new SetPointAckCodec();

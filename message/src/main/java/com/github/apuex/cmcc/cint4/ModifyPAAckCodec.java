@@ -34,17 +34,18 @@ public class ModifyPAAckCodec {
         // Message CONTENT END 
         // Message TAIL - envelope fields
         buf.putShort(v.CRC16);
-        final int pos = buf.position();
         // Message LENGTH - envelope fields
+        final int pos = buf.position();
         v.Length = pos - initialPos;
-        buf.position(initialPos + 4);
+        buf.position(initialPos + 4); 
         buf.putInt(v.Length);
-        buf.position(pos - 2);
-        v.CRC16 = Util.CRC16(buf.array(), initialPos, pos - 2);
+        buf.position(pos - 2); 
+        v.CRC16 = Util.CRC16(buf.array(), initialPos + 4, pos - 2); 
         buf.putShort(v.CRC16);
     }
 
     public ModifyPAAck decode(ByteBuffer buf) {
+        final int initialPos = buf.position();
         ModifyPAAck v = new ModifyPAAck();
         // Message HEAD - envelope fields
         v.Header = buf.getInt();
@@ -55,6 +56,7 @@ public class ModifyPAAckCodec {
         v.Result = EnumResult.fromValue(buf.getInt());
         // Message CONTENT END 
         // Message TAIL - envelope fields
+        buf.position(initialPos + v.Length - 2);
         v.CRC16 = buf.getShort();
         return v;
     }

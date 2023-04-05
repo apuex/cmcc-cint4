@@ -25,7 +25,7 @@ public class SyncAlarmCodecTest {
         byte[] expected = new byte[] 
             { (byte)0x5A, (byte)0x6B, (byte)0x7C, (byte)0x7E, (byte)0x12, (byte)0x00, (byte)0x00, (byte)0x00
             , (byte)0x02, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0xF9, (byte)0x01, (byte)0x00, (byte)0x00
-            , (byte)0xDB, (byte)0x81
+            , (byte)0xBC, (byte)0xBF
             };
         SyncAlarm v = new SyncAlarm(2);
       	byte[] actual = new byte[18];
@@ -50,11 +50,11 @@ public class SyncAlarmCodecTest {
         byte[] input = new byte[] 
             { (byte)0x5A, (byte)0x6B, (byte)0x7C, (byte)0x7E, (byte)0x12, (byte)0x00, (byte)0x00, (byte)0x00
             , (byte)0x02, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0xF9, (byte)0x01, (byte)0x00, (byte)0x00
-            , (byte)0xDB, (byte)0x81
+            , (byte)0xBC, (byte)0xBF
             };
         SyncAlarm expected = new SyncAlarm(2);
       	expected.Length = input.length;
-      	expected.CRC16 = (short)0x81DB;
+      	expected.CRC16 = (short)0xBFBC;
       	ByteBuffer buf = ByteBuffer.wrap(input);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
       	SyncAlarmCodec codec = new SyncAlarmCodec();
