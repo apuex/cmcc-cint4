@@ -13,7 +13,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
-public class ModifyPasswd {
+public class AlarmMode {
 	public static void launch(final Map<String, String> params) {
 		EventLoopGroup workerGroup = new NioEventLoopGroup();
 		Bootstrap bootstrap = new Bootstrap();
@@ -27,7 +27,7 @@ public class ModifyPasswd {
 							ch.pipeline()
 								.addLast(new ByteToCInt4MessageDecoder(tidMap))
 								.addLast(new CInt4MessageToByteEncoder(tidMap))
-								.addLast(new ModifyPasswdHandler(params));
+								.addLast(new AlarmModeHandler(params));
 						}
 					});
 

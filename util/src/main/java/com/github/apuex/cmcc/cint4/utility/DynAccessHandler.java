@@ -1,24 +1,29 @@
 package com.github.apuex.cmcc.cint4.utility;
 
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.LoggerFactory;
 
+import com.github.apuex.cmcc.cint4.EnumAccessMode;
 import com.github.apuex.cmcc.cint4.HeartBeatAck;
 import com.github.apuex.cmcc.cint4.Login;
 import com.github.apuex.cmcc.cint4.Logout;
 import com.github.apuex.cmcc.cint4.Message;
-import com.github.apuex.cmcc.cint4.ModifyPA;
+import com.github.apuex.cmcc.cint4.SetDynAccessMode;
+import com.github.apuex.cmcc.cint4.TID;
+import com.github.apuex.cmcc.cint4.TIDArray;
 
 import ch.qos.logback.classic.Logger;
 import io.netty.channel.ChannelHandlerContext;
 
-public class ModifyPasswdHandler extends io.netty.channel.ChannelInboundHandlerAdapter {
+public class DynAccessHandler extends io.netty.channel.ChannelInboundHandlerAdapter {
 	private static final Logger logger = (Logger) LoggerFactory.getLogger(ServerHandler.class);
 	private Map<String, String> params;
 
-	public ModifyPasswdHandler(Map<String, String> params) {
+	public DynAccessHandler(Map<String, String> params) {
 		this.params = params;
 	}
 	@Override
@@ -26,7 +31,6 @@ public class ModifyPasswdHandler extends io.netty.channel.ChannelInboundHandlerA
 		logger.info(String.format("[%s] SYN : connection established.", ctx.channel().remoteAddress()));
 		SerialNo.initSerialNo(ctx.channel());
 		send(ctx, new Login(SerialNo.nextSerialNo(ctx.channel()), params.get("server-user"), params.get("server-passwd")));
-		ctx.fireChannelActive();
 	}
 
 	@Override
@@ -37,11 +41,10 @@ public class ModifyPasswdHandler extends io.netty.channel.ChannelInboundHandlerA
 			switch(message.PKType) {
 			case LOGIN:
 				break;
-			case LOGIN_ACK:
-				send(ctx, new ModifyPA(SerialNo.nextSerialNo(ctx.channel())
-						, params.get("server-user")
-						, params.get("server-passwd")
-						, params.get("server-new-passwd") == null ? params.get("server-passwd") : params.get("server-new-passwd")));
+			case LOGIN_ACK: {
+				List<TID> l = new LinkedList<TID>();
+				send(ctx, new SetDynAccessMode(SerialNo.nextSerialNo(ctx.channel()), 1, 2, EnumAccessMode.ASK_ANSWER, 30, new TIDArray(l)));
+			}
 				break;
 			case LOGOUT:
 				break;
@@ -51,6 +54,7 @@ public class ModifyPasswdHandler extends io.netty.channel.ChannelInboundHandlerA
 			case SET_DYN_ACCESS_MODE:
 				break;
 			case DYN_ACCESS_MODE_ACK:
+				send(ctx, new Logout(SerialNo.nextSerialNo(ctx.channel())));
 				break;
 			case SET_ALARM_MODE:
 				break;
@@ -67,7 +71,6 @@ public class ModifyPasswdHandler extends io.netty.channel.ChannelInboundHandlerA
 			case MODIFY_PA:
 				break;
 			case MODIFY_PA_ACK:
-				send(ctx, new Logout(SerialNo.nextSerialNo(ctx.channel())));
 				break;
 			case HEART_BEAT:
 				send(ctx, new HeartBeatAck(message.SerialNo));

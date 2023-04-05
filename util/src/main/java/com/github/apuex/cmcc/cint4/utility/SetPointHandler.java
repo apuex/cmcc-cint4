@@ -5,20 +5,22 @@ import java.util.Map;
 
 import org.slf4j.LoggerFactory;
 
+import com.github.apuex.cmcc.cint4.EnumState;
 import com.github.apuex.cmcc.cint4.HeartBeatAck;
 import com.github.apuex.cmcc.cint4.Login;
 import com.github.apuex.cmcc.cint4.Logout;
 import com.github.apuex.cmcc.cint4.Message;
-import com.github.apuex.cmcc.cint4.ModifyPA;
+import com.github.apuex.cmcc.cint4.SetPoint;
+import com.github.apuex.cmcc.cint4.TA;
 
 import ch.qos.logback.classic.Logger;
 import io.netty.channel.ChannelHandlerContext;
 
-public class ModifyPasswdHandler extends io.netty.channel.ChannelInboundHandlerAdapter {
+public class SetPointHandler extends io.netty.channel.ChannelInboundHandlerAdapter {
 	private static final Logger logger = (Logger) LoggerFactory.getLogger(ServerHandler.class);
 	private Map<String, String> params;
 
-	public ModifyPasswdHandler(Map<String, String> params) {
+	public SetPointHandler(Map<String, String> params) {
 		this.params = params;
 	}
 	@Override
@@ -26,7 +28,6 @@ public class ModifyPasswdHandler extends io.netty.channel.ChannelInboundHandlerA
 		logger.info(String.format("[%s] SYN : connection established.", ctx.channel().remoteAddress()));
 		SerialNo.initSerialNo(ctx.channel());
 		send(ctx, new Login(SerialNo.nextSerialNo(ctx.channel()), params.get("server-user"), params.get("server-passwd")));
-		ctx.fireChannelActive();
 	}
 
 	@Override
@@ -37,11 +38,17 @@ public class ModifyPasswdHandler extends io.netty.channel.ChannelInboundHandlerA
 			switch(message.PKType) {
 			case LOGIN:
 				break;
-			case LOGIN_ACK:
-				send(ctx, new ModifyPA(SerialNo.nextSerialNo(ctx.channel())
-						, params.get("server-user")
-						, params.get("server-passwd")
-						, params.get("server-new-passwd") == null ? params.get("server-passwd") : params.get("server-new-passwd")));
+			case LOGIN_ACK: {
+				TA ta = new TA();
+			    ta.SiteID = "1"; // 站点编号
+			    ta.DeviceID = "2"; // 设备编号
+			    ta.SignalID = "3"; // 监控点的6位信号编码，即《动环信号标准化字典表(20170927)》中的信号编码ID
+			    ta.SignalNumber = "4"; // 同类监控点顺序号
+			    ta.Value = 12.34f; // AI值
+			    ta.Status = EnumState.NOALARM; // 数据值的状态
+
+				send(ctx, new SetPoint(SerialNo.nextSerialNo(ctx.channel()), ta));
+			}
 				break;
 			case LOGOUT:
 				break;
@@ -63,11 +70,11 @@ public class ModifyPasswdHandler extends io.netty.channel.ChannelInboundHandlerA
 			case SET_POINT:
 				break;
 			case SET_POINT_ACK:
+				send(ctx, new Logout(SerialNo.nextSerialNo(ctx.channel())));
 				break;
 			case MODIFY_PA:
 				break;
 			case MODIFY_PA_ACK:
-				send(ctx, new Logout(SerialNo.nextSerialNo(ctx.channel())));
 				break;
 			case HEART_BEAT:
 				send(ctx, new HeartBeatAck(message.SerialNo));

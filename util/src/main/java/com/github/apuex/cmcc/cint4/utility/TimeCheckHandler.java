@@ -9,16 +9,17 @@ import com.github.apuex.cmcc.cint4.HeartBeatAck;
 import com.github.apuex.cmcc.cint4.Login;
 import com.github.apuex.cmcc.cint4.Logout;
 import com.github.apuex.cmcc.cint4.Message;
-import com.github.apuex.cmcc.cint4.ModifyPA;
+import com.github.apuex.cmcc.cint4.TTime;
+import com.github.apuex.cmcc.cint4.TimeCheck;
 
 import ch.qos.logback.classic.Logger;
 import io.netty.channel.ChannelHandlerContext;
 
-public class ModifyPasswdHandler extends io.netty.channel.ChannelInboundHandlerAdapter {
+public class TimeCheckHandler extends io.netty.channel.ChannelInboundHandlerAdapter {
 	private static final Logger logger = (Logger) LoggerFactory.getLogger(ServerHandler.class);
 	private Map<String, String> params;
 
-	public ModifyPasswdHandler(Map<String, String> params) {
+	public TimeCheckHandler(Map<String, String> params) {
 		this.params = params;
 	}
 	@Override
@@ -26,7 +27,6 @@ public class ModifyPasswdHandler extends io.netty.channel.ChannelInboundHandlerA
 		logger.info(String.format("[%s] SYN : connection established.", ctx.channel().remoteAddress()));
 		SerialNo.initSerialNo(ctx.channel());
 		send(ctx, new Login(SerialNo.nextSerialNo(ctx.channel()), params.get("server-user"), params.get("server-passwd")));
-		ctx.fireChannelActive();
 	}
 
 	@Override
@@ -37,11 +37,16 @@ public class ModifyPasswdHandler extends io.netty.channel.ChannelInboundHandlerA
 			switch(message.PKType) {
 			case LOGIN:
 				break;
-			case LOGIN_ACK:
-				send(ctx, new ModifyPA(SerialNo.nextSerialNo(ctx.channel())
-						, params.get("server-user")
-						, params.get("server-passwd")
-						, params.get("server-new-passwd") == null ? params.get("server-passwd") : params.get("server-new-passwd")));
+			case LOGIN_ACK: {
+				TTime ta = new TTime();
+				ta.Years = 1996;
+				ta.Month = 7;
+				ta.Day = 14;
+				ta.Hour = 0;
+				ta.Minute = 0;
+				ta.Second = 0;
+				send(ctx, new TimeCheck(SerialNo.nextSerialNo(ctx.channel()), ta));
+			}
 				break;
 			case LOGOUT:
 				break;
@@ -67,7 +72,6 @@ public class ModifyPasswdHandler extends io.netty.channel.ChannelInboundHandlerA
 			case MODIFY_PA:
 				break;
 			case MODIFY_PA_ACK:
-				send(ctx, new Logout(SerialNo.nextSerialNo(ctx.channel())));
 				break;
 			case HEART_BEAT:
 				send(ctx, new HeartBeatAck(message.SerialNo));
@@ -77,6 +81,7 @@ public class ModifyPasswdHandler extends io.netty.channel.ChannelInboundHandlerA
 			case TIME_CHECK:
 				break;
 			case TIME_CHECK_ACK:
+				send(ctx, new Logout(SerialNo.nextSerialNo(ctx.channel())));
 				break;
 			default: // Unsupported PKType
 				ctx.close();

@@ -28,7 +28,7 @@ public class Server {
 							ch.pipeline()
 								.addLast(new ByteToCInt4MessageDecoder(tidMap))
 								.addLast(new CInt4MessageToByteEncoder(tidMap))
-								.addLast(new ServerHandler());
+								.addLast(new ServerHandler(params));
 						}
 					}).option(ChannelOption.SO_BACKLOG, 1024).option(ChannelOption.SO_REUSEADDR, true)
 					.childOption(ChannelOption.SO_KEEPALIVE, true);
