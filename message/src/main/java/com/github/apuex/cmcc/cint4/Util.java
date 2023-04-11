@@ -20,7 +20,7 @@ import java.nio.charset.Charset;
  * AI、DI值的结构的父类
  */
 public class Util {
-	static public final Charset charset = Charset.forName("GB18030");
+	static public final Charset charset = Charset.forName("UTF-8");
 	static public final byte padding = 0x20;
 	static public final short CRC16_INITIAL_VALUE = (short) 0xFFFF;
 	// static public final short CRC16_POLYNOMIAL = (short)0xA001;
@@ -36,7 +36,7 @@ public class Util {
 				buf.put(padding);
 			}
 		} else {
-			throw new IllegalArgumentException(String.format("String '%s' is too long.", s));
+			buf.put(ba, 0, maxLength);
 		}
 	}
 
