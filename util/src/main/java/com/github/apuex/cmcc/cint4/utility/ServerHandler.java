@@ -131,7 +131,10 @@ public class ServerHandler extends io.netty.channel.ChannelInboundHandlerAdapter
 	@Override
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
 		logger.info(String.format("[%s] RST : connection closed.", ctx.channel().remoteAddress()));
-		heartBeatTask.cancel(false);
+		ctx.channel()
+			.attr(HEART_BEAT_TASK_FUTURE_KEY)
+			.get()
+			.cancel(false);
 		ctx.fireChannelInactive();
 	}
 
