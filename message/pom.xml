@@ -5,13 +5,13 @@
 
   <groupId>com.github.apuex.cmcc-cint4</groupId>
   <artifactId>cmcc-cint4-message</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.2</version>
   <packaging>jar</packaging>
 
   <parent>
     <groupId>com.github.apuex.cmcc-cint4</groupId>
     <artifactId>cmcc-cint4</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
   </parent>
 
   <dependencies>
