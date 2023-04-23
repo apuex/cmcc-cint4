@@ -49,6 +49,7 @@ public class Server {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
 			workerGroup.shutdownGracefully();
 			bossGroup.shutdownGracefully();
 		}
