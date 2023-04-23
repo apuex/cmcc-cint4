@@ -10,11 +10,15 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
+import io.netty.channel.group.ChannelGroup;
+import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.util.concurrent.GlobalEventExecutor;
 
 public class Server {
+	static final ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 	public static void launch(final Map<String, String> params) {
 		EventLoopGroup bossGroup = new NioEventLoopGroup();
 		EventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -28,9 +32,11 @@ public class Server {
 							ch.pipeline()
 								.addLast(new ByteToCInt4MessageDecoder(tidMap))
 								.addLast(new CInt4MessageToByteEncoder(tidMap))
-								.addLast(new ServerHandler(params));
+								.addLast(new ServerHandler(params, channels));
 						}
-					}).option(ChannelOption.SO_BACKLOG, 1024).option(ChannelOption.SO_REUSEADDR, true)
+					})
+					.option(ChannelOption.SO_BACKLOG, 1024)
+					.option(ChannelOption.SO_REUSEADDR, true)
 					.childOption(ChannelOption.SO_KEEPALIVE, true);
 
 			// Bind and start to accept incoming connections.

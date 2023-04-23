@@ -5,31 +5,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import org.slf4j.LoggerFactory;
-
-import com.github.apuex.cmcc.cint4.AlarmModeAck;
-import com.github.apuex.cmcc.cint4.DynAccessModeAck;
-import com.github.apuex.cmcc.cint4.EnumResult;
-import com.github.apuex.cmcc.cint4.EnumRightLevel;
-import com.github.apuex.cmcc.cint4.HeartBeat;
-import com.github.apuex.cmcc.cint4.HeartBeatAck;
-import com.github.apuex.cmcc.cint4.LoginAck;
-import com.github.apuex.cmcc.cint4.LogoutAck;
-import com.github.apuex.cmcc.cint4.Message;
-import com.github.apuex.cmcc.cint4.ModifyPA;
-import com.github.apuex.cmcc.cint4.ModifyPAAck;
-import com.github.apuex.cmcc.cint4.SetAlarmMode;
-import com.github.apuex.cmcc.cint4.SetDynAccessMode;
+import com.github.apuex.cmcc.cint4.*;
 import com.github.apuex.cmcc.cint4.SetPoint;
-import com.github.apuex.cmcc.cint4.SetPointAck;
-import com.github.apuex.cmcc.cint4.TA;
-import com.github.apuex.cmcc.cint4.TATD;
-import com.github.apuex.cmcc.cint4.TATDArray;
-import com.github.apuex.cmcc.cint4.TD;
-import com.github.apuex.cmcc.cint4.TID;
-import com.github.apuex.cmcc.cint4.TIDArray;
-import com.github.apuex.cmcc.cint4.TimeCheckAck;
-import com.github.apuex.cmcc.cint4.Util;
+import io.netty.channel.group.ChannelGroup;
+import io.netty.util.AttributeKey;
+import org.slf4j.LoggerFactory;
 
 import ch.qos.logback.classic.Logger;
 import io.netty.channel.ChannelHandlerContext;
@@ -40,21 +20,31 @@ public class ServerHandler extends io.netty.channel.ChannelInboundHandlerAdapter
 	@SuppressWarnings("rawtypes")
 	ScheduledFuture heartBeatTask;
 
-	public ServerHandler(Map<String, String> params) {
+	public ServerHandler(Map<String, String> params, ChannelGroup channels) {
 		this.params = params;
+		this.channels = channels;
 	}
 	
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 		logger.info(String.format("[%s] SYN : connection established.", ctx.channel().remoteAddress()));
 		SerialNo.initSerialNo(ctx.channel());
-		heartBeatTask = ctx.executor().scheduleWithFixedDelay(() -> {
+		ctx.channel().attr(ACCESS_MODE_KEY).set(EnumAccessMode.STOP);
+		ctx.channel().attr(ALARM_MODE_KEY).set(EnumAlarmMode.NOALARM);
+		synchronized(channels) {
+			channels.add(ctx.channel());
+			channels.notifyAll();
+		}
+		ctx.fireChannelActive();
+
+		final int heartBeatPeriod = Integer.parseInt(params.get("heart-beat"));
+		ScheduledFuture <?> heartBeatTask = ctx.executor().scheduleWithFixedDelay(() -> {
 			HeartBeat msg = new HeartBeat(SerialNo.nextSerialNo(ctx.channel()));
 			ctx.writeAndFlush(msg);
-			logger.info(String.format("[%s] SND : %s", ctx.channel().remoteAddress(), msg));
-		}, 5, 5, TimeUnit.SECONDS);
-
-		ctx.fireChannelActive();
+		}, heartBeatPeriod, heartBeatPeriod, TimeUnit.SECONDS);
+		ctx.channel()
+		.attr(HEART_BEAT_TASK_FUTURE_KEY)
+		.set(heartBeatTask);
 	}
 
 	@Override
@@ -155,5 +145,9 @@ public class ServerHandler extends io.netty.channel.ChannelInboundHandlerAdapter
 		ctx.writeAndFlush(out);
 	}
 	
+	public static final AttributeKey<ScheduledFuture<?> > HEART_BEAT_TASK_FUTURE_KEY = AttributeKey.valueOf("HEART_BEAT_TASK_FUTURE_KEY");
+	public static final AttributeKey<EnumAccessMode> ACCESS_MODE_KEY = AttributeKey.valueOf("ACCESS_MODE_KEY");
+	public static final AttributeKey<EnumAlarmMode> ALARM_MODE_KEY = AttributeKey.valueOf("ALARM_MODE_KEY");
 	private Map<String, String> params;
+	private final ChannelGroup channels;
 }
