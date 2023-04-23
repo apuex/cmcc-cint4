@@ -2,6 +2,7 @@ package com.github.apuex.cmcc.cint4.utility;
 
 import java.util.Map;
 
+import ch.qos.logback.classic.Logger;
 import com.github.apuex.cmcc.cint4.EnumType;
 import com.github.apuex.cmcc.cint4.TIDToSignalTypeMap;
 
@@ -16,8 +17,10 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.concurrent.GlobalEventExecutor;
+import org.slf4j.LoggerFactory;
 
 public class Server {
+	private static final Logger logger = (Logger) LoggerFactory.getLogger(Server.class);
 	static final ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 	public static void launch(final Map<String, String> params) {
 		EventLoopGroup bossGroup = new NioEventLoopGroup();
@@ -43,9 +46,11 @@ public class Server {
 			ChannelFuture f = bootstrap.bind(params.get("server-host"), Integer.parseInt(params.get("server-port")))
 					.sync();
 
+			logger.info("server launched.");
 			// Wait until the server socket is closed,
 			// and shut down the server.
 			f.channel().closeFuture().sync();
+			logger.info("server stopped.");
 
 		} catch (Exception e) {
 			e.printStackTrace();
