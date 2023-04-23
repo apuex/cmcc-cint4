@@ -684,7 +684,8 @@ tidStruct = Meta.Struct
     , Meta.entityName    = "TID"
     , Meta.entityComment = "数据值的结构"
     , Meta.entityFields  =
-        [ siteID
+        [ enumType
+        , siteID
         , deviceID
         , signalID
         , signalNumber

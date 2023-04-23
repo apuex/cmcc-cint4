@@ -120,6 +120,7 @@ public class Util {
 
 	public static TID tidFrom(TA v) {
 		TID tid = new TID();
+		tid.Type = EnumType.AI;
 		tid.SiteID = v.SiteID;
 		tid.DeviceID = v.DeviceID;
 		tid.SignalID = v.SignalID;
@@ -129,6 +130,7 @@ public class Util {
 
 	public static TID tidFrom(TD v) {
 		TID tid = new TID();
+		tid.Type = EnumType.DI;
 		tid.SiteID = v.SiteID;
 		tid.DeviceID = v.DeviceID;
 		tid.SignalID = v.SignalID;
@@ -152,5 +154,18 @@ public class Util {
 		v.SignalID = tid.SignalID;
 		v.SignalNumber = tid.SignalNumber;
 		return v;
+	}
+
+	public static void printBytes(String name, byte[] buf) {
+		System.out.printf("%s[%d] = \n{ ", name, buf.length);
+		for(int i = 0; i != buf.length; ++i) {
+			if(0 == i) {
+				System.out.printf("(byte)0x%02X", 0xff & buf[i]);
+			} else {
+				if (0 == i % 8) System.out.println();
+				System.out.printf(", (byte)0x%02X", 0xff & buf[i]);
+			}
+		}
+		System.out.printf("\n}\n");
 	}
 }

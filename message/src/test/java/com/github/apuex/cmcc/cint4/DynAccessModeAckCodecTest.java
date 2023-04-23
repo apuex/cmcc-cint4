@@ -27,7 +27,7 @@ public class DynAccessModeAckCodecTest {
     @Test
     public void testEncode() {
         byte[] expected = new byte[] 
-            { (byte)0x5A, (byte)0x6B, (byte)0x7C, (byte)0x7E, (byte)0x4A, (byte)0x01, (byte)0x00, (byte)0x00
+            { (byte)0x5A, (byte)0x6B, (byte)0x7C, (byte)0x7E, (byte)0x52, (byte)0x01, (byte)0x00, (byte)0x00
             , (byte)0x01, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x92, (byte)0x01, (byte)0x00, (byte)0x00
             , (byte)0x02, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x03, (byte)0x00, (byte)0x00, (byte)0x00
             , (byte)0x01, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x02, (byte)0x00, (byte)0x00, (byte)0x00
@@ -50,16 +50,17 @@ public class DynAccessModeAckCodecTest {
             , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
             , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x31
             , (byte)0x20, (byte)0x20, (byte)0x79, (byte)0xE9, (byte)0xF6, (byte)0x42, (byte)0x01, (byte)0x00
-            , (byte)0x00, (byte)0x00, (byte)0x02, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x31, (byte)0x32
-            , (byte)0x33, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
+            , (byte)0x00, (byte)0x00, (byte)0x02, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x04, (byte)0x00
+            , (byte)0x00, (byte)0x00, (byte)0x31, (byte)0x32, (byte)0x33, (byte)0x20, (byte)0x20, (byte)0x20
             , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
-            , (byte)0x20, (byte)0x20, (byte)0x34, (byte)0x35, (byte)0x36, (byte)0x20, (byte)0x20, (byte)0x20
-            , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
-            , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
-            , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x37, (byte)0x38, (byte)0x39, (byte)0x20
+            , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x34, (byte)0x35
+            , (byte)0x36, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
             , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
             , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
-            , (byte)0x31, (byte)0x20, (byte)0x20, (byte)0x31, (byte)0x32, (byte)0x33, (byte)0x20, (byte)0x20
+            , (byte)0x37, (byte)0x38, (byte)0x39, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
+            , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
+            , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x31, (byte)0x20, (byte)0x20, (byte)0x03
+            , (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x31, (byte)0x32, (byte)0x33, (byte)0x20, (byte)0x20
             , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
             , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x34
             , (byte)0x35, (byte)0x36, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
@@ -68,7 +69,7 @@ public class DynAccessModeAckCodecTest {
             , (byte)0x20, (byte)0x37, (byte)0x39, (byte)0x30, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
             , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
             , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x31, (byte)0x20, (byte)0x20
-            , (byte)0xD5, (byte)0x33
+            , (byte)0xEA, (byte)0xDF
             };
         List<TATD> vl = new LinkedList<TATD>();
         TD td = new TD();
@@ -91,12 +92,14 @@ public class DynAccessModeAckCodecTest {
 
         List<TID> idl = new LinkedList<TID>();
         TID tid1 = new TID();
+        tid1.Type = EnumType.DI;
         tid1.SiteID = "123";
         tid1.DeviceID = "456";
         tid1.SignalID = "789";
         tid1.SignalNumber = "1";
         idl.add(tid1);
         TID tid2 = new TID();
+        tid2.Type = EnumType.AI;
         tid2.SiteID = "123";
         tid2.DeviceID = "456";
         tid2.SignalID = "790";
@@ -105,7 +108,7 @@ public class DynAccessModeAckCodecTest {
         
         TIDArray Values2 = new TIDArray(idl);
         DynAccessModeAck v = new DynAccessModeAck(1, 2, 3, EnumResult.SUCCESS, Values1, Values2);
-      	byte[] actual = new byte[330];
+      	byte[] actual = new byte[338];
       	ByteBuffer buf = ByteBuffer.wrap(actual);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
 
@@ -114,13 +117,8 @@ public class DynAccessModeAckCodecTest {
       	TATDArrayCodec Values1Codec = new TATDArrayCodec(tatdCodec);
       	DynAccessModeAckCodec codec = new DynAccessModeAckCodec(Values1Codec);
       	codec.encode(buf, v);
-      	v.Length = buf.position();
 
-        System.out.printf("actual[%d] = [ ", v.Length);
-      	for(int i = 0; i != v.Length; ++i) {
-          System.out.printf("%02X ", 0xff & actual[i]);
-      	}
-        System.out.printf("]\n");
+        Util.printBytes("actual", actual);
 
       	Assert.assertArrayEquals(expected, actual);
     }
@@ -128,7 +126,7 @@ public class DynAccessModeAckCodecTest {
     @Test
     public void testDecode() {
         byte[] input = new byte[] 
-			{ (byte)0x5A, (byte)0x6B, (byte)0x7C, (byte)0x7E, (byte)0x4A, (byte)0x01, (byte)0x00, (byte)0x00
+            { (byte)0x5A, (byte)0x6B, (byte)0x7C, (byte)0x7E, (byte)0x52, (byte)0x01, (byte)0x00, (byte)0x00
             , (byte)0x01, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x92, (byte)0x01, (byte)0x00, (byte)0x00
             , (byte)0x02, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x03, (byte)0x00, (byte)0x00, (byte)0x00
             , (byte)0x01, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x02, (byte)0x00, (byte)0x00, (byte)0x00
@@ -151,16 +149,17 @@ public class DynAccessModeAckCodecTest {
             , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
             , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x31
             , (byte)0x20, (byte)0x20, (byte)0x79, (byte)0xE9, (byte)0xF6, (byte)0x42, (byte)0x01, (byte)0x00
-            , (byte)0x00, (byte)0x00, (byte)0x02, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x31, (byte)0x32
-            , (byte)0x33, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
+            , (byte)0x00, (byte)0x00, (byte)0x02, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x04, (byte)0x00
+            , (byte)0x00, (byte)0x00, (byte)0x31, (byte)0x32, (byte)0x33, (byte)0x20, (byte)0x20, (byte)0x20
             , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
-            , (byte)0x20, (byte)0x20, (byte)0x34, (byte)0x35, (byte)0x36, (byte)0x20, (byte)0x20, (byte)0x20
-            , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
-            , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
-            , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x37, (byte)0x38, (byte)0x39, (byte)0x20
+            , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x34, (byte)0x35
+            , (byte)0x36, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
             , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
             , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
-            , (byte)0x31, (byte)0x20, (byte)0x20, (byte)0x31, (byte)0x32, (byte)0x33, (byte)0x20, (byte)0x20
+            , (byte)0x37, (byte)0x38, (byte)0x39, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
+            , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
+            , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x31, (byte)0x20, (byte)0x20, (byte)0x03
+            , (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x31, (byte)0x32, (byte)0x33, (byte)0x20, (byte)0x20
             , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
             , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x34
             , (byte)0x35, (byte)0x36, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
@@ -169,9 +168,8 @@ public class DynAccessModeAckCodecTest {
             , (byte)0x20, (byte)0x37, (byte)0x39, (byte)0x30, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
             , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
             , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x31, (byte)0x20, (byte)0x20
-            , (byte)0xD5, (byte)0x33
+            , (byte)0xEA, (byte)0xDF
             };
-
         List<TATD> vl = new LinkedList<TATD>();
         TD td = new TD();
         td.SiteID = "123";
@@ -193,12 +191,14 @@ public class DynAccessModeAckCodecTest {
 
         List<TID> idl = new LinkedList<TID>();
         TID tid1 = new TID();
+        tid1.Type = EnumType.DI;
         tid1.SiteID = "123";
         tid1.DeviceID = "456";
         tid1.SignalID = "789";
         tid1.SignalNumber = "1";
         idl.add(tid1);
         TID tid2 = new TID();
+        tid2.Type = EnumType.AI;
         tid2.SiteID = "123";
         tid2.DeviceID = "456";
         tid2.SignalID = "790";
@@ -208,17 +208,12 @@ public class DynAccessModeAckCodecTest {
         TIDArray Values2 = new TIDArray(idl);
         DynAccessModeAck expected = new DynAccessModeAck(1, 2, 3, EnumResult.SUCCESS, Values1, Values2);
       	expected.Length = input.length;
-      	expected.CRC16 = (short)0x33D5;
+      	expected.CRC16 = (short)0xDFEA;
 
       	Map<TID, EnumType> typeMap = new TreeMap<TID, EnumType>(new TIDComparator());
       	for(TATD v : vl) {
-      		if(v instanceof TA) {
-      			typeMap.put(v.toTID(), EnumType.AI);
-      		}else if(v instanceof TD) {
-      			typeMap.put(v.toTID(), EnumType.DI);
-      		} else {
-      			// not possible.
-      		}
+            TID tid = v.toTID();
+      		typeMap.put(tid, tid.Type);
       	}
       	TATDCodec tatdCodec = new TATDCodec(tid -> typeMap.get(tid));
       	TATDArrayCodec Values1Codec = new TATDArrayCodec(tatdCodec);

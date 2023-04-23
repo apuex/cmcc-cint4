@@ -61,6 +61,7 @@ public class TA extends TATD {
     @Override
     public TID toTID() {
     	TID tid = new TID();
+        tid.Type = EnumType.AI;
     	tid.SiteID = SiteID;
     	tid.DeviceID = DeviceID;
     	tid.SignalID = SignalID;

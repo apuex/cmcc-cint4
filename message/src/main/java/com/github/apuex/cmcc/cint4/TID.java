@@ -33,7 +33,8 @@ public class TID implements Serializable {
         }
 
         boolean result =
-            ( this.SiteID.equals(r.SiteID)
+            ( this.Type == r.Type
+            && this.SiteID.equals(r.SiteID)
             && this.DeviceID.equals(r.DeviceID)
             && this.SignalID.equals(r.SignalID)
             && this.SignalNumber.equals(r.SignalNumber)
@@ -47,7 +48,8 @@ public class TID implements Serializable {
         StringBuilder builder = new StringBuilder();
         builder
             .append("TID { ")
-            .append("SiteID=").append(this.SiteID)
+            .append("Type=").append(this.Type)
+            .append(", ").append("SiteID=").append(this.SiteID)
             .append(", ").append("DeviceID=").append(this.DeviceID)
             .append(", ").append("SignalID=").append(this.SignalID)
             .append(", ").append("SignalNumber=").append(this.SignalNumber)
@@ -56,6 +58,7 @@ public class TID implements Serializable {
         return builder.toString();
     }
 
+    public EnumType Type; // 监控系统数据的种类
     public String SiteID; // 站点编号
     public String DeviceID; // 设备编号
     public String SignalID; // 监控点的6位信号编码，即《动环信号标准化字典表(20170927)》中的信号编码ID

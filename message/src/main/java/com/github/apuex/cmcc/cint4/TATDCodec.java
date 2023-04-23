@@ -35,12 +35,15 @@ public class TATDCodec {
 
 	public TATD decode(ByteBuffer buf) {
 		TATD v = null;
-		TID tid = null;
+		TID tid = new TID();
 		final int pos = buf.position();
 		// the head of TA/TD is accidentally equivalent to TID ^_^
 		// re-interpret the head to be a TID causes ACCIDENTAL COUPLING to TID
 		// which SHOULD BE AVOIDED!
-		tid = tidCodec.decode(buf);
+		tid.SiteID = Util.decodeString(buf, Lengths.SITEID_LENGTH);
+		tid.DeviceID = Util.decodeString(buf, Lengths.DEVICEID_LENGTH);
+		tid.SignalID = Util.decodeString(buf, Lengths.ID_LENGTH);
+		tid.SignalNumber = Util.decodeString(buf, Lengths.SIGNALNUM_LENGTH);
 		buf.position(pos); // reset to begining.
 		EnumType dataType = typeMap.from(tid);
 		switch (dataType) {
@@ -56,7 +59,6 @@ public class TATDCodec {
 		return v;
 	}
 
-	private TIDCodec					 tidCodec	= new TIDCodec();
 	private TACodec						 taCodec	= new TACodec();
 	private TDCodec						 tdCodec	= new TDCodec();
 	private TIDToSignalTypeMap typeMap;

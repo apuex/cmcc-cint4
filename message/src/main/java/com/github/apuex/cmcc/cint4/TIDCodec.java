@@ -23,6 +23,7 @@ import java.nio.ByteBuffer;
 public class TIDCodec {
 
     public void encode(ByteBuffer buf, TID v) {
+        buf.putInt(v.Type.getValue());
         Util.encodeString(buf, v.SiteID, Lengths.SITEID_LENGTH);
         Util.encodeString(buf, v.DeviceID, Lengths.DEVICEID_LENGTH);
         Util.encodeString(buf, v.SignalID, Lengths.ID_LENGTH);
@@ -31,6 +32,7 @@ public class TIDCodec {
 
     public TID decode(ByteBuffer buf) {
         TID v = new TID();
+        v.Type = EnumType.fromValue(buf.getInt());
         v.SiteID = Util.decodeString(buf, Lengths.SITEID_LENGTH);
         v.DeviceID = Util.decodeString(buf, Lengths.DEVICEID_LENGTH);
         v.SignalID = Util.decodeString(buf, Lengths.ID_LENGTH);

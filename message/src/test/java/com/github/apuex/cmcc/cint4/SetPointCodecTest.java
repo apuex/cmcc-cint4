@@ -51,16 +51,12 @@ public class SetPointCodecTest {
     	buf.order(ByteOrder.LITTLE_ENDIAN);
 
     	final Map<TID, EnumType> typeMap = new TreeMap<TID, EnumType>(new TIDComparator());
-    	typeMap.put(Util.tidFrom(ta), EnumType.AI);
+    	TID theTid = Util.tidFrom(ta);
+        typeMap.put(theTid, theTid.Type);
     	SetPointCodec codec = new SetPointCodec(new TATDCodec(tid -> typeMap.get(tid)));
     	codec.encode(buf, v);
-    	v.Length = buf.position();
 
-      System.out.printf("actual[%d] = [ ", v.Length);
-    	for(int i = 0; i != v.Length; ++i) {
-    		System.out.printf("%02X ", 0xff & actual[i]);
-    	}
-      System.out.printf("]\n");
+        Util.printBytes("actual", actual);
 
     	Assert.assertArrayEquals(expected, actual);
   }
@@ -95,7 +91,8 @@ public class SetPointCodecTest {
     	buf.order(ByteOrder.LITTLE_ENDIAN);
 
     	Map<TID, EnumType> typeMap = new TreeMap<TID, EnumType>(new TIDComparator());
-    	typeMap.put(Util.tidFrom(ta), EnumType.AI);
+        TID theTid = Util.tidFrom(ta);
+        typeMap.put(theTid, theTid.Type);
     	SetPointCodec codec = new SetPointCodec(new TATDCodec(tid -> typeMap.get(tid)));
       SetPoint actual = codec.decode(buf);
 
@@ -130,6 +127,8 @@ public class SetPointCodecTest {
 
   	Map<TID, EnumType> typeMap = new TreeMap<TID, EnumType>(new TIDComparator());
   	typeMap.put(Util.tidFrom(td), EnumType.DI);
+    TID theTid = Util.tidFrom(td);
+    typeMap.put(theTid, theTid.Type);
   	SetPointCodec codec = new SetPointCodec(new TATDCodec(tid -> typeMap.get(tid)));
   	codec.encode(buf, v);
   	v.Length = buf.position();
@@ -173,7 +172,8 @@ public void testDecodeTD() {
   	buf.order(ByteOrder.LITTLE_ENDIAN);
 
   	Map<TID, EnumType> typeMap = new TreeMap<TID, EnumType>(new TIDComparator());
-  	typeMap.put(Util.tidFrom(td), EnumType.DI);
+    TID theTid = Util.tidFrom(td);
+    typeMap.put(theTid, theTid.Type);
   	SetPointCodec codec = new SetPointCodec(new TATDCodec(tid -> typeMap.get(tid)));
     SetPoint actual = codec.decode(buf);
 
