@@ -139,6 +139,12 @@ public class ServerHandler extends io.netty.channel.ChannelInboundHandlerAdapter
 	}
 
 	@Override
+	public void channelWritabilityChanged(ChannelHandlerContext ctx) throws Exception {
+		logger.info(String.format("[%s] INF: writ-ability changed.", ctx.channel().remoteAddress()));
+		ctx.fireChannelWritabilityChanged();
+	}
+
+	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
 		logger.info(String.format("[%s] ERR : %s", ctx.channel().remoteAddress(), cause));
 		ctx.fireExceptionCaught(cause);
