@@ -21,4 +21,6 @@ import java.io.Serializable;
 abstract public class TATD implements Serializable {
 	private static final long serialVersionUID = 1L;
 	abstract public TID toTID();
+	abstract public TID toDeviceTID();
+	abstract public TID toSiteTID();
 }

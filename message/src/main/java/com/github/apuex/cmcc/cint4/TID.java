@@ -23,6 +23,22 @@ import java.io.Serializable;
 public class TID implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    public TID() {}
+
+    public TID(
+            EnumType Type,  // 监控系统数据的种类
+            String SiteID,  // 站点编号
+            String DeviceID,  // 设备编号
+            String SignalID,  // 监控点的6位信号编码，即《动环信号标准化字典表(20170927)》中的信号编码ID
+            String SignalNumber  // 同类监控点顺序号
+    ) {
+        this.Type = Type;  // 监控系统数据的种类
+        this.SiteID = SiteID;  // 站点编号
+        this.DeviceID = DeviceID;  // 设备编号
+        this.SignalID = SignalID;  // 监控点的6位信号编码，即《动环信号标准化字典表(20170927)》中的信号编码ID
+        this.SignalNumber = SignalNumber;  // 同类监控点顺序号
+    }
+
     @Override
     public boolean equals(Object o) {
         TID r = null;
