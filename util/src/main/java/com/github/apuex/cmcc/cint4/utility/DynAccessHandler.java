@@ -5,16 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.github.apuex.cmcc.cint4.*;
 import org.slf4j.LoggerFactory;
-
-import com.github.apuex.cmcc.cint4.EnumAccessMode;
-import com.github.apuex.cmcc.cint4.HeartBeatAck;
-import com.github.apuex.cmcc.cint4.Login;
-import com.github.apuex.cmcc.cint4.Logout;
-import com.github.apuex.cmcc.cint4.Message;
-import com.github.apuex.cmcc.cint4.SetDynAccessMode;
-import com.github.apuex.cmcc.cint4.TID;
-import com.github.apuex.cmcc.cint4.TIDArray;
 
 import ch.qos.logback.classic.Logger;
 import io.netty.channel.ChannelHandlerContext;
@@ -43,6 +35,13 @@ public class DynAccessHandler extends io.netty.channel.ChannelInboundHandlerAdap
 				break;
 			case LOGIN_ACK: {
 				List<TID> l = new LinkedList<TID>();
+				TID tid = new TID();
+				tid.Type = EnumType.AI;
+				tid.SiteID = "12722";
+				tid.DeviceID = "12956";
+				tid.SignalID = "017302";
+				tid.SignalNumber = "005";
+				l.add(tid);
 				send(ctx, new SetDynAccessMode(SerialNo.nextSerialNo(ctx.channel()), 1, 2, EnumAccessMode.ASK_ANSWER, 30, new TIDArray(l)));
 			}
 				break;
