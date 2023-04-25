@@ -75,7 +75,11 @@ public class Main {
 				put("alarm-mode", "4");
 				put("dyn-access-mode", "0");
 				put("polling-time", "2");
-				put("node-id", "526336");
+				put("site-id", "12722");
+				put("device-id", "12956");
+				put("signal-id", "017301");
+				put("signal-number", "000");
+				put("enum-type", "5");
 				put("continuously", "false");
 				put("heart-beat", "30");
 				put("mq-host", "localhost");
@@ -96,7 +100,11 @@ public class Main {
 		options.addOption(new Option(null, "server-new-passwd", true, "C Interface server password"));
 		options.addOption(new Option(null, "alarm-mode", true, "alarm mode"));
 		options.addOption(new Option(null, "dyn-access-mode", true, "dynamic access mode"));
-		options.addOption(new Option("d", "node-id", true, "Node Id of data object"));
+		options.addOption(new Option(null, "site-id", true, "Site ID"));
+		options.addOption(new Option(null, "device-id", true, "Device ID"));
+		options.addOption(new Option(null, "signal-id", true, "Signal ID"));
+		options.addOption(new Option(null, "signal-number", true, "Signal number"));
+		options.addOption(new Option(null, "enum-type", true, "ALARM(0), DO(1), AO(2), DI(3), AI(4), DEVICE(5), ROOM(6), SITE(7), AREA(8)"));
 		options.addOption(new Option("t", "polling-time", true, "polling interval, in second(s)"));
 		options.addOption(new Option("c", "continuously", false, "send set dynamic access mode request continuously"));
 		options.addOption(new Option(null, "heart-beat", true, "idle timeout in second, to send heart beat message."));
