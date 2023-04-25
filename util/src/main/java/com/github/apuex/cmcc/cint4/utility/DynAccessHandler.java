@@ -43,7 +43,12 @@ public class DynAccessHandler extends io.netty.channel.ChannelInboundHandlerAdap
 					tid.SignalID = params.get("signal-id");
 					tid.SignalNumber = params.get("signal-number");
 					l.add(tid);
-					send(ctx, new SetDynAccessMode(SerialNo.nextSerialNo(ctx.channel()), 1, 2, EnumAccessMode.ASK_ANSWER, 30, new TIDArray(l)));
+					send(ctx, new SetDynAccessMode(SerialNo.nextSerialNo(ctx.channel())
+							, 1
+							, 2
+							, EnumAccessMode.ASK_ANSWER
+							, Integer.parseInt(params.get("polling-time"))
+							, new TIDArray(l)));
 				}
 				break;
 				case LOGOUT:
