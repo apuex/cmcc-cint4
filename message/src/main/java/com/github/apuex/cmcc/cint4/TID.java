@@ -14,6 +14,7 @@
 package com.github.apuex.cmcc.cint4;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * 数据值的结构
@@ -72,6 +73,11 @@ public class TID implements Serializable {
             .append(" }");
 
         return builder.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(Type, SiteID, DeviceID, SignalID, SignalNumber);
     }
 
     public EnumType Type; // 监控系统数据的种类
