@@ -42,7 +42,8 @@ public class ByteToCInt4MessageDecoder extends ByteToMessageDecoder {
 	
 	@Override
 	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-		if (in.readableBytes() < 4)
+		final int READABLE = in.readableBytes();
+		if (READABLE < 8) // sizeof(header) + sizeof(length)
 			return; // frame header
 		byte[] array = new byte[in.readableBytes()];
 		in.getBytes(0, array, 0, array.length);
@@ -55,18 +56,16 @@ public class ByteToCInt4MessageDecoder extends ByteToMessageDecoder {
 			return;
 		}
 
-		if (in.readableBytes() < 4)
-			return; // length
 		final int length = buf.getInt();
-		if (in.readableBytes() < length)
+		if (READABLE < length)
 			return; // frame header + length
 
-		if (in.readableBytes() < 4)
+		if (READABLE < 4)
 			return; // serial no
 		@SuppressWarnings("unused")
 		final int serialNo = buf.getInt();
 
-		if (in.readableBytes() < 4)
+		if (READABLE < 4)
 			return; // pk type
 		final EnumPKType PKType = EnumPKType.fromValue(buf.getInt());
 
