@@ -39,7 +39,6 @@ public class TAlarm implements Serializable {
             && this.DeviceID.equals(r.DeviceID)
             && this.SignalID.equals(r.SignalID)
             && this.SignalNumber.equals(r.SignalNumber)
-            && this.NMAlarmID.equals(r.NMAlarmID)
             && this.AlarmTime.equals(r.AlarmTime)
             && this.AlarmLevel == r.AlarmLevel
             && this.AlarmFlag == r.AlarmFlag
@@ -61,7 +60,6 @@ public class TAlarm implements Serializable {
             .append(", ").append("DeviceID=").append(this.DeviceID)
             .append(", ").append("SignalID=").append(this.SignalID)
             .append(", ").append("SignalNumber=").append(this.SignalNumber)
-            .append(", ").append("NMAlarmID=").append(this.NMAlarmID)
             .append(", ").append("AlarmTime=").append(this.AlarmTime)
             .append(", ").append("AlarmLevel=").append(this.AlarmLevel)
             .append(", ").append("AlarmFlag=").append(this.AlarmFlag)
@@ -78,7 +76,6 @@ public class TAlarm implements Serializable {
     public String DeviceID; // 设备编号
     public String SignalID; // 监控点的6位信号编码，即《动环信号标准化字典表(20170927)》中的信号编码ID
     public String SignalNumber; // 同类监控点顺序号
-    public String NMAlarmID; // 6位告警编码ID
     public String AlarmTime; // 告警时间，YYYY-MM-DD<SPACE键>hh:mm:ss（采用24小时的时间制式）
     public EnumState AlarmLevel; // 数据值的状态
     public EnumFlag AlarmFlag; // 告警标志

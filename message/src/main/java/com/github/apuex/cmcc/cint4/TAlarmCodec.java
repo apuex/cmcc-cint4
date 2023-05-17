@@ -29,7 +29,6 @@ public class TAlarmCodec {
         Util.encodeString(buf, v.DeviceID, Lengths.DEVICEID_LENGTH);
         Util.encodeString(buf, v.SignalID, Lengths.ID_LENGTH);
         Util.encodeString(buf, v.SignalNumber, Lengths.SIGNALNUM_LENGTH);
-        Util.encodeString(buf, v.NMAlarmID, Lengths.ID_LENGTH);
         Util.encodeString(buf, v.AlarmTime, Lengths.TIME_LENGTH);
         buf.putInt(v.AlarmLevel.getValue());
         buf.putInt(v.AlarmFlag.getValue());
@@ -45,7 +44,6 @@ public class TAlarmCodec {
         v.DeviceID = Util.decodeString(buf, Lengths.DEVICEID_LENGTH);
         v.SignalID = Util.decodeString(buf, Lengths.ID_LENGTH);
         v.SignalNumber = Util.decodeString(buf, Lengths.SIGNALNUM_LENGTH);
-        v.NMAlarmID = Util.decodeString(buf, Lengths.ID_LENGTH);
         v.AlarmTime = Util.decodeString(buf, Lengths.TIME_LENGTH);
         v.AlarmLevel = EnumState.fromValue(buf.getInt());
         v.AlarmFlag = EnumFlag.fromValue(buf.getInt());
