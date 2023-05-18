@@ -36,20 +36,18 @@ public class DynAccessHandler extends io.netty.channel.ChannelInboundHandlerAdap
 				case LOGIN:
 					break;
 				case LOGIN_ACK: {
-					List<TID> l = new LinkedList<TID>();
 					TID tid = new TID();
 					tid.Type = EnumType.fromValue(Integer.parseInt(params.get("enum-type")));
 					tid.SiteID = params.get("site-id");
 					tid.DeviceID = params.get("device-id");
 					tid.SignalID = params.get("signal-id");
 					tid.SignalNumber = params.get("signal-number");
-					l.add(tid);
 					send(ctx, new SetDynAccessMode(SerialNo.nextSerialNo(ctx.channel())
 							, 1
 							, 2
 							, EnumAccessMode.ASK_ANSWER
 							, Integer.parseInt(params.get("polling-time"))
-							, new TIDArray(l)));
+							, tid));
 				}
 				break;
 				case LOGOUT:

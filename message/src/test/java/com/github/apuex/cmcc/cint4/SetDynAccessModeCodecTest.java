@@ -40,15 +40,13 @@ public class SetDynAccessModeCodecTest {
             , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
             , (byte)0x20, (byte)0x20, (byte)0x36, (byte)0x20, (byte)0x20, (byte)0x26, (byte)0x3E
             };
-        List<TID> l = new LinkedList<TID>();
         TID tid = new TID();
         tid.Type = EnumType.AI;
         tid.SiteID = "3";
         tid.DeviceID = "4";
         tid.SignalID = "5";
         tid.SignalNumber = "6";
-        l.add(tid);
-        SetDynAccessMode v = new SetDynAccessMode(2, 1, 2, EnumAccessMode.ASK_ANSWER, 30, new TIDArray(l));
+        SetDynAccessMode v = new SetDynAccessMode(2, 1, 2, EnumAccessMode.ASK_ANSWER, 30, tid);
       	byte[] actual = new byte[111];
       	ByteBuffer buf = ByteBuffer.wrap(actual);
       	buf.order(ByteOrder.LITTLE_ENDIAN);
@@ -79,15 +77,13 @@ public class SetDynAccessModeCodecTest {
             , (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20, (byte)0x20
             , (byte)0x20, (byte)0x20, (byte)0x36, (byte)0x20, (byte)0x20, (byte)0x26, (byte)0x3E
             };
-        List<TID> l = new LinkedList<TID>();
         TID tid = new TID();
         tid.Type = EnumType.AI;
         tid.SiteID = "3";
         tid.DeviceID = "4";
         tid.SignalID = "5";
         tid.SignalNumber = "6";
-        l.add(tid);
-        SetDynAccessMode expected = new SetDynAccessMode(2, 1, 2, EnumAccessMode.ASK_ANSWER, 30, new TIDArray(l));
+        SetDynAccessMode expected = new SetDynAccessMode(2, 1, 2, EnumAccessMode.ASK_ANSWER, 30, tid);
       	expected.Length = input.length;
       	expected.CRC16 = (short)0x3E26;
       	ByteBuffer buf = ByteBuffer.wrap(input);

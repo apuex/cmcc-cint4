@@ -69,6 +69,6 @@ public class SetDynAccessModeCodec {
         return v;
     }
 
-    public TIDArrayCodec IdsCodec = new TIDArrayCodec(); // 如果类型是站点，即获取站内所有设备下的监控点数据；如果是设备，即获取该设备下所有监控点数据；如果是监控点，即是该点数据。
+    public TIDCodec IdsCodec = new TIDCodec(); // 如果类型是站点，即获取站内所有设备下的监控点数据；如果是设备，即获取该设备下所有监控点数据；如果是监控点，即是该点数据。
 }
 
