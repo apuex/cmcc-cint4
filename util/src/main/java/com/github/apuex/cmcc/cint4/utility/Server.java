@@ -1,11 +1,10 @@
 package com.github.apuex.cmcc.cint4.utility;
 
-import java.util.Map;
-
 import ch.qos.logback.classic.Logger;
 import com.github.apuex.cmcc.cint4.EnumType;
 import com.github.apuex.cmcc.cint4.TIDToSignalTypeMap;
-
+import com.github.apuex.cmcc.cint4.codec.ByteToCInt4MessageDecoder;
+import com.github.apuex.cmcc.cint4.codec.CInt4MessageToByteEncoder;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -18,6 +17,8 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import org.slf4j.LoggerFactory;
+
+import java.util.Map;
 
 public class Server {
 	private static final Logger logger = (Logger) LoggerFactory.getLogger(Server.class);

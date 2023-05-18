@@ -1,4 +1,4 @@
-package com.github.apuex.cmcc.cint4.utility;
+package com.github.apuex.cmcc.cint4.codec;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
