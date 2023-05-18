@@ -6,13 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.github.apuex.cmcc.cint4.*;
+import io.netty.util.ReferenceCountUtil;
 import org.slf4j.LoggerFactory;
 
 import ch.qos.logback.classic.Logger;
 import io.netty.channel.ChannelHandlerContext;
 
 public class DynAccessHandler extends io.netty.channel.ChannelInboundHandlerAdapter {
-	private static final Logger logger = (Logger) LoggerFactory.getLogger(ServerHandler.class);
+	private static final Logger logger = (Logger) LoggerFactory.getLogger(DynAccessHandler.class);
 	private Map<String, String> params;
 
 	public DynAccessHandler(Map<String, String> params) {
@@ -91,7 +92,7 @@ public class DynAccessHandler extends io.netty.channel.ChannelInboundHandlerAdap
 					break;
 			}
 		}
-		ctx.fireChannelRead(msg);
+		ReferenceCountUtil.release(msg);
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package com.github.apuex.cmcc.cint4.utility;
 
 import java.util.Map;
 
+import io.netty.util.ReferenceCountUtil;
 import org.slf4j.LoggerFactory;
 
 import com.github.apuex.cmcc.cint4.EnumState;
@@ -17,7 +18,7 @@ import ch.qos.logback.classic.Logger;
 import io.netty.channel.ChannelHandlerContext;
 
 public class SetPointHandler extends io.netty.channel.ChannelInboundHandlerAdapter {
-	private static final Logger logger = (Logger) LoggerFactory.getLogger(ServerHandler.class);
+	private static final Logger logger = (Logger) LoggerFactory.getLogger(SetPointHandler.class);
 	private Map<String, String> params;
 
 	public SetPointHandler(Map<String, String> params) {
@@ -90,7 +91,7 @@ public class SetPointHandler extends io.netty.channel.ChannelInboundHandlerAdapt
 				break;
 			}
 		}
-		ctx.fireChannelRead(msg);
+		ReferenceCountUtil.release(msg);
 	}
 
 	@Override

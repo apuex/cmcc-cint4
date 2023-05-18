@@ -3,6 +3,7 @@ package com.github.apuex.cmcc.cint4.utility;
 
 import java.util.Map;
 
+import io.netty.util.ReferenceCountUtil;
 import org.slf4j.LoggerFactory;
 
 import com.github.apuex.cmcc.cint4.HeartBeatAck;
@@ -15,7 +16,7 @@ import ch.qos.logback.classic.Logger;
 import io.netty.channel.ChannelHandlerContext;
 
 public class ModifyPasswdHandler extends io.netty.channel.ChannelInboundHandlerAdapter {
-	private static final Logger logger = (Logger) LoggerFactory.getLogger(ServerHandler.class);
+	private static final Logger logger = (Logger) LoggerFactory.getLogger(ModifyPasswdHandler.class);
 	private Map<String, String> params;
 
 	public ModifyPasswdHandler(Map<String, String> params) {
@@ -83,7 +84,7 @@ public class ModifyPasswdHandler extends io.netty.channel.ChannelInboundHandlerA
 				break;
 			}
 		}
-		ctx.fireChannelRead(msg);
+		ReferenceCountUtil.release(msg);
 	}
 
 	@Override

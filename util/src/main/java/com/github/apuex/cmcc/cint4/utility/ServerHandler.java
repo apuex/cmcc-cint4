@@ -9,6 +9,7 @@ import com.github.apuex.cmcc.cint4.*;
 import com.github.apuex.cmcc.cint4.SetPoint;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.util.AttributeKey;
+import io.netty.util.ReferenceCountUtil;
 import org.slf4j.LoggerFactory;
 
 import ch.qos.logback.classic.Logger;
@@ -125,7 +126,7 @@ public class ServerHandler extends io.netty.channel.ChannelInboundHandlerAdapter
 				break;
 			}
 		}
-		ctx.fireChannelRead(msg);
+		ReferenceCountUtil.release(msg);
 	}
 
 	@Override

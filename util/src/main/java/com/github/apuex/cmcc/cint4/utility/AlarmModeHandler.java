@@ -3,6 +3,7 @@ package com.github.apuex.cmcc.cint4.utility;
 
 import java.util.Map;
 
+import io.netty.util.ReferenceCountUtil;
 import org.slf4j.LoggerFactory;
 
 import com.github.apuex.cmcc.cint4.EnumAlarmMode;
@@ -18,7 +19,7 @@ import ch.qos.logback.classic.Logger;
 import io.netty.channel.ChannelHandlerContext;
 
 public class AlarmModeHandler extends io.netty.channel.ChannelInboundHandlerAdapter {
-	private static final Logger logger = (Logger) LoggerFactory.getLogger(ServerHandler.class);
+	private static final Logger logger = (Logger) LoggerFactory.getLogger(AlarmModeHandler.class);
 	private Map<String, String> params;
 
 	public AlarmModeHandler(Map<String, String> params) {
@@ -86,7 +87,7 @@ public class AlarmModeHandler extends io.netty.channel.ChannelInboundHandlerAdap
 				break;
 			}
 		}
-		ctx.fireChannelRead(msg);
+		ReferenceCountUtil.release(msg);
 	}
 
 	@Override
